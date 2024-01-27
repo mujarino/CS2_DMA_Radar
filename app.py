@@ -79,16 +79,6 @@ print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
-
-mapname = str(readmapfrommem()).replace('\x00', '')
-mapname = mapname.replace('\x10\x0e', '')
-print(f"[+] Finded map {mapname}")
-if os.path.exists(f'maps/{mapname}'):
-    pass
-else:
-    print(f'[-] Pls, import this map first ({mapname})')
-    exit()
-scale,x,y = getmapdata(mapname)
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -100,6 +90,15 @@ font = pygame.font.Font(None, hp_font_size)
 
 while True:
     try:
+        mapname = str(readmapfrommem()).replace('\x00', '')
+        mapname = mapname.replace('\x10\x0e', '')
+        print(f"[+] Finded map {mapname}")
+        if os.path.exists(f'maps/{mapname}'):
+            pass
+        else:
+            print(f'[-] Pls, import this map first ({mapname})')
+            exit()
+        scale,x,y = getmapdata(mapname)
         entitys = getentitys()
         print(f"[+] Find entitys {entitys}")
         try:
@@ -157,6 +156,10 @@ while True:
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
     except:
-        print('[-] Error data reading. Some entity leave or map closed. Retrying in 5 seconds')
+        textt = 'Error data reading. Some entity leave or map closed. Retrying in 5 seconds'
+        print(f'[-] {textt}')
+        fontt = pygame.font.Font(None, 20)
+        text_surface = fontt.render(f'{textt}', True, (255, 255, 255))
+        screen.blit(error_text)
         time.sleep(5)
 pygame.quit()
