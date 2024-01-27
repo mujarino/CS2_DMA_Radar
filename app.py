@@ -72,9 +72,11 @@ for entityId in range(1,2048):
         pass
 print(f"[+] Find entitys {entitys}")
 print(f"[+] Mapname {readmapfrommem()}")
-
-if os.path.exists(os.path.join("maps", str(readmapfrommem()))):
+mapname = str(readmapfrommem())
+if os.path.exists(os.path.join("maps", mapname)):
     print("test")
+else:
+    print('test2')
 pygame.init()
 
 clock = pygame.time.Clock()
