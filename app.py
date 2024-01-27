@@ -9,6 +9,13 @@ import numpy as np
 import os
 import re
 
+########## ADJUST SIZES HERE ##########
+
+triangle_length = 13
+circle_size = 7 # 8 too big
+hp_font_size = 18
+
+#######################################
 
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
@@ -17,6 +24,8 @@ m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
 m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
+
+#######################################
 
 zoom_scale = 2
 
@@ -34,11 +43,6 @@ def getmapdata(mapname):
     y = data['offset']['y']
     return scale,x,y
 
-vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
-cs2 = vmm.process('cs2.exe')
-client = cs2.module('client.dll')
-client_base = client.base
-
 def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
@@ -46,6 +50,10 @@ def readmapfrommem():
     mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode()
     return mapName
 
+vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
+cs2 = vmm.process('cs2.exe')
+client = cs2.module('client.dll')
+client_base = client.base
 print(f"[+] Client_base {client_base}")
 
 entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
@@ -85,7 +93,7 @@ screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
-font = pygame.font.Font(None, 18)
+font = pygame.font.Font(None, hp_font_size)
 
 # Создание кнопок и меток
 running = True
@@ -98,7 +106,6 @@ while running:
 
     screen.fill((0, 0, 0))
 
-    triangle_length = 15
     triangle_color = (255, 255, 255)
 
     rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
@@ -122,10 +129,10 @@ while running:
         triangle_right_y = transformed_y + math.cos(EyeAngles - math.pi / 3) * triangle_length / 2
         if Hp > 0 and team == 2:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 7)
+            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
         if Hp > 0 and team == 3:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 7)
+            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
         if Hp>30:
             text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
             text_surface.set_alpha(255)
