@@ -101,8 +101,7 @@ font = pygame.font.Font(None, hp_font_size)
 while True:
     if 1==1:
         entitys = getentitys()
-        print(entitys)
-        print(f"[+] Find {entitys.count()} entitys")
+        print(f"[+] Find {len(entitys)} entitys")
         try:
             entitys[0]
         except:
