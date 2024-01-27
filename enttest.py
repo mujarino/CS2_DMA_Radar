@@ -34,7 +34,7 @@ def getinfo(entityId):
 
 entitys = []
 
-for entityId in range(1,2048)
+for entityId in range(1,2048):
     entityId = struct.unpack("<I", cs2.memory.read(player + m_iIDEntIndex, 4, memprocfs.FLAG_NOCACHE))[0]
     EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
     try:
