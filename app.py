@@ -65,9 +65,9 @@ for entityId in range(1,2048):
         entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         if int(entityHp) != 0:
-            entitys.append(entityId)
             team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-            print(team)
+            if int(team) == 1 or int(team) == 2 or int(team) == 3:
+                entitys.append(entityId)
         else:
             pass
     except:
