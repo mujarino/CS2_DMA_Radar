@@ -42,8 +42,9 @@ def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    map_name = struct.unpack("<32s", cs2.memory.read(mapNameAddress, 32, memprocfs.FLAG_NOCACHE))[0].decode()
-    return map_name
+    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0]
+    return mapName
+
 
 
 print(f"[+] Client_base {client_base}")
@@ -69,7 +70,6 @@ for entityId in range(1,2048):
     except:
         pass
 print(f"[+] Find entitys {entitys}")
-print(f"[+] Mapname {readmapfrommem()}")
 pygame.init()
 
 clock = pygame.time.Clock()
