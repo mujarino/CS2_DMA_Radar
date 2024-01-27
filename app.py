@@ -131,10 +131,10 @@ while running:
             line_color = (0, 0, 255)
         if Hp>30:
             text_surface = font.render(f' {Hp}', True, (255, 255, 255))
-            text_surface.set_alpha(150)
+            text_surface.set_alpha(255)
         if Hp<=30:
             text_surface = font.render(f' {Hp}', True, (255, 0, 0))
-            text_surface.set_alpha(150)
+            text_surface.set_alpha(255)
         if Hp==0:
             text_surface = font.render(f' {Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
