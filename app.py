@@ -30,6 +30,7 @@ def getmapdata(mapname):
     scale = data['scale']
     x = data['offset']['x']
     y = data['offset']['y']
+    print(x,y,scale)
     return scale,x,y
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
@@ -71,6 +72,7 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem())
+print(mapname)
 scale,x,y = getmapdata(mapname)
 if os.path.exists(f'maps/{mapname}'):
     print("test")
