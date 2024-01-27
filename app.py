@@ -115,8 +115,6 @@ while running:
         EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
         EyeAngles = math.radians(EyeAngles[0])
         transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
-        line_end_x = transformed_x + math.sin(EyeAngles) * line_length
-        line_end_y = transformed_y + math.cos(EyeAngles) * line_length
         triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
         triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
         triangle_left_x = transformed_x + math.sin(EyeAngles + math.pi / 3) * triangle_length / 2
