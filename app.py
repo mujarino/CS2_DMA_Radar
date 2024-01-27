@@ -14,7 +14,7 @@ m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
 m_angEyeAngles = 0x1518
 
-mapname = "de_overpass"
+mapname = "de_mirage"
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
