@@ -4,12 +4,16 @@ import time
 import pygame
 import pygame_gui
 import json
+import math
+
 
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
 m_iHealth = 0x32C
 m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
+m_angEyeAngles = 0x1518
+
 mapname = "de_overpass"
 zoom_scale = 2
 
@@ -58,13 +62,10 @@ print(entitys)
 pygame.init()
 
 clock = pygame.time.Clock()
-
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
-
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
-
 font = pygame.font.Font(None, 24)
 
 
@@ -79,6 +80,9 @@ while running:
 
     screen.fill((0, 0, 0))
 
+    line_length = 10
+    line_width = 2
+
     rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
     screen.blit(rotated_map_image, map_rect.topleft)
 
@@ -89,16 +93,20 @@ while running:
         pY = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
         Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+        EyeAngles = struct.unpack("<Q", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 8, memprocfs.FLAG_NOCACHE))[0]
+        EyeAngles = math.degrees(EyeAngles)
+        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
+        line_end_x = transformed_x + math.cos(EyeAngles) * line_length
+        line_end_y = transformed_y + math.sin(EyeAngles) * line_length
         if Hp > 0 and team == 2:
-            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 5)
+            line_color = (255, 0, 0)
+            pygame.draw.line(screen, line_color, (transformed_x, transformed_y), (line_end_x, line_end_y), line_width)
         if Hp > 0 and team == 3:
-            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
             pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 5)
+            line_color = (0, 0, 255)
+            pygame.draw.line(screen, line_color, (transformed_x, transformed_y), (line_end_x, line_end_y), line_width)
         text_surface = font.render(f'{Hp}', True, (255, 255, 255))
-
         screen.blit(text_surface, (transformed_x, transformed_y))
-
     pygame.display.flip()
-
 pygame.quit()
