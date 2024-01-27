@@ -86,7 +86,7 @@ screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
-font = pygame.font.Font(None, 24)
+font = pygame.font.Font(None, 18)
 
 # Создание кнопок и меток
 running = True
@@ -131,8 +131,15 @@ while running:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 5)
             line_color = (0, 0, 255)
-
-        text_surface = font.render(f'{Hp}', True, (255, 255, 255))
+        if hp>30:
+            text_surface = font.render(f'{Hp}', True, (255, 255, 255))
+            text_surface.set_alpha(130)
+        if hp<=30:
+            text_surface = font.render(f'{Hp}', True, (255, 0, 0))
+            text_surface.set_alpha(130)
+        if hp==0:
+            text_surface = font.render(f'{Hp}', True, (255, 0, 0))
+            text_surface.set_alpha(0)
         screen.blit(text_surface, (transformed_x, transformed_y))
     pygame.display.flip()
 pygame.quit()
