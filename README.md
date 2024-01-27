@@ -13,7 +13,7 @@ Alpha version of my project. Simple using, fast mem reading
 6. Start on first round freezetime with /python main.py
 
 # TODO
-- [ ] Draw eye angle
+- [x] Draw eye angle
 - [ ] Automatic parse offsets.
 - [ ] Automatic map reading.
 - [ ] Bomb/kits drawing.
