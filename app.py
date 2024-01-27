@@ -24,7 +24,7 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
 
     return int(image_x), int(image_y)
 
-def getmapdata():
+def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
     scale = data['scale']
@@ -73,7 +73,7 @@ print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem())
 
-if os.path.exists(os.path.join("maps", mapname)):
+if os.path.exists(f'maps/{mapname}'):
     print("test")
 else:
     print('test2')
