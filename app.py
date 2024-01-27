@@ -134,7 +134,7 @@ while running:
             text_surface.set_alpha(150)
         if Hp<=30:
             text_surface = font.render(f' {Hp}', True, (255, 0, 0))
-            text_surface.set_alpha(150у)
+            text_surface.set_alpha(150)
         if Hp==0:
             text_surface = font.render(f' {Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
