@@ -72,8 +72,14 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem())
-print(mapname)
-getmapdata(mapname)
+with open(f'maps/{mapname}/meta.json', 'r') as f:
+        data = json.load(f)
+scale = data['scale']
+x = data['offset']['x']
+y = data['offset']['y']
+print(x,y,scale)
+
+
 scale,x,y = getmapdata(mapname)
 if os.path.exists(f'maps/{mapname}'):
     print("test")
