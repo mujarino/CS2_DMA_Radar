@@ -85,7 +85,6 @@ clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
-radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 
 while True:
@@ -98,6 +97,7 @@ while True:
         else:
             print(f'[-] Pls, import this map first ({mapname})')
             exit()
+        radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
         scale,x,y = getmapdata(mapname)
         entitys = getentitys()
         print(f"[+] Find entitys {entitys}")
