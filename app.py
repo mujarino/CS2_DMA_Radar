@@ -81,7 +81,6 @@ player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8,
 
 
 mapname = readmapfrommem()
-print(f"[+] Found map {mapname}")
 
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
