@@ -48,8 +48,11 @@ def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode()
-    return mapName
+    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0]
+    print('mapname raw', mapName)
+    mapName = mapName.split('\\')
+    print('mapname', mapName)
+    return mapName[0]
 
 def getentitys():
     entitys = []
@@ -95,7 +98,6 @@ clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
-mapname = 'de_inferno'
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 
