@@ -13,6 +13,7 @@ m_iHealth = 0x32C
 m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
 m_angEyeAngles = 0x1518
+mapNameVal = 0x1CC200
 
 mapname = "de_mirage"
 zoom_scale = 2
@@ -36,6 +37,19 @@ vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '
 cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
 client_base = client.base
+
+def readmapfrommem():
+    mapNameAddress_dll = cs2.module('matchmaking.dll')
+    mapNameAddressbase = mapNameAddress_dll.base
+    try:
+        mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
+        mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddressbase + mapNameVal, 32, memprocfs.FLAG_NOCACHE))[0]
+        return mapName
+    except:
+        return None
+
+
+
 print(f"[+] Client_base {client_base}")
 
 entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
@@ -82,6 +96,7 @@ while running:
 
     line_length = 10
     line_width = 2
+    print(readmapfrommem())
 
     rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
     screen.blit(rotated_map_image, map_rect.topleft)
