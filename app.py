@@ -94,11 +94,11 @@ while running:
         Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
         EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-        print(f'raw:{EyeAngles}')
         EyeAngles = EyeAngles[0]
         transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
         line_end_x = transformed_x + math.cos(EyeAngles) * line_length
         line_end_y = transformed_y + math.sin(EyeAngles) * line_length
+        print(f'cos:{math.cos(EyeAngles)}sin:{math.sin(EyeAngles)}')
         if Hp > 0 and team == 2:
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 5)
             line_color = (255, 0, 0)
