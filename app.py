@@ -110,12 +110,14 @@ while True:
         while running:
             time_delta = clock.tick(60)/1000.0
             for event in pygame.event.get():
+                manager.process_events(event)
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == scale_plus_button:
                             rotate__angle += 90
+            manager.update(time_delta)
 
 
             screen.fill((0, 0, 0))
@@ -159,6 +161,7 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
+                manager.draw_ui(screen)
                 rotated_screen = pygame.transform.rotate(screen, rotate__angle)
                 screen.blit(rotated_screen, (0, 0))
             pygame.display.flip()
