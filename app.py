@@ -81,7 +81,7 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("Mean Radar")
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, 24)
-
+print(readmapfrommem())
 
 # Создание кнопок и меток
 running = True
@@ -96,7 +96,6 @@ while running:
 
     line_length = 10
     line_width = 2
-    print(readmapfrommem())
 
     rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
     screen.blit(rotated_map_image, map_rect.topleft)
