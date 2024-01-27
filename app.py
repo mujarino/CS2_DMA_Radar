@@ -159,7 +159,8 @@ while True:
         textt = 'Error data reading. Some entity leave or map closed. Retrying in 5 seconds'
         print(f'[-] {textt}')
         fontt = pygame.font.Font(None, 20)
-        text_surface = fontt.render(f'{textt}', True, (255, 255, 255))
+        error_text = fontt.render(f'{textt}', True, (255, 255, 255))
         screen.blit(error_text)
+        pygame.display.flip()
         time.sleep(5)
 pygame.quit()
