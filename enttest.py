@@ -1,6 +1,7 @@
 import memprocfs
 import struct
 import time
+import math
 
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
@@ -29,6 +30,7 @@ def getinfo(entityId):
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
     entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
     EyeAngles = struct.unpack("<Q", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 8, memprocfs.FLAG_NOCACHE))[0]
+    EyeAngles = math.cos(math.radians(EyeAngles))
     print(f"[+] entityId {entityId} | EyeAngles {EyeAngles}")
 
 entitys = []
