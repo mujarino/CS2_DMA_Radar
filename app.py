@@ -70,6 +70,7 @@ for entityId in range(1,2048):
     except:
         pass
 print(f"[+] Find entitys {entitys}")
+print(f"[+] Mapname {readmapfrommem()}")
 pygame.init()
 
 clock = pygame.time.Clock()
