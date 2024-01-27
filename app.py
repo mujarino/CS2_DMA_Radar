@@ -16,7 +16,6 @@ m_iTeamNum = 0x3BF
 m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
 
-mapname = "de_inferno"
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
@@ -71,8 +70,9 @@ for entityId in range(1,2048):
     except:
         pass
 print(f"[+] Find entitys {entitys}")
-print(f"[+] Mapname {readmapfrommem()}")
+print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem())
+
 if os.path.exists(os.path.join("maps", mapname)):
     print("test")
 else:
