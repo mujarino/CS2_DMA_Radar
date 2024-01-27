@@ -115,7 +115,7 @@ while True:
                     running = False
                 if event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == scale_plus_button:
+                        if event.ui_element == rotate_button:
                             rotate__angle += 90
             manager.update(time_delta)
 
