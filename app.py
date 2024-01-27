@@ -35,6 +35,14 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
 
     return int(image_x), int(image_y)
 
+def get_window_center():
+    surface = pygame.display.get_surface()
+    width = screen.get_width()
+    height = screen.get_height()
+    x = math.floor((0 + width) / 2)
+    y = math.floor((0 + height) / 2)
+    return (x,y)
+
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
@@ -160,7 +168,7 @@ while True:
         print(f'[-] {textt}')
         fontt = pygame.font.Font(None, 20)
         error_text = fontt.render(f'{textt}', True, (255, 255, 255))
-        screen.blit(error_text)
+        screen.blit(error_text, get_window_center())
         pygame.display.flip()
         time.sleep(5)
 pygame.quit()
