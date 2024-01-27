@@ -99,7 +99,7 @@ font = pygame.font.Font(None, hp_font_size)
 manager = pygame_gui.UIManager((600, 600))
 rotate_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (30, 30)), text='○', manager=manager)
 while True:
-    try:
+    if 1==1:
         entitys = getentitys()
         print(f"[+] Find entitys {entitys}")
         try:
@@ -164,6 +164,8 @@ while True:
                 rotated_screen = pygame.transform.rotate(screen, rotate__angle)
                 screen.blit(rotated_screen, (0, 0))
             pygame.display.flip()
+    try:
+        pass
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
         exit()
