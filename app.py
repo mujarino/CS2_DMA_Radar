@@ -126,7 +126,7 @@ while True:
 
             rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
             screen.blit(rotated_map_image, map_rect.topleft)
-
+            manager.draw_ui(screen)
 
 
             for entityId in entitys:
@@ -161,7 +161,6 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
-                manager.draw_ui(screen)
                 rotated_screen = pygame.transform.rotate(screen, rotate__angle)
                 screen.blit(rotated_screen, (0, 0))
             pygame.display.flip()
