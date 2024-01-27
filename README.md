@@ -1,15 +1,15 @@
 # CS2 DMA RADAR
-Alpha version of my project. Simple using, fast mem reading
+Alpha version of my project. Simple using, fast memory reading
 
 # requirements
 1. pcileech DMA Card
-2. Second x64 pc
+2. Second x64 pc with windows or linux(did not testing on macOS)
 # install
 1. Download release
 2. Install python 3
 3. Install dependencies with ```pip install -r requirements.txt```
 4. Open cs2 and connect to the map
-5. Start on first round freezetime with /python main.py
+5. Start in match with /python main.py
 
 # TODO
 - [x] Draw eye angle
