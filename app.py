@@ -74,7 +74,7 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem()).replace('\x00', '')
-mapname = re.sub(r'\\.*$', '', mapname)
+mapname = mapname.replace('\x10\x0e', '')
 if '\x00' in mapname:
     print("Строка содержит нулевой символ")
 else:
