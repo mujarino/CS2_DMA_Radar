@@ -26,15 +26,14 @@ m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
 
 #######################################
-rotate__angle = 0 
+
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
-    image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
-    image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
+    image_x = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
+    image_y = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
 
     return int(image_x), int(image_y)
-
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
@@ -42,6 +41,7 @@ def getmapdata(mapname):
     x = data['offset']['x']
     y = data['offset']['y']
     return scale,x,y
+
 def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
@@ -66,6 +66,10 @@ def getentitys():
             pass
     return(entitys)
 
+def handle_button_click(button, screen):
+    screen = pygame.transform.rotate(screen, 90)
+    pygame.display.set_mode((screen.get_height(), screen.get_width()))
+    pygame.display.flip()
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
 cs2 = vmm.process('cs2.exe')
@@ -96,8 +100,7 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("Mean Radar")
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
-manager = pygame_gui.UIManager((600, 600))
-rotate_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (30, 30)), text='○', manager=manager)
+
 while True:
     try:
         entitys = getentitys()
@@ -109,13 +112,16 @@ while True:
         running = True
         while running:
             time_delta = clock.tick(60)/1000.0
+            rotate_button = pygame_gui.elements.UIButton(pygame.Rect((50, 50), (100, 50)), 'Rotate', manager)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                if event.type == pygame.USEREVENT:
-                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == scale_plus_button:
-                            rotate__angle += 90
+                elif event.type == pygame.USEREVENT:
+                    manager.process_events(event)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    manager.process_events(event)
+                    if rotate_button.checked:
+                        handle_button_click(rotate_button, screen)
 
 
             screen.fill((0, 0, 0))
@@ -159,8 +165,6 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
-                rotated_screen = pygame.transform.rotate(screen, rotate__angle)
-                screen.blit(rotated_screen, (0, 0))
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
