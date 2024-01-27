@@ -94,11 +94,12 @@ clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
+radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 manager = pygame_gui.UIManager((600, 600))
 rotate_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (30, 30)), text='○', manager=manager)
 while True:
-    if 1==1:
+    try:
         entitys = getentitys()
         print(f"[+] Find entitys {entitys}")
         try:
@@ -109,24 +110,21 @@ while True:
         while running:
             time_delta = clock.tick(60)/1000.0
             for event in pygame.event.get():
-                manager.process_events(event)
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == rotate_button:
+                        if event.ui_element == scale_plus_button:
                             rotate__angle += 90
-            manager.update(time_delta)
 
 
             screen.fill((0, 0, 0))
 
             triangle_color = (255, 255, 255)
-            radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
-            rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
 
+            rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
             screen.blit(rotated_map_image, map_rect.topleft)
-            manager.draw_ui(screen)
+
 
 
             for entityId in entitys:
@@ -163,10 +161,7 @@ while True:
                 screen.blit(text_surface, (transformed_x, transformed_y))
                 rotated_screen = pygame.transform.rotate(screen, rotate__angle)
                 screen.blit(rotated_screen, (0, 0))
-            
             pygame.display.flip()
-    try:
-        pass
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
         exit()
