@@ -71,7 +71,7 @@ for entityId in range(1,2048):
         pass
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
-mapname = str(readmapfrommem())
+mapname = str(readmapfrommem()).strip('\x00')
 with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
 scale = data['scale']
