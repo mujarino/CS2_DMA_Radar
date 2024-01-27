@@ -48,12 +48,9 @@ def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0]
+    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     print('mapname raw', mapName)
-    mapName = mapName.replace('\\','/')
-    print('mapname', mapName)
-    mapName = mapName.split('/')
-    return mapName[0]
+    return mapName
 
 def getentitys():
     entitys = []
@@ -84,8 +81,7 @@ print(f"[+] Entered entitylist")
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
 
-mapname = str(readmapfrommem()).replace('\x00', '')
-mapname = mapname.replace('\x10\x0e', '')
+mapname = str(readmapfrommem())
 print(f"[+] Finded map {mapname}")
 if os.path.exists(f'maps/{mapname}'):
     pass
