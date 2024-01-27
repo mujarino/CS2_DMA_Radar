@@ -7,10 +7,9 @@ Alpha version of my project. Simple using, fast mem reading
 # install
 1. Download release
 2. Install python 3
-3. Install dependencies(memprocfs,pygame,pygame_gui)
-4. Change map in map.txt
-5. Open csgo and connect to the map
-6. Start on first round freezetime with /python main.py
+3. Install dependencies with ```pip install -r requirements.txt```
+4. Open cs2 and connect to the map
+5. Start on first round freezetime with /python main.py
 
 # TODO
 - [x] Draw eye angle
