@@ -6,6 +6,7 @@ import pygame_gui
 import json
 import math
 import numpy as np
+import os
 
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
