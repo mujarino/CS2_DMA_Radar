@@ -32,7 +32,6 @@ def getmapdata(mapname):
     y = data['offset']['y']
     return scale,x,y
 
-scale,x,y = getmapdata()
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
 cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
@@ -72,7 +71,7 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem())
-
+scale,x,y = getmapdata()
 if os.path.exists(f'maps/{mapname}'):
     print("test")
 else:
