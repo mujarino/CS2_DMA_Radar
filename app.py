@@ -24,6 +24,7 @@ m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
 m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
+m_iCompTeammateColor = 0x738
 
 #######################################
 
