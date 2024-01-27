@@ -50,7 +50,6 @@ for entityId in range(1,2048):
         pass
 print(entitys)
 
-while True:
-
-    print(getinfo(entitys[0]))
+for entity in entitys:
+    print(getinfo(entity))
 
