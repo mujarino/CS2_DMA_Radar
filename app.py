@@ -122,10 +122,10 @@ while running:
         triangle_right_y = transformed_y + math.cos(EyeAngles - math.pi / 3) * triangle_length / 2
         if Hp > 0 and team == 2:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 6)
+            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 7)
         if Hp > 0 and team == 3:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 6)
+            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 7)
         if Hp>30:
             text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
             text_surface.set_alpha(255)
