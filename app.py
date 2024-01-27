@@ -32,7 +32,6 @@ def getmapdata(mapname):
     scale = data['scale']
     x = data['offset']['x']
     y = data['offset']['y']
-    print(x,y,scale)
     return scale,x,y
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
@@ -123,20 +122,18 @@ while running:
         triangle_right_y = transformed_y + math.cos(EyeAngles - math.pi / 3) * triangle_length / 2
         if Hp > 0 and team == 2:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 5)
-            line_color = (255, 0, 0)
+            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 8)
         if Hp > 0 and team == 3:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 5)
-            line_color = (0, 0, 255)
+            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 8)
         if Hp>30:
-            text_surface = font.render(f' {Hp}', True, (255, 255, 255))
+            text_surface = font.render(f'  {Hp}', True, (255, 255, 255))
             text_surface.set_alpha(255)
         if Hp<=30:
-            text_surface = font.render(f' {Hp}', True, (255, 0, 0))
+            text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
             text_surface.set_alpha(255)
         if Hp==0:
-            text_surface = font.render(f' {Hp}', True, (255, 0, 0))
+            text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
         screen.blit(text_surface, (transformed_x, transformed_y))
     pygame.display.flip()
