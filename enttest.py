@@ -32,6 +32,7 @@ def getinfo(entityId):
     EyeAngles = struct.unpack("<Q", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 8, memprocfs.FLAG_NOCACHE))[0]
     EyeAngles = math.cos(math.radians(EyeAngles))
     print(f"[+] entityId {entityId} | EyeAngles {EyeAngles}")
+    return 
 
 entitys = []
 for entityId in range(1,2048):
@@ -52,5 +53,4 @@ print(entitys)
 while True:
 
     print(getinfo(entitys[0]))
-    time.sleep(2.0)
 
