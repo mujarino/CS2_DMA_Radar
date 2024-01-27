@@ -122,14 +122,14 @@ while True:
             screen.fill((0, 0, 0))
 
             triangle_color = (255, 255, 255)
-
+            radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
             rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
+
             screen.blit(rotated_map_image, map_rect.topleft)
             manager.draw_ui(screen)
 
 
             for entityId in entitys:
-                radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
                 EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
                 entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
                 pX = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
@@ -163,6 +163,7 @@ while True:
                 screen.blit(text_surface, (transformed_x, transformed_y))
                 rotated_screen = pygame.transform.rotate(screen, rotate__angle)
                 screen.blit(rotated_screen, (0, 0))
+            
             pygame.display.flip()
     try:
         pass
