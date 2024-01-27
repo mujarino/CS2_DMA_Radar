@@ -71,7 +71,7 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem())
-scale,x,y = getmapdata()
+scale,x,y = getmapdata(mapname)
 if os.path.exists(f'maps/{mapname}'):
     print("test")
 else:
