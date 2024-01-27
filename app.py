@@ -154,6 +154,6 @@ try:
         pygame.display.flip()
 except:
     print('error data reading. retrying in 5s')
-    time.pause(5)
+    time.sleep(5)
 
 pygame.quit()
