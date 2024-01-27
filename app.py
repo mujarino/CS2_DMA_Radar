@@ -72,22 +72,21 @@ vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '
 cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
 client_base = client.base
-print(f"[+] Client_base {client_base}")
+print(f"[+] Finded client base")
 
 entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Entitylist {entList}")
+print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Player {player}")
 
 
 mapname = str(readmapfrommem()).replace('\x00', '')
 mapname = mapname.replace('\x10\x0e', '')
-print(f"[+] Find map {mapname}")
+print(f"[+] Finded map {mapname}")
 if os.path.exists(f'maps/{mapname}'):
     pass
 else:
-    print(f'Pls, import this map first({mapname})')
+    print(f'[-] Pls, import this map first ({mapname})')
     exit()
 scale,x,y = getmapdata(mapname)
 pygame.init()
@@ -103,6 +102,10 @@ while True:
     try:
         entitys = getentitys()
         print(f"[+] Find entitys {entitys}")
+        try:
+            entitys[0]
+        except:
+            0/0
         running = True
         while running:
             time_delta = clock.tick(60)/1000.0
@@ -154,6 +157,6 @@ while True:
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
     except:
-        print('error data reading. some entity leave or map closed')
+        print('[-] Error data reading. Some entity leave or map closed. Retrying in 5 seconds')
         time.sleep(5)
 pygame.quit()
