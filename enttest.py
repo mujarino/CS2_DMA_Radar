@@ -29,9 +29,9 @@ def getinfo(entityId):
     EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
     entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-    EyeAngles = struct.unpack("<Q", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 8, memprocfs.FLAG_NOCACHE))[0]
-    EyeAngles = math.cos(math.radians(EyeAngles))
-    print(f"[+] entityId {entityId} | EyeAngles {EyeAngles}")
+    EyeAngles1 = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
+    EyeAngles = [math.degrees(angle) for angle in EyeAngles1]
+    print(f"[+] entityId {entityId} | EyeAnglesRaw {EyeAngles1} | EyeAngles {EyeAngles}")
     return 
 
 entitys = []
