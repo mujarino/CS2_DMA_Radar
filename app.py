@@ -129,13 +129,13 @@ while running:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 5)
             line_color = (0, 0, 255)
-        if hp>30:
+        if Hp>30:
             text_surface = font.render(f'{Hp}', True, (255, 255, 255))
             text_surface.set_alpha(130)
-        if hp<=30:
+        if Hp<=30:
             text_surface = font.render(f'{Hp}', True, (255, 0, 0))
             text_surface.set_alpha(130)
-        if hp==0:
+        if Hp==0:
             text_surface = font.render(f'{Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
         screen.blit(text_surface, (transformed_x, transformed_y))
