@@ -16,7 +16,7 @@ Alpha version of my project. Simple using, fast mem reading
 - [x] Draw eye angle
 - [ ] adjustable sizes of models
 - [ ] Automatic parse offsets.
-- [ ] Automatic map reading.
+- [x] Automatic map reading.
 - [ ] Bomb/kits drawing.
 - [ ] Tutorial for add maps.
 - [ ] ...
