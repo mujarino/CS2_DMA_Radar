@@ -98,7 +98,7 @@ while running:
 
     screen.fill((0, 0, 0))
 
-    triangle_length = 30
+    triangle_length = 15
     triangle_color = (255, 255, 255)
 
     rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
