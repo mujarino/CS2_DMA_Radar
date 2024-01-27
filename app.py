@@ -26,7 +26,7 @@ m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
 
 #######################################
-
+rotate__angle = 0 
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
@@ -42,7 +42,6 @@ def getmapdata(mapname):
     x = data['offset']['x']
     y = data['offset']['y']
     return scale,x,y
-
 def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
@@ -97,7 +96,8 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("Mean Radar")
 radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
-
+manager = pygame_gui.UIManager((600, 600))
+rotate_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (30, 30)), text='○', manager=manager)
 while True:
     try:
         entitys = getentitys()
@@ -112,6 +112,10 @@ while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.USEREVENT:
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == scale_plus_button:
+                            rotate__angle += 90
 
 
             screen.fill((0, 0, 0))
@@ -155,6 +159,8 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
+                rotated_screen = pygame.transform.rotate(screen, rotate__angle)
+                screen.blit(rotated_screen, (0, 0))
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
