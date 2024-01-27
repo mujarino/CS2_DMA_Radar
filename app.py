@@ -7,6 +7,8 @@ import json
 import math
 import numpy as np
 import os
+import re
+
 
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
@@ -72,7 +74,7 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem()).replace('\x00', '')
-mapname = mapname.split('\\')[0]
+mapname = re.sub(r'\\.*$', '', mapname)
 if '\x00' in mapname:
     print("Строка содержит нулевой символ")
 else:
