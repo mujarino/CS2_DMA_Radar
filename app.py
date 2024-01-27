@@ -35,14 +35,6 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
 
     return int(image_x), int(image_y)
 
-def get_window_center():
-    surface = pygame.display.get_surface()
-    width = screen.get_width()
-    height = screen.get_height()
-    x = math.floor((0 + width) / 2)
-    y = math.floor((0 + height) / 2)
-    return (x,y)
-
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
@@ -87,26 +79,27 @@ print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
+
+mapname = str(readmapfrommem()).replace('\x00', '')
+mapname = mapname.replace('\x10\x0e', '')
+print(f"[+] Finded map {mapname}")
+if os.path.exists(f'maps/{mapname}'):
+    pass
+else:
+    print(f'[-] Pls, import this map first ({mapname})')
+    exit()
+scale,x,y = getmapdata(mapname)
 pygame.init()
 
 clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
+radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 
 while True:
     try:
-        mapname = str(readmapfrommem()).replace('\x00', '')
-        mapname = mapname.replace('\x10\x0e', '')
-        print(f"[+] Finded map {mapname}")
-        if os.path.exists(f'maps/{mapname}'):
-            pass
-        else:
-            print(f'[-] Pls, import this map first ({mapname})')
-            exit()
-        radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
-        scale,x,y = getmapdata(mapname)
         entitys = getentitys()
         print(f"[+] Find entitys {entitys}")
         try:
@@ -164,11 +157,6 @@ while True:
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
     except:
-        textt = 'Error data reading. Some entity leave or map closed. Retrying in 5 seconds'
-        print(f'[-] {textt}')
-        fontt = pygame.font.Font(None, 20)
-        error_text = fontt.render(f'{textt}', True, (255, 255, 255))
-        screen.blit(error_text, get_window_center())
-        pygame.display.flip()
-        time.sleep(5)
+        print('[-] Error data reading. Some entity leave or map closed. Closing program')
+        exit()
 pygame.quit()
