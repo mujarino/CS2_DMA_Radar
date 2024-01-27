@@ -41,13 +41,9 @@ client_base = client.base
 def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
-    try:
-        mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-        map_name = struct.unpack("<32s", cs2.memory.read(map_name_address, 32, memprocfs.FLAG_NOCACHE))[0].decode()
-        return map_name
-    except:
-        return None
-
+    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
+    map_name = struct.unpack("<32s", cs2.memory.read(map_name_address, 32, memprocfs.FLAG_NOCACHE))[0].decode()
+    return map_name
 
 
 print(f"[+] Client_base {client_base}")
