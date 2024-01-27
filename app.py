@@ -72,13 +72,10 @@ for entityId in range(1,2048):
 print(f"[+] Find entitys {entitys}")
 print(f"[+]{readmapfrommem()}[+]")
 mapname = str(readmapfrommem()).strip('\x00')
-file_path = os.path.join("maps", mapname, "meta.json")
-with open(file_path, 'r') as f:
-    data = json.load(f)
-scale = data['scale']
-x = data['offset']['x']
-y = data['offset']['y']
-print(x,y,scale)
+if '\x00' in mapname:
+    print("Строка содержит нулевой символ")
+else:
+    print("Строка не содержит нулевой символ")
 
 
 scale,x,y = getmapdata(mapname)
