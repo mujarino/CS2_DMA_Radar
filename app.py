@@ -113,7 +113,6 @@ while running:
         transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
         line_end_x = transformed_x + math.sin(EyeAngles) * line_length
         line_end_y = transformed_y + math.cos(EyeAngles) * line_length
-        print(f'cos:{math.cos(EyeAngles)}sin:{math.sin(EyeAngles)}')
         if Hp > 0 and team == 2:
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 5)
             line_color = (255, 0, 0)
