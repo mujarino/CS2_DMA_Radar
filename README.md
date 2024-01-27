@@ -14,7 +14,7 @@ Alpha version of my project. Simple using, fast mem reading
 
 # TODO
 - [x] Draw eye angle
-- [ ] adjustable sizes of models
+- [x] adjustable sizes of models
 - [ ] Automatic parse offsets.
 - [x] Automatic map reading.
 - [ ] Bomb/kits drawing.
