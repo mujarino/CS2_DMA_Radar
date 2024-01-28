@@ -9,6 +9,8 @@ m_iIDEntIndex = 0x1544
 m_iHealth = 0x32C
 m_angEyeAngles = 0x1518
 m_iCompTeammateColor = 0x738
+m_pBombDefuser = 0xEEC
+m_hBombDefuser = 0xED8
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
@@ -42,7 +44,8 @@ for entityId in range(1,2048):
         entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         if int(entityHp) != 0:
             entitys.append(entityId)
-            team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+            defh = struct.unpack("<I", cs2.memory.read(entity + m_pBombDefuser, 8, memprocfs.FLAG_NOCACHE))[0]
+            defp = struct.unpack("<I", cs2.memory.read(entity + m_hBombDefuser, 8, memprocfs.FLAG_NOCACHE))[0]
             print(team)
         else:
             pass

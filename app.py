@@ -121,7 +121,7 @@ manager = pygame_gui.UIManager((600, 600))
 clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
-pygame.display.set_caption("Mean Radar")
+pygame.display.set_caption("CS2 Radar")
 map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
