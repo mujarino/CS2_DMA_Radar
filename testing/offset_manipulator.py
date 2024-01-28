@@ -10,6 +10,7 @@ dwLocalPlayerPawn = 0x16D4F48
 m_iHealth = 0x32C
 m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
+mapNameVal = 0x1CC200
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
