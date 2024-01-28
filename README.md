@@ -1,6 +1,6 @@
 # CS2 DMA RADAR
 Alpha version of my project. Simple using, fast memory reading
-
+![Capture](https://media.discordapp.net/attachments/667075233215414272/1201179746470465536/show.gif?ex=65c8e0d0&is=65b66bd0&hm=379b9cdb52201317c7cb67c4b717c2a6c8b4dae268a71da1534e9d96b0bb5b3e&=)
 # requirements
 1. pcileech DMA Card
 2. Second x64 pc with windows or linux(did not testing on macOS)
@@ -9,7 +9,7 @@ Alpha version of my project. Simple using, fast memory reading
 2. Install python 3
 3. Install dependencies with ```pip install -r requirements.txt```
 4. Open cs2 and connect to the map
-5. Start in match with ```python app.py```
+5. Start on match starts with ```python app.py```
 
 # TODO
 - [ ] Logic to draw lower maps for nuke and vertigo.
