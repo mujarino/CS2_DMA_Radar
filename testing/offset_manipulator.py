@@ -33,7 +33,7 @@ def readmapfrommem():
     mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     return str(mapName)
 
-def getmapdata():
+def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
     scale = data['scale']
