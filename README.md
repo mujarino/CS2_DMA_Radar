@@ -12,6 +12,8 @@ Alpha version of my project. Simple using, fast memory reading
 5. Start in match with ```python app.py```
 
 # TODO
+- [ ] Logic to draw lower maps for nuke and vertigo.
+- [ ] SET ANGLE MAP ROTATING
 - [x] Draw eye angle
 - [x] adjustable sizes of models
 - [ ] Automatic parse offsets.
