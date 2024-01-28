@@ -150,7 +150,7 @@ while True:
             triangle_color = (255, 255, 255)
 
             rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
-            rot_plus_button.set_position(50, 50)
+            rot_plus_button.set_position([50, 50])
             screen.blit(rotated_map_image, map_rect.topleft)
 
 
