@@ -186,6 +186,7 @@ while True:
                 if Hp==0:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
+                rot_plus_button.set_position(50,50)
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
     #except:
