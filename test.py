@@ -61,6 +61,11 @@ def readmapfrommem():
     mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     return str(mapName)
 
+def rotate_image(image, angle):
+    rotated_image = pygame.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center = image.get_rect().center)
+    return rotated_image, new_rect
+
 def getentitys():
     entitys = []
     for entityId in range(1,2048):
