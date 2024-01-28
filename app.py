@@ -182,9 +182,8 @@ while True:
                 EyeAngles = math.radians(EyeAngles[0]+rot_angle)
                 if mapname in maps_with_split:
                     if pZ<lowerz:
-                        pX = lowerx
-                        pY = lowery
-                print(pX,pY)
+                        x = lowerx
+                        y = lowery
                 transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                 triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                 triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
