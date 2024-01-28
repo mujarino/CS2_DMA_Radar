@@ -122,7 +122,7 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("Mean Radar")
 map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
-rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (30, 30)), text='+', manager=manager)
+rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (30, 30)), text='ANGLE+90', manager=manager)
 
 while True:
     if 1==1:
@@ -143,7 +143,6 @@ while True:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == rot_plus_button:
                             rot_angle += 90
-                            scale_label.set_text(f'Rot.Angle: {rot_angle}')
                 manager.update(time_delta)
 
 
@@ -188,7 +187,6 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
-                print(transformed_x, transformed_y)
             pygame.display.flip()
     #except:
         #print('[-] Error data reading. Some entity leave or map closed. Closing program')
