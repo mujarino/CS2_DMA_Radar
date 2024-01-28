@@ -33,7 +33,6 @@ def getmapdata():
     y = data['offset']['y']
     return scale,x,y
 
-scale,x,y = getmapdata()
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
 cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
