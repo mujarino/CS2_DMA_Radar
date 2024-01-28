@@ -1,7 +1,7 @@
 # CS2 DMA RADAR
 Alpha version of my project. Simple using, fast memory reading
 
-![Capture](https://cdn.discordapp.com/attachments/667075233215414272/1201188881895276615/simplescreenrecorder-2024-01-28_17_55_40_2.gif?ex=65c8e952&is=65b67452&hm=0899f733e52c680a8661027609d28c7417f796ffbc6bf8ee0a460a3cd3776905&)
+![Capture](https://media.discordapp.net/attachments/667075233215414272/1201236851525161091/radarr.gif)
 # requirements
 1. pcileech DMA Card
 2. Second x64 pc with windows or linux(did not testing on macOS)
