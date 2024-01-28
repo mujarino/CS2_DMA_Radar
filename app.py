@@ -206,7 +206,6 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
-                print(transformed_x, transformed_y)
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
