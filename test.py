@@ -119,7 +119,7 @@ map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 
 while True:
-    try:
+    if 1==1:
         entitys = getentitys()
         print(f"[+] Find {len(entitys)} entitys")
         try:
@@ -176,7 +176,7 @@ while True:
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
-    except:
-        print('[-] Error data reading. Some entity leave or map closed. Closing program')
-        exit()
+    #except:
+        #print('[-] Error data reading. Some entity leave or map closed. Closing program')
+        #exit()
 pygame.quit()
