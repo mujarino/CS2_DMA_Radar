@@ -60,7 +60,8 @@ def getlowermapdata(mapname):
         data = json.load(f)
     lowerx = data['splits']['offset']['x']
     lowery = data['splits']['offset']['y']
-    return lowerx,lowery
+    z = data['splits']['zRange']['z']
+    return lowerx,lowery,z
 
 def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
@@ -124,7 +125,7 @@ else:
     exit()
 print(f"[+] Found map {mapname}")
 if mapname in maps_with_split:
-    lowerx,lowery = getlowermapdata(mapname)
+    lowerx,lowery,lowerz = getlowermapdata(mapname)
     print(lowerx,lowery)
 scale,x,y = getmapdata(mapname)
 pygame.init()
@@ -179,6 +180,10 @@ while True:
                 team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
                 EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
                 EyeAngles = math.radians(EyeAngles[0]+rot_angle)
+                if mapname in maps_with_split:
+                    if pZ<lowerz:
+                        pX = lowerx
+                        pY = lowery
                 transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                 triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                 triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
@@ -202,7 +207,6 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
-                print(transformed_x,transformed_y)
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
