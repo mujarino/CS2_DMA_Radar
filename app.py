@@ -182,9 +182,11 @@ while True:
                 EyeAngles = math.radians(EyeAngles[0]+rot_angle)
                 if mapname in maps_with_split:
                     if pZ<lowerz:
-                        x = lowerx
-                        y = lowery
-                transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
+                        transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
+                    else:
+                        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
+                else:
+                    transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                 triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                 triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
                 triangle_left_x = transformed_x + math.sin(EyeAngles + math.pi / 3) * triangle_length / 2
@@ -200,7 +202,7 @@ while True:
                 if Hp>30:
                     text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
                     text_surface.set_alpha(255)
-                if Hp<=30:
+                if Hp<=30:  
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(255)
                 if Hp==0:
