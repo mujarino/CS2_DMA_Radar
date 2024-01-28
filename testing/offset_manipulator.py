@@ -10,7 +10,6 @@ dwLocalPlayerPawn = 0x16D4F48
 m_iHealth = 0x32C
 m_vOldOrigin = 0x1224
 m_iTeamNum = 0x3BF
-mapname = "de_nuke"
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
@@ -18,6 +17,13 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
     image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
 
     return int(image_x), int(image_y)
+
+def readmapfrommem():
+    mapNameAddress_dll = cs2.module('matchmaking.dll')
+    mapNameAddressbase = mapNameAddress_dll.base
+    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
+    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    return str(mapName)
 
 def getmapdata():
     with open(f'maps/{mapname}/meta.json', 'r') as f:
@@ -55,6 +61,31 @@ for entityId in range(1,2048):
     except:
         pass
 print(entitys)
+
+mapname = readmapfrommem()
+
+map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+
+for folder in map_folders:
+    if folder in mapname:
+        mapname = folder
+        break
+
+if mapname == 'empty':
+    print(f"[-] You are not connected to map")
+    exit()
+if os.path.exists(f'maps/{mapname}'):
+    pass
+else:
+    print(f'[-] Please, import this map first ({mapname})')
+    exit()
+print(f"[+] Found map {mapname}")
+if mapname in maps_with_split:
+    lowerx,lowery = getlowermapdata(mapname)
+    print(lowerx,lowery)
+scale,x,y = getmapdata(mapname)
+
+
 pygame.init()
 
 clock = pygame.time.Clock()
