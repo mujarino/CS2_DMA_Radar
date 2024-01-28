@@ -1,7 +1,13 @@
 import memprocfs
 import struct
 import time
+import pygame
+import pygame_gui
+import json
 import math
+import numpy as np
+import os
+import re
 
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
@@ -9,8 +15,7 @@ m_iIDEntIndex = 0x1544
 m_iHealth = 0x32C
 m_angEyeAngles = 0x1518
 m_iCompTeammateColor = 0x738
-m_pBombDefuser = 0xEEC
-m_hBombDefuser = 0xED8
+m_iItemDefinitionIndex = 0x1BA
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
@@ -31,9 +36,8 @@ print(f"[+] Player {player}")
 def getinfo(entityId):
     EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-    entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-    color = struct.unpack("<I", cs2.memory.read(entity + m_iCompTeammateColor, 4, memprocfs.FLAG_NOCACHE))[0]
-    print(f"[+] entityId {entityId} | Color {color}")
+    color = struct.unpack("<I", cs2.memory.read(entity + m_iItemDefinitionIndex, 4, memprocfs.FLAG_NOCACHE))[0]
+    print(f"[+] entityId {entityId} | hasbomb {color}")
     return 
 
 entitys = []
@@ -44,8 +48,6 @@ for entityId in range(1,2048):
         entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         if int(entityHp) != 0:
             entitys.append(entityId)
-            defh = struct.unpack("<I", cs2.memory.read(entity + m_pBombDefuser, 8, memprocfs.FLAG_NOCACHE))[0]
-            defp = struct.unpack("<I", cs2.memory.read(entity + m_hBombDefuser, 8, memprocfs.FLAG_NOCACHE))[0]
             print(team)
         else:
             pass
