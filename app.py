@@ -184,6 +184,7 @@ while True:
                     if pZ<lowerz:
                         pX = lowerx
                         pY = lowery
+                print(pX,pY)
                 transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                 triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                 triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
