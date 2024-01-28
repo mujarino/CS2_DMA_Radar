@@ -89,6 +89,9 @@ for folder in map_folders:
         mapname = folder
         break
 
+if mapname == 'empty':
+    print(f"[-] You are not connected to map")
+    exit()
 if os.path.exists(f'maps/{mapname}'):
     pass
 else:
