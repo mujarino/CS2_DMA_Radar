@@ -14,7 +14,7 @@ Alpha version of my project. Simple using, fast memory reading
 
 # TODO
 - [ ] Logic to draw lower maps for nuke and vertigo.
-- [ ] SET ANGLE MAP ROTATING
+- [x] SET ANGLE MAP ROTATING
 - [x] Draw eye angle
 - [x] adjustable sizes of models
 - [ ] Automatic parse offsets.
