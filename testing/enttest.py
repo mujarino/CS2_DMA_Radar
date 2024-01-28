@@ -38,8 +38,8 @@ def getinfo(entityId):
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
     for i in range(1,16):
         try:
-            color = struct.unpack("<H", cs2.memory.read(entity + m_iItemDefinitionIndex, i, memprocfs.FLAG_NOCACHE))[0]
-            print(f"[+] entityId {entityId} | hasbomb {color}")
+            bomb = struct.unpack("<I", cs2.memory.read(entity + m_iItemDefinitionIndex, 2, memprocfs.FLAG_NOCACHE))[0]
+            print(f"[+] entityId {entityId} | bomb {bomb}")
         except:
             print('чтение не удалось')
     return 
