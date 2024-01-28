@@ -14,7 +14,7 @@ import re
 triangle_length = 13
 circle_size = 7 # 8 too big
 hp_font_size = 18
-
+rot_angle = 0
 #######################################
 
 dwEntityList = 0x17CE6A0
@@ -30,11 +30,20 @@ m_iCompTeammateColor = 0x738
 
 zoom_scale = 2
 
-def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
+def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
     image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
-
+    center_x, center_y = screen.get_width() // 2, screen.get_height() // 2
+    image_x, image_y = rotate_point((center_x, center_y), (image_x, image_y), rotation_angle)
     return int(image_x), int(image_y)
+
+def rotate_point(center, point, angle):
+    angle_rad = math.radians(angle)
+    temp_point = point[0] - center[0], center[1] - point[1]
+    temp_point = (temp_point[0]*math.cos(angle_rad)-temp_point[1]*math.sin(angle_rad), temp_point[0]*math.sin(angle_rad)+temp_point[1]*math.cos(angle_rad))
+    temp_point = temp_point[0] + center[0], center[1] - temp_point[1]
+    return temp_point
+
 
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
@@ -50,6 +59,11 @@ def readmapfrommem():
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
     mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     return str(mapName)
+
+def rotate_image(image, angle):
+    rotated_image = pygame.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center = image.get_rect().center)
+    return rotated_image, new_rect
 
 def getentitys():
     entitys = []
@@ -101,15 +115,17 @@ print(f"[+] Found map {mapname}")
 scale,x,y = getmapdata(mapname)
 pygame.init()
 
+manager = pygame_gui.UIManager((600, 600))
 clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("Mean Radar")
-radar_image = pygame.image.load(f'maps/{mapname}/radar.png')
+map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
+rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
 while True:
-    try:
+    if 1==1:
         entitys = getentitys()
         print(f"[+] Find {len(entitys)} entitys")
         try:
@@ -122,14 +138,22 @@ while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
+                manager.process_events(event)
+                if event.type == pygame.USEREVENT:
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == rot_plus_button:
+                            rot_angle += 90
+            manager.update(time_delta)
 
             screen.fill((0, 0, 0))
 
             triangle_color = (255, 255, 255)
 
-            rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
+            rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
+            rot_plus_button.set_position([50, 50])
             screen.blit(rotated_map_image, map_rect.topleft)
+            manager.draw_ui(screen)
+
 
 
 
@@ -141,8 +165,8 @@ while True:
                 Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
                 EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-                EyeAngles = math.radians(EyeAngles[0])
-                transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
+                EyeAngles = math.radians(EyeAngles[0]+rot_angle)
+                transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                 triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                 triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
                 triangle_left_x = transformed_x + math.sin(EyeAngles + math.pi / 3) * triangle_length / 2
@@ -166,7 +190,7 @@ while True:
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
-    except:
-        print('[-] Error data reading. Some entity leave or map closed. Closing program')
-        exit()
+    #except:
+        #print('[-] Error data reading. Some entity leave or map closed. Closing program')
+        #exit()
 pygame.quit()
