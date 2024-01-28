@@ -15,8 +15,10 @@ triangle_length = 13
 circle_size = 7 # 8 too big
 hp_font_size = 18
 rot_angle = 0
+
 #######################################
 
+maps_with_split = ['de_nuke','de_vertigo']
 dwEntityList = 0x17CE6A0
 dwLocalPlayerPawn = 0x16D4F48
 m_iHealth = 0x32C
@@ -52,6 +54,13 @@ def getmapdata(mapname):
     x = data['offset']['x']
     y = data['offset']['y']
     return scale,x,y
+
+def getlowermapdata(mapname):
+    with open(f'maps/{mapname}/meta.json', 'r') as f:
+        data = json.load(f)
+    lowerx = data['splits']['offset']['x']
+    lowery = data['splits']['offset']['y']
+    return lowerx,lowery
 
 def readmapfrommem():
     mapNameAddress_dll = cs2.module('matchmaking.dll')
@@ -114,6 +123,9 @@ else:
     print(f'[-] Please, import this map first ({mapname})')
     exit()
 print(f"[+] Found map {mapname}")
+if mapname in maps_with_split:
+    lowerx,lowery = getlowermapdata(mapname)
+    print(lowerx,lowery)
 scale,x,y = getmapdata(mapname)
 pygame.init()
 
@@ -162,6 +174,7 @@ while True:
             for entity in entitys:
                 pX = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
                 pY = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
+                pZ = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
                 Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
                 EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
@@ -189,6 +202,7 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
+                print(transformed_x,transformed_y)
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
