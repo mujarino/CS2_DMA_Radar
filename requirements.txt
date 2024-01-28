@@ -1,5 +1,4 @@
 memprocfs
-struct
 pygame
 pygame_gui
 numpy

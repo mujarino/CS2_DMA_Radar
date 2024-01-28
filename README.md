@@ -9,7 +9,7 @@ Alpha version of my project. Simple using, fast memory reading
 2. Install python 3
 3. Install dependencies with ```pip install -r requirements.txt```
 4. Open cs2 and connect to the map
-5. Start in match with /python main.py
+5. Start in match with ```python app.py```
 
 # TODO
 - [x] Draw eye angle
