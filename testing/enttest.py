@@ -36,8 +36,12 @@ print(f"[+] Player {player}")
 def getinfo(entityId):
     EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-    color = struct.unpack("<H", cs2.memory.read(entity + m_iItemDefinitionIndex, 2, memprocfs.FLAG_NOCACHE))[0]
-    print(f"[+] entityId {entityId} | hasbomb {color}")
+    for i in range(1,16):
+        try:
+            color = struct.unpack("<H", cs2.memory.read(entity + m_iItemDefinitionIndex, i, memprocfs.FLAG_NOCACHE))[0]
+            print(f"[+] entityId {entityId} | hasbomb {color}")
+        except:
+            print('чтение не удалось')
     return 
 
 entitys = []
@@ -48,7 +52,6 @@ for entityId in range(1,2048):
         entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         if int(entityHp) != 0:
             entitys.append(entityId)
-            print(team)
         else:
             pass
     except:
