@@ -155,7 +155,7 @@ while True:
                 Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
                 EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-                EyeAngles = math.radians(EyeAngles[0])
+                EyeAngles = math.radians(EyeAngles[0]+rot_angle)
                 transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                 triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                 triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
