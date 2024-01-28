@@ -152,6 +152,7 @@ while True:
 
             rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
             screen.blit(rotated_map_image, map_rect.topleft)
+            rot_plus_button.set_position(50, 50)
 
 
 
@@ -186,7 +187,6 @@ while True:
                 if Hp==0:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
-                rot_plus_button.set_position(50,50)
                 screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
     #except:
