@@ -143,8 +143,7 @@ while True:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == rot_plus_button:
                             rot_angle += 90
-                manager.update(time_delta)
-
+            manager.update(time_delta)
 
             screen.fill((0, 0, 0))
 
