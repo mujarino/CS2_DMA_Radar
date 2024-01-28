@@ -13,7 +13,7 @@ Alpha version of my project. Simple using, fast memory reading
 5. Start on match starts with ```sudo python app.py```
 
 # TODO
-- [ ] Logic to draw lower maps for nuke and vertigo.
+- [x] Logic to draw lower maps for nuke and vertigo.
 - [x] SET ANGLE MAP ROTATING
 - [x] Draw eye angle
 - [x] adjustable sizes of models
