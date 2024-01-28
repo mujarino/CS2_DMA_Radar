@@ -115,6 +115,7 @@ print(f"[+] Found map {mapname}")
 scale,x,y = getmapdata(mapname)
 pygame.init()
 
+manager = pygame_gui.UIManager((600, 600))
 clock = pygame.time.Clock()
 screen_width, screen_height = 600, 600
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
