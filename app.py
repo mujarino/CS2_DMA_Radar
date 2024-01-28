@@ -126,7 +126,6 @@ else:
 print(f"[+] Found map {mapname}")
 if mapname in maps_with_split:
     lowerx,lowery,lowerz = getlowermapdata(mapname)
-    print(lowerx,lowery)
 scale,x,y = getmapdata(mapname)
 pygame.init()
 
@@ -170,8 +169,6 @@ while True:
             manager.draw_ui(screen)
 
 
-
-
             for entity in entitys:
                 pX = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
                 pY = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
@@ -209,6 +206,7 @@ while True:
                     text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                     text_surface.set_alpha(0)
                 screen.blit(text_surface, (transformed_x, transformed_y))
+                print(transformed_x, transformed_y)
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
