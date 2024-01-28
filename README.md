@@ -13,7 +13,7 @@ Alpha version of my project. Simple using, fast memory reading
 5. Start on match starts with ```sudo python app.py```
 
 # TODO
-- [ ] Logic to draw lower maps for nuke and vertigo.
+- [x] Logic to draw lower maps for nuke and vertigo.
 - [x] SET ANGLE MAP ROTATING
 - [x] Draw eye angle
 - [x] adjustable sizes of models
@@ -36,4 +36,6 @@ sudo ./pcileech -device fpga probe
 
    a) try another windows version(downgrade for 21h2 for example)
    
-   b) try to buy other dma firmware 
+   b) try to buy other dma firmware
+
+![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
