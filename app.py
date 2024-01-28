@@ -33,7 +33,6 @@ zoom_scale = 2
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
     image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
     image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
-    image_x, image_y = rotate_point((center_x, center_y), (image_x, image_y), rotation_angle)
 
     return int(image_x), int(image_y)
 
