@@ -33,7 +33,6 @@ client_base = client.base
 print(f"[+] Client_base {client_base}")
 
 c4_ent = struct.unpack("<Q", cs2.memory.read(client_base + dwPlantedC4, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Entitylist {entList}")
 
 c4_node = struct.unpack("<Q", cs2.memory.read(c4_ent + m_pGameSceneNode, 8, memprocfs.FLAG_NOCACHE))[0]
 
