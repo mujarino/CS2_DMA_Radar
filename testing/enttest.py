@@ -16,6 +16,8 @@ m_iHealth = 0x32C
 m_angEyeAngles = 0x1518
 m_iCompTeammateColor = 0x738
 m_iItemDefinitionIndex = 0x1BA
+m_bHasDefuser = 0x40
+
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
@@ -36,12 +38,9 @@ print(f"[+] Player {player}")
 def getinfo(entityId):
     EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-    for i in range(1,16):
-        try:
-            bomb = struct.unpack("<I", cs2.memory.read(entity + m_iItemDefinitionIndex, 2, memprocfs.FLAG_NOCACHE))[0]
-            print(f"[+] entityId {entityId} | bomb {bomb}")
-        except:
-            print('чтение не удалось')
+    bomb = struct.unpack("<I", cs2.memory.read(entity + m_bHasDefuser, 4, memprocfs.FLAG_NOCACHE))[0]
+    bomb = struct.unpack("<I", cs2.memory.read(entity + m_iItemDefinitionIndex, 2, memprocfs.FLAG_NOCACHE))[0]
+    print(f"[+] entityId {entityId} | def is {bomb}")
     return 
 
 entitys = []
