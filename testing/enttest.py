@@ -39,7 +39,6 @@ def getinfo(entityId):
     EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
     entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
     bomb = struct.unpack("<I", cs2.memory.read(entity + m_bHasDefuser, 4, memprocfs.FLAG_NOCACHE))[0]
-    bomb = struct.unpack("<I", cs2.memory.read(entity + m_iItemDefinitionIndex, 2, memprocfs.FLAG_NOCACHE))[0]
     print(f"[+] entityId {entityId} | def is {bomb}")
     return 
 
