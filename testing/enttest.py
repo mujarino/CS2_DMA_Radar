@@ -36,7 +36,7 @@ c4_ent = struct.unpack("<Q", cs2.memory.read(client_base + dwPlantedC4, 8, mempr
 
 c4_node = struct.unpack("<Q", cs2.memory.read(c4_ent + m_pGameSceneNode, 8, memprocfs.FLAG_NOCACHE))[0]
 
-c4_pos = struct.unpack("<Q", cs2.memory.read(c4_node + m_vecAbsOrigin, 8, memprocfs.FLAG_NOCACHE))[0]
+c4_pos = struct.unpack("<f", cs2.memory.read(c4_node + m_vecAbsOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
 
 print(c4_pos)
 
