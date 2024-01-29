@@ -18,6 +18,9 @@ m_iCompTeammateColor = 0x738
 m_iItemDefinitionIndex = 0x1BA
 m_bPawnHasDefuser = 0x800
 m_iPawnHealth = 0x7F8
+dwPlantedC4 = 0x18317D8
+m_pGameSceneNode = 0x310
+m_vecAbsOrigin = 0xC8
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
@@ -29,33 +32,14 @@ client = cs2.module('client.dll')
 client_base = client.base
 print(f"[+] Client_base {client_base}")
 
-entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+c4_ent = struct.unpack("<Q", cs2.memory.read(client_base + dwPlantedC4, 8, memprocfs.FLAG_NOCACHE))[0]
 print(f"[+] Entitylist {entList}")
 
-player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Player {player}")
+c4_node = struct.unpack("<Q", cs2.memory.read(c4_ent + m_pGameSceneNode, 8, memprocfs.FLAG_NOCACHE))[0]
 
-def getinfo(entityId):
-    EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-    entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-    bomb = struct.unpack("<I", cs2.memory.read(entity + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-    print(f"[+] entityId {entityId} | def is {bomb}")
-    return 
+c4_pos = struct.unpack("<Q", cs2.memory.read(c4_node + m_vecAbsOrigin, 8, memprocfs.FLAG_NOCACHE))[0]
 
-entitys = []
-for entityId in range(1,2048):
-    EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-    try:
-        entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-        entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        if int(entityHp) != 0:
-            entitys.append(entityId)
-        else:
-            pass
-    except:
-        pass
-print(entitys)
+print(c4_pos)
 
-for entity in entitys:
-    print(getinfo(entity))
+
 
