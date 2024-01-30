@@ -32,16 +32,27 @@ client = cs2.module('client.dll')
 client_base = client.base
 print(f"[+] Client_base {client_base}")
 
-c4_ent = struct.unpack("<Q", cs2.memory.read(client_base + dwPlantedC4, 8, memprocfs.FLAG_NOCACHE))[0]
-print(c4_ent)
+entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+print(f"[+] Entered entitylist")
 
-c4_node = struct.unpack("<Q", cs2.memory.read(c4_ent + m_pGameSceneNode, 8, memprocfs.FLAG_NOCACHE))[0]
-print(c4_node)
+def getentitys():
+    entitys = []
+    for entityId in range(1,2048):
+        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
+        try:
+            entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+            entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+            team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+            if int(team) == 1 or int(team) == 2 or int(team) == 3:
+                if and entityHp<=100:
+                    entitys.append(entityId)
+            else:
+                pass
+        except:
+            pass
+    return(entitys)
 
-c4_pos = struct.unpack("<f", cs2.memory.read(c4_node + m_vecAbsOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
-
-
-print(c4_pos)
+print(getentitys())
 
 
 
