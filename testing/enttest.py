@@ -53,7 +53,7 @@ def getentitys():
             pass
     return(entitys)
 
-print(count(getentitys()))
+print(len(getentitys()))
 
 
 
