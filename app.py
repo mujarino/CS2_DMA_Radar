@@ -8,6 +8,7 @@ import math
 import numpy as np
 import os
 import re
+import asyncio
 
 ########## ADJUST SIZES HERE ##########
 
@@ -183,7 +184,7 @@ while True:
     running = True
     while running:
         try:
-            entitys = getentitys()
+            entitys = await getentitys()
             players = []
             for entity in entitys:
                 p = player1(entity)
