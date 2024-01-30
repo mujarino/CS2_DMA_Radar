@@ -185,6 +185,20 @@ async def main():
     circle_size = 7 # 8 too big
     hp_font_size = 18
     rot_angle = 0
+    maps_with_split = ['de_nuke','de_vertigo']
+    dwEntityList = 0x17CE6A0
+    dwLocalPlayerPawn = 0x16D4F48
+    m_iHealth = 0x32C
+    m_vOldOrigin = 0x1224
+    m_iTeamNum = 0x3BF
+    m_angEyeAngles = 0x1518
+    mapNameVal = 0x1CC200
+    m_iCompTeammateColor = 0x738
+    m_bIsDefusing = 0x13B0
+
+    #######################################
+
+    zoom_scale = 2
     while True:
         entitys = await getentitys()
         players = []
