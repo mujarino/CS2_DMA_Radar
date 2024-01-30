@@ -47,7 +47,6 @@ def rotate_point(center, point, angle):
     temp_point = temp_point[0] + center[0], center[1] - temp_point[1]
     return temp_point
 
-
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
@@ -95,6 +94,48 @@ def getentitys():
             pass
     return(entitys)
 
+class player:
+    def __init__(self, entity_id):
+        self.entity_id = entity_id
+        self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
+        self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
+
+    def draw(self, screen):
+        if mapname in maps_with_split:
+            if self.pZ<lowerz:
+                transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
+            else:
+                transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
+        else:
+            transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
+        triangle_top_x = transformed_x + math.sin(self.EyeAngles) * triangle_length
+        triangle_top_y = transformed_y + math.cos(self.EyeAngles) * triangle_length
+        triangle_left_x = transformed_x + math.sin(self.EyeAngles + math.pi / 3) * triangle_length / 2
+        triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
+        triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
+        triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
+        if self.Hp > 0 and self.team == 2:
+            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
+        if self.Hp > 0 and self.team == 3:
+            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
+        if self.Hp>30:
+            text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
+            text_surface.set_alpha(255)
+        if self.Hp<=30:  
+            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+            text_surface.set_alpha(255)
+        if self.Hp==0:
+            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+            text_surface.set_alpha(0)
+        screen.blit(text_surface, (transformed_x, transformed_y))
+
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
 cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
@@ -105,7 +146,6 @@ entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, mem
 print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-
 
 mapname = readmapfrommem()
 
@@ -142,6 +182,9 @@ rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50
 while True:
     try:
         entitys = getentitys()
+        for entity in entitys:
+            p = player(entity)
+            players.append(p)
         print(f"[+] Find {len(entitys)} entitys")
         try:
             entitys[0]
@@ -168,45 +211,9 @@ while True:
             rot_plus_button.set_position([50, 50])
             screen.blit(rotated_map_image, map_rect.topleft)
             manager.draw_ui(screen)
+            for p in players:
+                p.draw(screen)
 
-
-            for entity in entitys:
-                pX = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
-                pY = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
-                pZ = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
-                Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-                team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-                EyeAngles = struct.unpack("<fff", cs2.memory.read(entity +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-                EyeAngles = math.radians(EyeAngles[0]+rot_angle)
-                if mapname in maps_with_split:
-                    if pZ<lowerz:
-                        transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
-                    else:
-                        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
-                else:
-                    transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
-                triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
-                triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
-                triangle_left_x = transformed_x + math.sin(EyeAngles + math.pi / 3) * triangle_length / 2
-                triangle_left_y = transformed_y + math.cos(EyeAngles + math.pi / 3) * triangle_length / 2
-                triangle_right_x = transformed_x + math.sin(EyeAngles - math.pi / 3) * triangle_length / 2
-                triangle_right_y = transformed_y + math.cos(EyeAngles - math.pi / 3) * triangle_length / 2
-                if Hp > 0 and team == 2:
-                    pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                    pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
-                if Hp > 0 and team == 3:
-                    pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                    pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
-                if Hp>30:
-                    text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
-                    text_surface.set_alpha(255)
-                if Hp<=30:  
-                    text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
-                    text_surface.set_alpha(255)
-                if Hp==0:
-                    text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
-                    text_surface.set_alpha(0)
-                screen.blit(text_surface, (transformed_x, transformed_y))
             pygame.display.flip()
     except:
         print('[-] Error data reading. Some entity leave or map closed. Closing program')
