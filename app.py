@@ -180,7 +180,7 @@ font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
 while True:
-    try:
+    if 1==1:
         entitys = getentitys()
         for entity in entitys:
             p = player(entity)
@@ -215,7 +215,7 @@ while True:
                 p.draw(screen)
 
             pygame.display.flip()
-    except:
-        print('[-] Error data reading. Some entity leave or map closed. Closing program')
-        exit()
+    #except:
+        #print('[-] Error data reading. Some entity leave or map closed. Closing program')
+        #exit()
 pygame.quit()
