@@ -98,15 +98,15 @@ async def getentitys():
 class player1:
     def __init__(self, entity_id):
         self.entity_id = entity_id
-        self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))
+        self.pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))
+        self.pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))
+        self.Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))
+        self.team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))
         self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-        self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
+        self.EyeAngles = math.radians(self.EyeAngles)
 
-    def draw(self, screen):
+    def draw(self, screen, rot_angle):
         if mapname in maps_with_split:
             if self.pZ<lowerz:
                 transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
@@ -127,13 +127,13 @@ class player1:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
         if self.Hp>30:
-            text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
+            text_surface = font.render(f' {self.Hp}', True, (0, 255, 0))
             text_surface.set_alpha(255)
-        if self.Hp<=30:  
-            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+        if self.Hp<=30:
+            text_surface = font.render(f' {self.Hp}', True, (255, 0, 0))
             text_surface.set_alpha(255)
         if self.Hp==0:
-            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+            text_surface = font.render(f' {self.Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
         screen.blit(text_surface, (transformed_x, transformed_y))
 
