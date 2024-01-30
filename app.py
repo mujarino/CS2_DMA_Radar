@@ -137,49 +137,6 @@ class player1:
             text_surface.set_alpha(0)
         screen.blit(text_surface, (transformed_x, transformed_y))
 
-vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
-cs2 = vmm.process('cs2.exe')
-client = cs2.module('client.dll')
-client_base = client.base
-print(f"[+] Finded client base")
-
-entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Entered entitylist")
-
-player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-
-mapname = readmapfrommem()
-
-map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-
-for folder in map_folders:
-    if folder in mapname:
-        mapname = folder
-        break
-
-if mapname == 'empty':
-    print(f"[-] You are not connected to map")
-    exit()
-if os.path.exists(f'maps/{mapname}'):
-    pass
-else:
-    print(f'[-] Please, import this map first ({mapname})')
-    exit()
-print(f"[+] Found map {mapname}")
-if mapname in maps_with_split:
-    lowerx,lowery,lowerz = getlowermapdata(mapname)
-scale,x,y = getmapdata(mapname)
-pygame.init()
-
-manager = pygame_gui.UIManager((600, 600))
-clock = pygame.time.Clock()
-screen_width, screen_height = 600, 600
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
-pygame.display.set_caption("CS2 Radar")
-map_image = pygame.image.load(f'maps/{mapname}/radar.png')
-font = pygame.font.Font(None, hp_font_size)
-rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-
 async def main():
     triangle_length = 13
     circle_size = 7 # 8 too big
@@ -197,8 +154,49 @@ async def main():
     m_bIsDefusing = 0x13B0
 
     #######################################
-
     zoom_scale = 2
+    vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
+    cs2 = vmm.process('cs2.exe')
+    client = cs2.module('client.dll')
+    client_base = client.base
+    print(f"[+] Finded client base")
+
+    entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+    print(f"[+] Entered entitylist")
+
+    player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+
+    mapname = readmapfrommem()
+
+    map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+
+    for folder in map_folders:
+        if folder in mapname:
+            mapname = folder
+            break
+
+    if mapname == 'empty':
+        print(f"[-] You are not connected to map")
+        exit()
+    if os.path.exists(f'maps/{mapname}'):
+        pass
+    else:
+        print(f'[-] Please, import this map first ({mapname})')
+        exit()
+    print(f"[+] Found map {mapname}")
+    if mapname in maps_with_split:
+        lowerx,lowery,lowerz = getlowermapdata(mapname)
+    scale,x,y = getmapdata(mapname)
+    pygame.init()
+
+    manager = pygame_gui.UIManager((600, 600))
+    clock = pygame.time.Clock()
+    screen_width, screen_height = 600, 600
+    screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
+    pygame.display.set_caption("CS2 Radar")
+    map_image = pygame.image.load(f'maps/{mapname}/radar.png')
+    font = pygame.font.Font(None, hp_font_size)
+    rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
     while True:
         entitys = await getentitys()
         players = []
