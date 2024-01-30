@@ -180,46 +180,49 @@ map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
-while True:
-    running = True
-    while running:
-        try:
-            entitys = await getentitys()
-            players = []
-            for entity in entitys:
-                p = player1(entity)
-                players.append(p)
-            print(f"[+] Find {len(entitys)} entitys")
+def main():
+    while True:
+        running = True
+        while running:
             try:
-                entitys[0]
+                entitys = await getentitys()
+                players = []
+                for entity in entitys:
+                    p = player1(entity)
+                    players.append(p)
+                print(f"[+] Find {len(entitys)} entitys")
+                try:
+                    entitys[0]
+                except:
+                    0/0
             except:
-                0/0
-        except:
-            print('[-] Error data reading. Some entity leave or map closed. Closing program')
-            exit()
+                print('[-] Error data reading. Some entity leave or map closed. Closing program')
+                exit()
 
-        time_delta = clock.tick(60)/1000.0
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            manager.process_events(event)
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == rot_plus_button:
-                        rot_angle += 90
-        manager.update(time_delta)
+            time_delta = clock.tick(60)/1000.0
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                manager.process_events(event)
+                if event.type == pygame.USEREVENT:
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == rot_plus_button:
+                            rot_angle += 90
+            manager.update(time_delta)
 
-        screen.fill((0, 0, 0))
+            screen.fill((0, 0, 0))
 
-        triangle_color = (255, 255, 255)
+            triangle_color = (255, 255, 255)
 
-        rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
-        rot_plus_button.set_position([50, 50])
-        screen.blit(rotated_map_image, map_rect.topleft)
-        manager.draw_ui(screen)
-        for p in players:
-            p.draw(screen)
+            rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
+            rot_plus_button.set_position([50, 50])
+            screen.blit(rotated_map_image, map_rect.topleft)
+            manager.draw_ui(screen)
+            for p in players:
+                p.draw(screen)
 
-        pygame.display.flip()
+            pygame.display.flip()
+
+asyncio.run(main())
 pygame.quit()
 
