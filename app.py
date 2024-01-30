@@ -94,7 +94,7 @@ def getentitys():
             pass
     return(entitys)
 
-class player:
+class player1:
     def __init__(self, entity_id):
         self.entity_id = entity_id
         self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
@@ -182,8 +182,9 @@ rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50
 while True:
     if 1==1:
         entitys = getentitys()
+        players = []
         for entity in entitys:
-            p = player(entity)
+            p = player1(entity)
             players.append(p)
         print(f"[+] Find {len(entitys)} entitys")
         try:
