@@ -15,7 +15,6 @@ import asyncio
 triangle_length = 13
 circle_size = 7 # 8 too big
 hp_font_size = 18
-global rot_angle 
 rot_angle = 0
 
 #######################################
@@ -182,6 +181,10 @@ font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
 async def main():
+    triangle_length = 13
+    circle_size = 7 # 8 too big
+    hp_font_size = 18
+    rot_angle = 0
     while True:
         entitys = await getentitys()
         players = []
