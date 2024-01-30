@@ -181,6 +181,7 @@ rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50
 
 while True:
     entitys = getentitys()
+    print(f"[+] Find {len(entitys)} entitys")
     running = True
     while running:
         try:
@@ -188,7 +189,6 @@ while True:
             for entity in entitys:
                 p = player1(entity)
                 players.append(p)
-            print(f"[+] Find {len(entitys)} entitys")
             try:
                 entitys[0]
             except:
