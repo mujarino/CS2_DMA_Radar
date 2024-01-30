@@ -44,7 +44,7 @@ def getentitys():
             entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
             team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
             if int(team) == 1 or int(team) == 2 or int(team) == 3:
-                if and entityHp<=100:
+                if entityHp<=100:
                     entitys.append(entityId)
             else:
                 pass
