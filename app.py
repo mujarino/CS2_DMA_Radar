@@ -201,8 +201,8 @@ while True:
         rot_plus_button.set_position([50, 50])
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
+        players = []
         for entity in entitys:
-            players = []
             p = player1(entity)
             players.append(p)
         for p in players:
