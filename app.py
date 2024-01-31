@@ -32,7 +32,7 @@ m_bIsDefusing = 0x13B0
 global players
 
 #######################################
-
+players = []
 entitys = []
 zoom_scale = 2
 
