@@ -8,7 +8,6 @@ import math
 import numpy as np
 import os
 import re
-import threading
 
 ########## ADJUST SIZES HERE ##########
 
@@ -31,7 +30,7 @@ m_iCompTeammateColor = 0x738
 m_bIsDefusing = 0x13B0
 
 #######################################
-entitys = []
+
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
@@ -77,21 +76,23 @@ def rotate_image(image, angle):
     return rotated_image, new_rect
 
 def getentitys():
-    while True:
-        for entityId in range(1,2048):
-            EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-            try:
-                entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-                entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-                team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-                if int(team) == 1 or int(team) == 2 or int(team) == 3:
-                    if entityHp<=100 and entityHp>0:
-                        entitys.append(entity)
-                else:
-                    pass
-            except:
+    entitys = []
+    for entityId in range(1,2048):
+        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
+        try:
+            entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+            entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+            team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+            if int(team) == 1 or int(team) == 2 or int(team) == 3:
+                if entityHp>0 and entityHp<=100:
+                    EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
+                    entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+                    entitys.append(entity)
+            else:
                 pass
-        time.sleep(10)
+        except:
+            pass
+    return(entitys)
 
 class player1:
     def __init__(self, entity_id):
@@ -177,9 +178,10 @@ pygame.display.set_caption("CS2 Radar")
 map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-thread1 = threading.Thread(target=getentitys)
-thread1.start()
+
 while True:
+    entitys = getentitys()
+    print(f"[+] Find {len(entitys)} entitys")
     running = True
     while running:
         try:
@@ -187,9 +189,14 @@ while True:
             for entity in entitys:
                 p = player1(entity)
                 players.append(p)
+            try:
+                entitys[0]
+            except:
+                0/0
         except:
             print('[-] Error data reading. Some entity leave or map closed. Closing program')
             exit()
+
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -211,8 +218,6 @@ while True:
         manager.draw_ui(screen)
         for p in players:
             p.draw(screen)
-        print(players, 'from cycle')
 
         pygame.display.flip()
 pygame.quit()
-
