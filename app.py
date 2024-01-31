@@ -187,10 +187,6 @@ while True:
             for entity in entitys:
                 p = player1(entity)
                 players.append(p)
-            try:
-                entitys[0]
-            except:
-                0/0
         except:
             print('[-] Error data reading. Some entity leave or map closed. Closing program')
             exit()
