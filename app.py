@@ -92,6 +92,7 @@ def getentitys():
                         p = player1(entity)
                         players.append(p)
                         print('added 1')
+                        print(players)
                 else:
                     pass
             except:
@@ -209,6 +210,7 @@ while True:
         manager.draw_ui(screen)
         for p in players:
             p.draw(screen)
+        print(players, 'from cycle')
 
         pygame.display.flip()
 pygame.quit()
