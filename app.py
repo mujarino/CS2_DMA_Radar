@@ -29,6 +29,7 @@ m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
 m_iCompTeammateColor = 0x738
 m_bIsDefusing = 0x13B0
+global players
 
 #######################################
 
@@ -79,7 +80,7 @@ def rotate_image(image, angle):
 
 def getentitys():
     while True:
-        entitys = []
+        players = []
         for entityId in range(1,2048):
             EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
             try:
@@ -87,8 +88,9 @@ def getentitys():
                 entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
                 if int(team) == 1 or int(team) == 2 or int(team) == 3:
-                    if entityHp<=100:
-                        entitys.append(entity)
+                    if entityHp<=100 and entityHp>0:
+                        p = player1(entity)
+                        players.append(p)
                 else:
                     pass
             except:
@@ -183,19 +185,15 @@ rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50
 while True:
     thread1 = threading.Thread(target=getentitys)
     thread1.start()
-    entitys = getentitys()
-    print(f"[+] Find {len(entitys)} entitys")
     running = True
     while running:
         try:
-            players = []
-            for entity in entitys:
-                p = player1(entity)
-                players.append(p)
             try:
-                entitys[0]
+                players[0]
             except:
-                0/0
+                print('Entity list is clear. Retrying in 5 sec)')
+                time.sleep(5)
+                continue
         except:
             print('[-] Error data reading. Some entity leave or map closed. Closing program')
             exit()
@@ -221,7 +219,7 @@ while True:
         manager.draw_ui(screen)
         for p in players:
             p.draw(screen)
-
+            
         pygame.display.flip()
 pygame.quit()
 
