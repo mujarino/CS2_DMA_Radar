@@ -183,23 +183,11 @@ pygame.display.set_caption("CS2 Radar")
 map_image = pygame.image.load(f'maps/{mapname}/radar.png')
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-
+thread1 = threading.Thread(target=getentitys)
+thread1.start()
 while True:
-    thread1 = threading.Thread(target=getentitys)
-    thread1.start()
     running = True
     while running:
-        if 1==1:
-            if 1==1:
-                players[0]
-            #except:
-                #print('Entity list is clear. Retrying in 5 sec)')
-                #time.sleep(5)
-                #continue
-        #except:
-            #print('[-] Error data reading. Some entity leave or map closed. Closing program')
-            #exit()
-
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
