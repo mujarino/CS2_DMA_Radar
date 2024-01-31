@@ -177,7 +177,7 @@ rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50
 
 while True:
     entitys = getentitys()
-    print(f"[+] Find {len(entitys)} entitys")
+    print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
     running = True
     while running:
         try:
@@ -188,7 +188,17 @@ while True:
             try:
                 entitys[0]
             except:
-                0/0
+                print('[-] No entity found. Waiting')
+                time.pause(1)
+                print('[-] 4')
+                time.pause(1)
+                print('[-] 3')
+                time.pause(1)
+                print('[-] 2')
+                time.pause(1)
+                print('[-] 1')
+                time.pause(1)
+                print('[+] Searching...')
         except:
             print('[-] Error data reading. Some entity leave or map closed. Closing program')
             exit()
