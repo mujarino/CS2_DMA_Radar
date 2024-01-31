@@ -91,10 +91,12 @@ def getentitys():
                     if entityHp<=100 and entityHp>0:
                         p = player1(entity)
                         players.append(p)
+                        print('added 1')
                 else:
                     pass
             except:
                 pass
+        print(players)
         time.sleep(10)
 
 class player1:
@@ -219,7 +221,7 @@ while True:
         manager.draw_ui(screen)
         for p in players:
             p.draw(screen)
-            
+
         pygame.display.flip()
 pygame.quit()
 
