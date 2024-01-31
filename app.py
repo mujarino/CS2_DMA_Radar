@@ -79,7 +79,6 @@ def rotate_image(image, angle):
 
 def getentitys():
     while True:
-        time.sleep(100)
         entitys = []
         for entityId in range(1,2048):
             EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
@@ -94,7 +93,7 @@ def getentitys():
                     pass
             except:
                 pass
-        return(entitys)
+        time.sleep(10)
 
 class player1:
     def __init__(self, entity_id):
