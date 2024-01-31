@@ -182,6 +182,18 @@ thread1.start()
 while True:
     running = True
     while running:
+        try:
+            players = []
+            for entity in entitys:
+                p = player1(entity)
+                players.append(p)
+            try:
+                entitys[0]
+            except:
+                0/0
+        except:
+            print('[-] Error data reading. Some entity leave or map closed. Closing program')
+            exit()
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -201,10 +213,6 @@ while True:
         rot_plus_button.set_position([50, 50])
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
-        players = []
-        for entity in entitys:
-            p = player1(entity)
-            players.append(p)
         for p in players:
             p.draw(screen)
         print(players, 'from cycle')
