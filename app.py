@@ -29,10 +29,8 @@ m_angEyeAngles = 0x1518
 mapNameVal = 0x1CC200
 m_iCompTeammateColor = 0x738
 m_bIsDefusing = 0x13B0
-global players
 
 #######################################
-players = []
 entitys = []
 zoom_scale = 2
 
@@ -80,7 +78,6 @@ def rotate_image(image, angle):
 
 def getentitys():
     while True:
-        players = []
         for entityId in range(1,2048):
             EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
             try:
@@ -89,15 +86,11 @@ def getentitys():
                 team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
                 if int(team) == 1 or int(team) == 2 or int(team) == 3:
                     if entityHp<=100 and entityHp>0:
-                        p = player1(entity)
-                        players.append(p)
-                        print('added 1')
-                        print(players)
+                        entitys.append(entity)
                 else:
                     pass
             except:
                 pass
-        print(players)
         time.sleep(10)
 
 class player1:
@@ -208,6 +201,10 @@ while True:
         rot_plus_button.set_position([50, 50])
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
+        for entity in entitys:
+            players = []
+            p = player1(entity)
+            players.append(p)
         for p in players:
             p.draw(screen)
         print(players, 'from cycle')
