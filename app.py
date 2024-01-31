@@ -189,16 +189,16 @@ while True:
     thread1.start()
     running = True
     while running:
-        try:
+        if 1==1:
             if 1==1:
                 players[0]
             #except:
                 #print('Entity list is clear. Retrying in 5 sec)')
                 #time.sleep(5)
                 #continue
-        except:
-            print('[-] Error data reading. Some entity leave or map closed. Closing program')
-            exit()
+        #except:
+            #print('[-] Error data reading. Some entity leave or map closed. Closing program')
+            #exit()
 
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
