@@ -9,18 +9,15 @@ import numpy as np
 import os
 import re
 
-dwEntityList = 0x17CE6A0
-dwLocalPlayerPawn = 0x16D4F48
-m_iIDEntIndex = 0x1544
-m_iHealth = 0x32C
-m_angEyeAngles = 0x1518
-m_iCompTeammateColor = 0x738
-m_iItemDefinitionIndex = 0x1BA
-m_bPawnHasDefuser = 0x800
-m_iPawnHealth = 0x7F8
-dwPlantedC4 = 0x18317D8
-m_pGameSceneNode = 0x310
-m_vecAbsOrigin = 0xC8
+dwEntityList = 0x18AFFB8 # offsets.py
+dwLocalPlayerPawn = 0x17252B8 #offsets.py
+m_iHealth = 0x14F8  #client.dll.py
+m_vOldOrigin = 0x127C #client.dll.py
+m_iTeamNum = 0x3CB #client.dll.py
+m_angEyeAngles = 0x1578 #client.dll.py
+mapNameVal = 0x1CC200 #I don't know where you found it
+m_iCompTeammateColor = 0x7300 #client.dll.py
+m_bIsDefusing = 0x1408 #client.dll.py
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
