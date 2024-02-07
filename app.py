@@ -132,6 +132,7 @@ class player1:
         if self.Hp==0:
             text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
+        print(transformed_x,transformed_y)
         screen.blit(text_surface, (transformed_x, transformed_y))
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
