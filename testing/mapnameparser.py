@@ -28,7 +28,7 @@ cs2 = vmm.process('cs2.exe')
 mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
 
-for mapNameVal in range(0x1,0x1388):
+for mapNameVal in range(0x1,0xDAC0):
     try:
         mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
         mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
