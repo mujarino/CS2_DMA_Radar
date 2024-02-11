@@ -29,7 +29,7 @@ mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
 
 # Read the entire 'matchmaking.dll' into a buffer
-buffer = cs2.memory.read(mapNameAddressbase, mapNameAddress_dll.size, memprocfs.FLAG_NOCACHE)
+buffer = cs2.memory.read(mapNameAddressbase, memprocfs.FLAG_NOCACHE)
 
 # Find 'de_mirage' in the buffer
 position = buffer.find(b'de_mirage')
