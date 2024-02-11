@@ -148,6 +148,8 @@ print(f"[+] Entered entitylist")
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
 mapname = readmapfrommem()
+if not mapname:
+    mapname = input('[-] cant read mapname. enter it by yourself:\n')
 
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
