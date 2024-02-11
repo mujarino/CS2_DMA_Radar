@@ -20,7 +20,7 @@ m_hPlayerPawn = 0x7E4
 m_vOldOrigin = 0x127C
 m_iIDEntIndex = 0x15A4
 m_iHealth = 0x334
-mapNameVal = 0x19E5FEC
+mapNameVal = 0x19E60E4
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
