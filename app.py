@@ -8,7 +8,6 @@ import math
 import numpy as np
 import os
 import re
-import threading
 
 ########## ADJUST SIZES HERE ##########
 
@@ -20,19 +19,23 @@ rot_angle = 0
 #######################################
 
 maps_with_split = ['de_nuke','de_vertigo']
-dwEntityList = 0x17CE6A0
-dwLocalPlayerPawn = 0x16D4F48
-m_iHealth = 0x32C
-m_vOldOrigin = 0x1224
-m_iTeamNum = 0x3BF
-m_angEyeAngles = 0x1518
-mapNameVal = 0x1CC200
-m_iCompTeammateColor = 0x738
-m_bIsDefusing = 0x13B0
+dwEntityList = 0x18B0FC8 # offsets.py
+dwLocalPlayerPawn = 0x17262E8 #offsets.py
+m_iPawnHealth = 0x7F0
+m_iPawnArmor = 0x7F4
+m_bPawnIsAlive = 0x7EC
+m_angEyeAngles = 0x1578
+m_iTeamNum = 0x3CB
+m_hPlayerPawn = 0x7E4
+m_vOldOrigin = 0x127C
+m_iIDEntIndex = 0x15A4
+m_iHealth = 0x334
+mapNameVal = 0x001D2300
+
+#https://github.com/a2x/cs2-dumper/tree/main/generated
 
 #######################################
 
-entitys = []
 zoom_scale = 2
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
@@ -78,24 +81,19 @@ def rotate_image(image, angle):
     return rotated_image, new_rect
 
 def getentitys():
-    while True:
-        time.sleep(5)
-        for entityId in range(1,2048):
-            EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-            try:
-                entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-                entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-                team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-                if int(team) == 1 or int(team) == 2 or int(team) == 3:
-                    if entityHp<=100:
-                        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-                        entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-                        entitys.append(entity)
-                else:
-                    pass
-            except:
+    entitys = []
+    for entityId in range(1,2048):
+        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
+        try:
+            entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+            entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+            if entityHp>0 and entityHp<=100:
+                entitys.append(entity)
+            else:
                 pass
-        return(entitys)
+        except:
+            pass
+    return(entitys)
 
 class player1:
     def __init__(self, entity_id):
@@ -183,10 +181,8 @@ font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
 while True:
-    thread1 = threading.Thread(target=getentitys)
-    thread1.start()
     entitys = getentitys()
-    print(f"[+] Find {len(entitys)} entitys")
+    print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
     running = True
     while running:
         try:
@@ -197,7 +193,17 @@ while True:
             try:
                 entitys[0]
             except:
-                0/0
+                print('[-] No entity found. Waiting')
+                time.sleep(1)
+                print('[-] 4')
+                time.sleep(1)
+                print('[-] 3')
+                time.sleep(1)
+                print('[-] 2')
+                time.sleep(1)
+                print('[-] 1')
+                time.sleep(1)
+                print('[+] Searching...')
         except:
             print('[-] Error data reading. Some entity leave or map closed. Closing program')
             exit()
@@ -226,4 +232,3 @@ while True:
 
         pygame.display.flip()
 pygame.quit()
-
