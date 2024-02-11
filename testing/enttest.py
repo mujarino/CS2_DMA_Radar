@@ -39,7 +39,7 @@ EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntity
 
 def getentitys():
     entitys = []
-    for index in range(1,64):
+    for index in range(1,2048):
         try:
             EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (index + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
             Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
