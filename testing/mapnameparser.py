@@ -20,7 +20,7 @@ m_hPlayerPawn = 0x7E4
 m_vOldOrigin = 0x127C
 m_iIDEntIndex = 0x15A4
 m_iHealth = 0x334
-mapNameVal = 0x196F31C
+mapNameVal = 0x19E5FEC
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
@@ -28,7 +28,5 @@ cs2 = vmm.process('cs2.exe')
 
 mapNameAddress_dll = cs2.module('client.dll')
 mapNameAddressbase = mapNameAddress_dll.base
-mapNameAddress = struct.unpack("<32s", cs2.memory.read(mapNameAddressbase + mapNameVal, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
-print(mapNameAddress)
-mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddressbase + mapNameVal, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
 print(mapName)
