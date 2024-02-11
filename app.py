@@ -19,14 +19,14 @@ rot_angle = 0
 #######################################
 
 maps_with_split = ['de_nuke','de_vertigo']
-dwEntityList = 0x18AFFB8 # offsets.py
-dwLocalPlayerPawn = 0x17252B8 #offsets.py
-m_iHealth = 0x14F8  #client.dll.py
+dwEntityList = 0x18B0FC8 # offsets.py
+dwLocalPlayerPawn = 0x17262E8 #offsets.py
+m_iHealth = 0x334 #client.dll.py
 m_vOldOrigin = 0x127C #client.dll.py
 m_iTeamNum = 0x3CB #client.dll.py
 m_angEyeAngles = 0x1578 #client.dll.py
 mapNameVal = 0x1CC200 #I don't know where you found it
-m_iCompTeammateColor = 0x7300 #client.dll.py
+m_iCompTeammateColor = 0x730 #client.dll.py
 m_bIsDefusing = 0x1408 #client.dll.py
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
