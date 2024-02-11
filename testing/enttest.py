@@ -51,8 +51,8 @@ def getentitys():
                 entitys.append(entity)
             else:
                 pass
-            except:
-                pass
+        except:
+            pass
     return(entitys)
 
 print(len(getentitys()))
