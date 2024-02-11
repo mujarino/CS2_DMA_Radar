@@ -30,7 +30,7 @@ m_hPlayerPawn = 0x7E4
 m_vOldOrigin = 0x127C
 m_iIDEntIndex = 0x15A4
 m_iHealth = 0x334
-mapNameVal = 0x19E60E4
+mapNameVal = 0x13C04C0
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
 
@@ -69,7 +69,9 @@ def getlowermapdata(mapname):
     return lowerx,lowery,z
 
 def readmapfrommem():
-    mapName = struct.unpack("<32s", cs2.memory.read(client_base + mapNameVal, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    mapNameAddress_dll = cs2.module('server.dll')
+    mapNameAddressbase = mapNameAddress_dll.base
+    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddressbase + mapNameVal, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     return str(mapName)
 
 def rotate_image(image, angle):
