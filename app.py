@@ -134,7 +134,6 @@ class player1:
         if self.Hp==0:
             text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
-        print(transformed_x,transformed_y)
         screen.blit(text_surface, (transformed_x, transformed_y))
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
@@ -194,15 +193,15 @@ while True:
                 entitys[0]
             except:
                 print('[-] No entity found. Waiting')
-                time.pause(1)
+                time.sleep(1)
                 print('[-] 4')
-                time.pause(1)
+                time.sleep(1)
                 print('[-] 3')
-                time.pause(1)
+                time.sleep(1)
                 print('[-] 2')
-                time.pause(1)
+                time.sleep(1)
                 print('[-] 1')
-                time.pause(1)
+                time.sleep(1)
                 print('[+] Searching...')
         #except:
             #print('[-] Error data reading. Some entity leave or map closed. Closing program')
