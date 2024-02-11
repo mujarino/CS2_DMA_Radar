@@ -30,6 +30,7 @@ m_hPlayerPawn = 0x7E4
 m_vOldOrigin = 0x127C
 m_iIDEntIndex = 0x15A4
 m_iHealth = 0x334
+mapNameVal = 0x19E60E4
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
 
@@ -147,7 +148,7 @@ print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
-mapname = input('enter mapname(sorry, this is temporary measure)\n')
+mapname = readmapfrommem()
 
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
