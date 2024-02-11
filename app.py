@@ -30,7 +30,7 @@ m_hPlayerPawn = 0x7E4
 m_vOldOrigin = 0x127C
 m_iIDEntIndex = 0x15A4
 m_iHealth = 0x334
-mapNameVal = 0x13C04C0
+mapNameVal = 0x001D2300
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
 
@@ -69,9 +69,10 @@ def getlowermapdata(mapname):
     return lowerx,lowery,z
 
 def readmapfrommem():
-    mapNameAddress_dll = cs2.module('server.dll')
+    mapNameAddress_dll = cs2.module('matchmaking.dll')
     mapNameAddressbase = mapNameAddress_dll.base
-    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddressbase + mapNameVal, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
+    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     return str(mapName)
 
 def rotate_image(image, angle):
@@ -148,8 +149,6 @@ print(f"[+] Entered entitylist")
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
 mapname = readmapfrommem()
-if not mapname:
-    mapname = input('[-] cant read mapname. enter it by yourself:\n')
 
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
