@@ -3,14 +3,24 @@ Beta version of my project. Simple using, fast memory reading.
 
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/preview.gif)
 # requirements
-1. pcileech DMA Card
+1. pcileech DMA Card [recommendation](https://github.com/ufrisk/pcileech?tab=readme-ov-file#hardware-based-memory-aqusition-methods)
 2. Second x64 pc with windows or linux(did not testing on macOS)
-# install
-1. Download release
-2. Install python 3
-3. Install dependencies with ```pip install -r requirements.txt```
-4. Open cs2 and connect to the map
-5. Start on match starts with ```sudo python app.py```
+# Install:
+1. **Download Release:**
+   - Access the latest release on GitHub to get the project files.
+
+2. **Install Python 3:**
+   - Ensure you have [Python3](https://www.python.org/downloads/) installed on your system.
+
+3. **Install Dependencies:**
+   - Run `pip install -r requirements.txt` to install the required dependencies.
+
+4. **Open CS2 and Connect to the Map:**
+   - Launch CS2 and establish a connection to the map as needed for your radar.
+
+5. **Start the Match:**
+   - On Linux: Launch the match with `sudo python app.py`.
+   - On Windows: Execute the appropriate command to start the match `python.exe ./app.py`.
 
 # TODO
 - [x] pygame radar
