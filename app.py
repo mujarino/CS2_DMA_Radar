@@ -19,8 +19,8 @@ rot_angle = 0
 #######################################
 
 maps_with_split = ['de_nuke','de_vertigo']
-dwEntityList = 0x18B0FC8 # offsets.py
-dwLocalPlayerPawn = 0x17262E8 #offsets.py
+dwEntityList = 0x18B3FA8 # offsets.py
+dwLocalPlayerPawn = 0x1729348 #offsets.py
 m_iPawnHealth = 0x7F0
 m_iPawnArmor = 0x7F4
 m_bPawnIsAlive = 0x7EC
@@ -30,7 +30,7 @@ m_hPlayerPawn = 0x7E4
 m_vOldOrigin = 0x127C
 m_iIDEntIndex = 0x15A4
 m_iHealth = 0x334
-mapNameVal = 0x001D2300
+mapNameVal = 0x1D2300
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
 
