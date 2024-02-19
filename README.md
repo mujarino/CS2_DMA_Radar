@@ -1,6 +1,6 @@
 # CS2 DMA RADAR
 Beta version of my project. Simple using, fast memory reading.
-
+#Hit the star and i'll do web version!
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/preview.gif)
 # requirements
 1. pcileech DMA Card
