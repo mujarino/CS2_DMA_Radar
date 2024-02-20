@@ -21,7 +21,7 @@ Beta version of my project. Simple using, fast memory reading.
    - [ ] Automatic parse offsets.
    - [x] Automatic map reading.
    - [ ] Bomb/kits drawing.
-   - [ ] Tutorial for add maps.
+   - [x] Tutorial for add maps.
    - [ ] ...
 - [ ] websocket radar
    - [ ] alpha version
@@ -46,3 +46,12 @@ sudo ./pcileech -device fpga probe
    b) try to buy other dma firmware
 
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
+
+# How to add your map?
+   1. download offsetfinder.py
+   2. make folder in /maps with your mapname
+   3. copy meta.json from one of other maps. to work properly in needs 2 files in folder: radar.png and meta.json
+   4. run offset finder with python
+   5. numbers in console is player position in program. so u need to make it positive(if its negative) with plus and minus, x,y
+   6. use buttons to search current offset
+   7. enter new numbers in meta.json
