@@ -42,7 +42,7 @@ m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value'
 m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value']
-
+m_bPawnHasDefuser = clientdll['CCSPlayerController']['data']['m_bPawnHasDefuser']['value']
 print('[+] offsets parsed')
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
@@ -145,6 +145,7 @@ class player1:
         self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
         self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
         self.isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.hasdefuser = struct.unpack("?", cs2.memory.read(entity_id + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
     def draw(self, screen):
         if mapname in maps_with_split:
             if self.pZ<lowerz:
@@ -166,8 +167,12 @@ class player1:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
         if self.isdefusing == 1:
-            pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
-            pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
+            if self.hasdefuser:
+                pygame.draw.line(screen, (255, 0, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
+                pygame.draw.line(screen, (255, 0, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
+            else:
+                pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
+                pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
         if self.Hp>30:
             text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
             text_surface.set_alpha(255)
