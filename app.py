@@ -105,12 +105,14 @@ def get_only_mapname():
 
 def pawnhandler():
     global global_entity_list
-    entityss = getentitypawns()
-    if global_entity_list == entityss:
-        pass
-    else:
-        global_entity_list = entityss
-    time.sleep(2)
+    while True:
+        entityss = getentitypawns()
+        if global_entity_list == entityss:
+            pass
+        else:
+            global_entity_list = entityss
+            print('список обновлен')
+        time.sleep(2)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
