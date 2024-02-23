@@ -49,7 +49,7 @@ EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, 
 EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
 for i in range(1,64):
     EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
-    colors = struct.unpack("<Q", cs2.memory.read(EntityList + color, 8, memprocfs.FLAG_NOCACHE))[0]
+    colors = struct.unpack("<I", cs2.memory.read(EntityList + color, 4, memprocfs.FLAG_NOCACHE))[0]
     print(f'color {colors}')
 
 
