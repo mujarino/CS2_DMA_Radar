@@ -81,8 +81,6 @@ def getlowermapdata(mapname):
     return lowerx,lowery,z
 
 def readmapfrommem():
-    mapNameAddress_dll = cs2.module('matchmaking.dll')
-    mapNameAddressbase = mapNameAddress_dll.base
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
     mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
     return str(mapName)
@@ -172,45 +170,53 @@ print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
 
-mapname = readmapfrommem()
+mapNameAddress_dll = cs2.module('matchmaking.dll')
+mapNameAddressbase = mapNameAddress_dll.base
 
-map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-
-for folder in map_folders:
-    if folder in mapname:
-        mapname = folder
-        break
-
-if mapname == 'empty':
-    print(f"[-] You are not connected to map")
-    exit()
-if os.path.exists(f'maps/{mapname}'):
-    pass
-else:
-    print(f'[-] Please, import this map first ({mapname})')
-    exit()
-print(f"[+] Found map {mapname}")
-if mapname in maps_with_split:
-    lowerx,lowery,lowerz = getlowermapdata(mapname)
-scale,x,y = getmapdata(mapname)
-pygame.init()
-
-manager = pygame_gui.UIManager((600, 600))
-clock = pygame.time.Clock()
-screen_width, screen_height = 600, 600
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
-pygame.display.set_caption("CS2 Radar")
-map_image = pygame.image.load(f'maps/{mapname}/radar.png')
-font = pygame.font.Font(None, hp_font_size)
-rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
 while True:
+    mapname = readmapfrommem()
+
+    map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+
+    for folder in map_folders:
+        if folder in mapname:
+            mapname = folder
+            break
+
+    if mapname == 'empty':
+        print(f"[-] waiting for map connection")
+        time.sleep(5)
+        break
+    if os.path.exists(f'maps/{mapname}'):
+        pass
+    else:
+        print(f'[-] Please, import this map first ({mapname})')
+        exit()
+    print(f"[+] Found map {mapname}")
+    if mapname in maps_with_split:
+        lowerx,lowery,lowerz = getlowermapdata(mapname)
+    scale,x,y = getmapdata(mapname)
+    pygame.init()
+
+    manager = pygame_gui.UIManager((600, 600))
+    clock = pygame.time.Clock()
+    screen_width, screen_height = 600, 600
+    screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
+    pygame.display.set_caption("CS2 Radar")
+    map_image = pygame.image.load(f'maps/{mapname}/radar.png')
+    font = pygame.font.Font(None, hp_font_size)
+    rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
+    
     entitys = getentitypawns()
     print(entitys)
     print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
     running = True
     while running:
-        if 1==1:
+        mapname = readmapfrommem()
+        if 'empty' in mapname:
+            break
+        try:
             players = []
             for entity in entitys:
                 p = player1(entity)
@@ -229,9 +235,9 @@ while True:
                 print('[-] 1')
                 time.sleep(1)
                 print('[+] Searching...')
-        #except:
-            #print('[-] Error data reading. Some entity leave or map closed. Closing program')
-            #exit()
+        except:
+            print('[-] Error data reading. Some entity leave or map closed. Closing program')
+            exit()
 
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
