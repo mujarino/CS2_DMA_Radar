@@ -56,4 +56,6 @@ while True:
         try:
             IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing  , 4, memprocfs.FLAG_NOCACHE))
             print('entity is defusing!!')
+        except:
+            pass
 
