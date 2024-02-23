@@ -52,8 +52,6 @@ print('[+] offsets parsed')
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 global_entity_list = []
-terminate_thread = False
-
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
         image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -107,7 +105,7 @@ def get_only_mapname():
 
 def pawnhandler():
     global global_entity_list
-    while not terminate_thread:
+    while True:
         entityss = getentitypawns()
         if global_entity_list == entityss:
             pass
@@ -241,7 +239,6 @@ while running:
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate_thread = True
                 exit()
             manager.process_events(event)
             if event.type == pygame.USEREVENT:
