@@ -64,9 +64,9 @@ enitys = getentitys()
 
 while True:
     for entity_pawn in enitys:
+        defuses = []
         try:
             IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing  , 4, memprocfs.FLAG_NOCACHE))
-            defuses = []
             defuses.append(IsDefusing)
         except:
             print('some entity is defusing!!')
