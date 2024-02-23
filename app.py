@@ -104,7 +104,6 @@ def getentitypawns():
             entitys.append(Pawn)
         except:
             pass
-    print(entitys)
     return(entitys)
 
 class player1:
@@ -209,7 +208,6 @@ while True:
         rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
         
         entitys = getentitypawns()
-        print(entitys)
         print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
         running = True
         while running:
