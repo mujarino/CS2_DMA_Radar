@@ -220,8 +220,8 @@ while True:
                 time.sleep(1)
                 print('[+] Searching...')
         #except:
-            print('[-] Error data reading. Some entity leave or map closed. Closing program')
-            exit()
+            #print('[-] Error data reading. Some entity leave or map closed. Closing program')
+            #exit()
 
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
