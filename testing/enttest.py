@@ -53,6 +53,6 @@ while True:
     if entityId < 2048 and entityId > 0:
         entEntry = struct.unpack("<Q", cs2.memory.read(entList + 0x8 * (entityId >> 9) + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
         entity_pawn = struct.unpack("<Q", cs2.memory.read(entEntry + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-        IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing , 4, memprocfs.FLAG_NOCACHE))
+        IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + (m_bIsDefusing +0x4)  , 4, memprocfs.FLAG_NOCACHE))
         print(entityId,IsDefusing)
 
