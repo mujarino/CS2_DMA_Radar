@@ -90,7 +90,7 @@ def readmapfrommem():
             break
     print(f"[+] Found map {mapname}")
     mapname = str(mapname)
-    return mapName
+    return mapname
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
