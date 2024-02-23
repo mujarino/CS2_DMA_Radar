@@ -51,7 +51,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-entityss = []
+
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
         image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -224,7 +224,6 @@ while running:
     while not 'empty' in get_only_mapname():
         try:
             players = []
-            global entityss
             for entity in entityss:
                 p = player1(entity)
                 players.append(p)
