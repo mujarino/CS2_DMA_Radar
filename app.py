@@ -40,6 +40,8 @@ m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['m_iIDEntIndex']['value']
 m_iHealth = clientdll['C_BaseEntity']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 
+print('[+] offsets parsed')
+
 #https://github.com/a2x/cs2-dumper/tree/main/generated
 
 #######################################
