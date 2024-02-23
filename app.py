@@ -134,7 +134,8 @@ class player1:
         triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
         triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
         if self.isdefusing == 1:
-
+            pygame.draw.line(screen, (0, 255, 0), (image_x - cross_size, image_y - cross_size), (image_x + cross_size, image_y + cross_size), 2)
+            pygame.draw.line(screen, (0, 255, 0), (image_x + cross_size, image_y - cross_size), (image_x - cross_size, image_y + cross_size), 2)
         if self.Hp > 0 and self.team == 2:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
