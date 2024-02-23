@@ -82,8 +82,24 @@ def getlowermapdata(mapname):
 
 def readmapfrommem():
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
-    return str(mapName)
+    mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+    for folder in map_folders:
+        if folder in mapname:
+            mapname = folder
+            break
+    if mapname == 'empty':
+        print(f"[-] waiting for map connection")
+        time.sleep(5)
+        break
+    if os.path.exists(f'maps/{mapname}'):
+        pass
+    else:
+        print(f'[-] Please, import this map first ({mapname})')
+        exit()
+    print(f"[+] Found map {mapname}")
+    mapname = str(mapname)
+    return mapName
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
@@ -172,22 +188,6 @@ mapNameAddressbase = mapNameAddress_dll.base
 while True:
     mapname = readmapfrommem()
 
-    map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-
-    for folder in map_folders:
-        if folder in mapname:
-            mapname = folder
-            break
-    if mapname == 'empty':
-        print(f"[-] waiting for map connection")
-        time.sleep(5)
-        break
-    if os.path.exists(f'maps/{mapname}'):
-        pass
-    else:
-        print(f'[-] Please, import this map first ({mapname})')
-        exit()
-    print(f"[+] Found map {mapname}")
     if mapname in maps_with_split:
         lowerx,lowery,lowerz = getlowermapdata(mapname)
     scale,x,y = getmapdata(mapname)
