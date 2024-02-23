@@ -121,42 +121,39 @@ class player1:
         except:
             pass
     def draw(self, screen):
-        try:
-            if mapname in maps_with_split:
-                if self.pZ<lowerz:
-                    transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
-                else:
-                    transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
+        if mapname in maps_with_split:
+            if self.pZ<lowerz:
+                transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
             else:
                 transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
-            triangle_top_x = transformed_x + math.sin(self.EyeAngles) * triangle_length
-            triangle_top_y = transformed_y + math.cos(self.EyeAngles) * triangle_length
-            triangle_left_x = transformed_x + math.sin(self.EyeAngles + math.pi / 3) * triangle_length / 2
-            triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
-            triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
-            triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
-            if self.Hp > 0 and self.team == 2:
-                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
-            if self.Hp > 0 and self.team == 3:
-                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
-            if self.isdefusing == 1:
-                pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
-                pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
-            if self.Hp>30:
-                text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
-                text_surface.set_alpha(255)
-            if self.Hp<=30:  
-                text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
-                text_surface.set_alpha(255)
-            if self.Hp==0:
-                text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
-                text_surface.set_alpha(0)
-
-            screen.blit(text_surface, (transformed_x, transformed_y))
-        except:
-            pass
+        else:
+            print(mapname)
+            transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
+        triangle_top_x = transformed_x + math.sin(self.EyeAngles) * triangle_length
+        triangle_top_y = transformed_y + math.cos(self.EyeAngles) * triangle_length
+        triangle_left_x = transformed_x + math.sin(self.EyeAngles + math.pi / 3) * triangle_length / 2
+        triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
+        triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
+        triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
+        if self.Hp > 0 and self.team == 2:
+            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
+        if self.Hp > 0 and self.team == 3:
+            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
+        if self.isdefusing == 1:
+            pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
+            pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
+        if self.Hp>30:
+            text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
+            text_surface.set_alpha(255)
+        if self.Hp<=30:  
+            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+            text_surface.set_alpha(255)
+        if self.Hp==0:
+            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+            text_surface.set_alpha(0)
+        screen.blit(text_surface, (transformed_x, transformed_y))
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
 cs2 = vmm.process('cs2.exe')
