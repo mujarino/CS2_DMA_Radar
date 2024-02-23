@@ -9,7 +9,7 @@ import numpy as np
 import os
 import re
 from requests import get
-import threading
+import multiprocessing
 
 
 with open(f'config.json', 'r') as f:
@@ -204,8 +204,8 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-t = threading.Thread(target=pawnhandler)
-t.start()
+process = multiprocessing.Process(target=pawnhandler)
+process.start()
 running = True
 while running:
     mapname = readmapfrommem()
