@@ -120,7 +120,7 @@ def pawnhandler():
         except:
             pass
 
-        time.sleep(2)
+        time.sleep(10)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
