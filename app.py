@@ -18,6 +18,7 @@ triangle_length = settings['triangle_length']
 circle_size = settings['circle_size']
 hp_font_size = settings['hp_font_size']
 rot_angle = settings['rot_angle']
+cross_size = settings['cross_size']
 
 #######################################
 
@@ -39,6 +40,7 @@ m_vOldOrigin = clientdll['C_BasePlayerPawn']['data']['m_vOldOrigin']['value']
 m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value']
 m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
+m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value']
 
 print('[+] offsets parsed')
 
@@ -115,7 +117,8 @@ class player1:
         self.team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
         self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
         self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
-
+        self.isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
+        self.isdefusing = self.isdefusing[0]
     def draw(self, screen):
         if mapname in maps_with_split:
             if self.pZ<lowerz:
@@ -130,6 +133,8 @@ class player1:
         triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
         triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
         triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
+        if self.isdefusing == 1:
+
         if self.Hp > 0 and self.team == 2:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)

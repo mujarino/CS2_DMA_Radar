@@ -31,6 +31,7 @@ m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value'
 m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_bIsDefusing = 5128
+hasdefuser = 2040
 
 print('[+] offsets parsed')
 def getentitys():
@@ -66,7 +67,7 @@ while True:
     defuses = []
     for entity_pawn in enitys:
         try:
-            IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))
+            IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + hasdefuser, 4, memprocfs.FLAG_NOCACHE))
             defuses.append(IsDefusing[0])
         except:
             print('some entity is defusing!!')
