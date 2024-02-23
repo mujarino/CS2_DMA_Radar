@@ -8,29 +8,37 @@ import math
 import numpy as np
 import os
 import re
+from requests import get
 
-########## ADJUST SIZES HERE ##########
 
-triangle_length = 13
-circle_size = 7 # 8 too big
-hp_font_size = 18
-rot_angle = 0
+with open(f'config.json', 'r') as f:
+    settings = json.load(f)
+
+triangle_length = settings['triangle_length']
+circle_size = settings['circle_size']
+hp_font_size = settings['hp_font_size']
+rot_angle = settings['rot_angle']
+
+#######################################
+
+offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/generated/offsets.json').json()
+clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/generated/client.dll.json').json()
 
 #######################################
 
 maps_with_split = ['de_nuke','de_vertigo']
-dwEntityList = 0x18B3FA8 # offsets.py
-dwLocalPlayerPawn = 0x1729348 #offsets.py
-m_iPawnHealth = 0x7F0
-m_iPawnArmor = 0x7F4
-m_bPawnIsAlive = 0x7EC
-m_angEyeAngles = 0x1578
-m_iTeamNum = 0x3CB
-m_hPlayerPawn = 0x7E4
-m_vOldOrigin = 0x127C
-m_iIDEntIndex = 0x15A4
-m_iHealth = 0x334
-mapNameVal = 0x1D2300
+dwEntityList = offsets['client_dll']['data']['dwEntityList']['value']
+dwLocalPlayerPawn = offsets['client_dll']['data']['dwLocalPlayerPawn']['value']
+m_iPawnHealth = clientdll['CCSPlayerController']['m_iPawnHealth']['value']
+m_iPawnArmor = clientdll['CCSPlayerController']['m_iPawnArmor']['value']
+m_bPawnIsAlive = clientdll['CCSPlayerController']['m_bPawnIsAlive']['value']
+m_angEyeAngles = clientdll['C_CSPlayerPawnBase']['m_angEyeAngles']['value']
+m_iTeamNum = clientdll['C_BaseEntity']['m_iTeamNum']['value']
+m_hPlayerPawn = clientdll['CCSPlayerController']['m_hPlayerPawn']['value']
+m_vOldOrigin = clientdll['C_BasePlayerPawn']['m_vOldOrigin']['value']
+m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['m_iIDEntIndex']['value']
+m_iHealth = clientdll['C_BaseEntity']['m_iHealth']['value']
+mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
 
