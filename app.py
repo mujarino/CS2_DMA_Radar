@@ -201,7 +201,7 @@ while True:
     print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
     running = True
     while running:
-        try:
+        if 1==1:
             players = []
             for entity in entitys:
                 p = player1(entity)
@@ -220,7 +220,7 @@ while True:
                 print('[-] 1')
                 time.sleep(1)
                 print('[+] Searching...')
-        except:
+        #except:
             print('[-] Error data reading. Some entity leave or map closed. Closing program')
             exit()
 
