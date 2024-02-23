@@ -43,6 +43,7 @@ m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value']
 m_bPawnHasDefuser = clientdll['CCSPlayerController']['data']['m_bPawnHasDefuser']['value']
+m_iCompTeammateColor = clientdll['CCSPlayerController']['data']['m_iCompTeammateColor']['value']
 print('[+] offsets parsed')
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
@@ -129,14 +130,15 @@ def getentitypawns():
             Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
             EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
             Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-            entitys.append(Pawn)
+            entitys.append((Pawn, EntityAddress))
         except:
             pass
     return(entitys)
 
 class player1:
-    def __init__(self, entity_id):
+    def __init__(self, entity_id, EntityAddress):
         self.entity_id = entity_id
+        self.EntityAddress = EntityAddress
         self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
         self.pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
         self.pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
@@ -145,7 +147,8 @@ class player1:
         self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
         self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
         self.isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.hasdefuser = struct.unpack("?", cs2.memory.read(entity_id + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
+        self.hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
+        self.color = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iCompTeammateColor, 4, memprocfs.FLAG_NOCACHE))[0]
     def draw(self, screen):
         if mapname in maps_with_split:
             if self.pZ<lowerz:
@@ -160,12 +163,25 @@ class player1:
         triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
         triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
         triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
-        if self.Hp > 0 and self.team == 2:
+        if self.Hp > 0 and self.team == playerTeam:
+            if self.color == 0:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (66, 170, 255), (transformed_x, transformed_y), circle_size)
+            if self.color == 1:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (0, 255, 0), (transformed_x, transformed_y), circle_size)
+            if self.color == 2:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (255, 255, 0), (transformed_x, transformed_y), circle_size)
+            if self.color == 3:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (255, 165, 0), (transformed_x, transformed_y), circle_size)
+            if self.color == 4:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (128, 0, 128), (transformed_x, transformed_y), circle_size)
+        if self.Hp > 0 and self.team != playerTeam:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
-        if self.Hp > 0 and self.team == 3:
-            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
         if self.isdefusing == 1:
             if self.hasdefuser:
                 pygame.draw.line(screen, (255, 0, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
@@ -197,6 +213,7 @@ entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, mem
 print(f"[+] Entered entitylist")
 
 player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+playerTeam = struct.unpack("<I", cs2.memory.read(player + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
 
 mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
@@ -235,8 +252,8 @@ while running:
     while not 'empty' in get_only_mapname():
         try:
             players = []
-            for entity in global_entity_list:
-                p = player1(entity)
+            for Pawn, EntityAddress in global_entity_list:
+                p = player1(Pawn,EntityAddress)
                 players.append(p)
         except:
             pass
