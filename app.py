@@ -52,7 +52,6 @@ print('[+] offsets parsed')
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
-
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
         image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -117,6 +116,7 @@ def rotate_image(image, angle):
     return rotated_image, new_rect
 
 def getentitypawns():
+    entitys = []
     EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
     EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
     for i in range(0,64):
@@ -225,13 +225,14 @@ while running:
     map_image = pygame.image.load(f'maps/{mapname}/radar.png')
     while not 'empty' in get_only_mapname():
         try:
-            entitys = getentitypawns()
             players = []
+            entitys = getentitypawns()
             for entity in entitys:
                 p = player1(entity)
                 players.append(p)
         except:
             pass
+
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -241,6 +242,7 @@ while running:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == rot_plus_button:
                         rot_angle += 90
+                    
         manager.update(time_delta)
 
         screen.fill((0, 0, 0))
