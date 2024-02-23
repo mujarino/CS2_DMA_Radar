@@ -51,7 +51,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-
+entitys = []
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
@@ -230,8 +230,7 @@ while running:
         lowerx,lowery,lowerz = getlowermapdata(mapname)
     scale,x,y = getmapdata(mapname)
     map_image = pygame.image.load(f'maps/{mapname}/radar.png')
-    entitys = getentitypawns()
-    print(f"[+] Find {len(entitys)} entitys.")
+
     while not 'empty' in get_only_mapname():
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
