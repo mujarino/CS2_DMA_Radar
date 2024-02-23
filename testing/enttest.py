@@ -66,8 +66,8 @@ while True:
     defuses = []
     for entity_pawn in enitys:
         try:
-            IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing  , 4, memprocfs.FLAG_NOCACHE))
-            defuses.append(IsDefusing)
+            IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))
+            defuses.append(IsDefusing[0])
         except:
             print('some entity is defusing!!')
             pass
