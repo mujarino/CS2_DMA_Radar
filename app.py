@@ -238,7 +238,7 @@ while exit_state == 0:
                             if event.ui_element == rot_plus_button:
                                 rot_angle += 90
                             if event.ui_element == search:
-                                research == 1
+                                running = False
                 manager.update(time_delta)
 
                 screen.fill((0, 0, 0))
