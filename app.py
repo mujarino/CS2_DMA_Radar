@@ -170,29 +170,28 @@ mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
 
 while True:
-    while True:
-        mapname = readmapfrommem()
+    mapname = readmapfrommem()
 
-        map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+    map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
-        for folder in map_folders:
-            if folder in mapname:
-                mapname = folder
-                break
-
-        if mapname == 'empty':
-            print(f"[-] waiting for map connection")
-            time.sleep(5)
+    for folder in map_folders:
+        if folder in mapname:
+            mapname = folder
             break
-        if os.path.exists(f'maps/{mapname}'):
-            pass
-        else:
-            print(f'[-] Please, import this map first ({mapname})')
-            exit()
-        print(f"[+] Found map {mapname}")
-        if mapname in maps_with_split:
-            lowerx,lowery,lowerz = getlowermapdata(mapname)
-        scale,x,y = getmapdata(mapname)
+    if mapname == 'empty':
+        print(f"[-] waiting for map connection")
+        time.sleep(5)
+        break
+    if os.path.exists(f'maps/{mapname}'):
+        pass
+    else:
+        print(f'[-] Please, import this map first ({mapname})')
+        exit()
+    print(f"[+] Found map {mapname}")
+    if mapname in maps_with_split:
+        lowerx,lowery,lowerz = getlowermapdata(mapname)
+    scale,x,y = getmapdata(mapname)
+    while True:
         pygame.init()
 
         manager = pygame_gui.UIManager((600, 600))
