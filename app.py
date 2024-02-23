@@ -9,7 +9,7 @@ import numpy as np
 import os
 import re
 from requests import get
-import multiprocessing
+import threading
 
 
 with open(f'config.json', 'r') as f:
@@ -111,7 +111,6 @@ def pawnhandler():
     else:
         global_entity_list = entityss
     time.sleep(2)
-    print(global_entity_list)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
@@ -204,10 +203,11 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-process = multiprocessing.Process(target=pawnhandler)
-process.start()
+
 running = True
 while running:
+    t = threading.Thread(target=pawnhandler)
+    t.start()
     mapname = readmapfrommem()
     if 'empty' in mapname:
         image = pygame.image.load(f'maps/empty/1.png')
