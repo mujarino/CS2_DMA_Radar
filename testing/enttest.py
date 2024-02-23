@@ -8,18 +8,30 @@ import math
 import numpy as np
 import os
 import re
+from requests import get
 
-dwEntityList = 0x18B0FC8 # offsets.py
-dwLocalPlayerPawn = 0x17262E8 #offsets.py
-m_iPawnHealth = 0x7F0
-m_iPawnArmor = 0x7F4
-m_bPawnIsAlive = 0x7EC
-m_angEyeAngles = 0x1578
-m_iTeamNum = 0x3CB
-m_hPlayerPawn = 0x7E4
-m_vOldOrigin = 0x127C
-m_iIDEntIndex = 0x15A4
-m_iHealth = 0x334
+#######################################
+
+offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/generated/offsets.json').json()
+clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/generated/client.dll.json').json()
+
+#######################################
+
+maps_with_split = ['de_nuke','de_vertigo']
+dwEntityList = offsets['client_dll']['data']['dwEntityList']['value']
+dwLocalPlayerPawn = offsets['client_dll']['data']['dwLocalPlayerPawn']['value']
+m_iPawnHealth = clientdll['CCSPlayerController']['data']['m_iPawnHealth']['value']
+m_iPawnArmor = clientdll['CCSPlayerController']['data']['m_iPawnArmor']['value']
+m_bPawnIsAlive = clientdll['CCSPlayerController']['data']['m_bPawnIsAlive']['value']
+m_angEyeAngles = clientdll['C_CSPlayerPawnBase']['data']['m_angEyeAngles']['value']
+m_iTeamNum = clientdll['C_BaseEntity']['data']['m_iTeamNum']['value']
+m_hPlayerPawn = clientdll['CCSPlayerController']['data']['m_hPlayerPawn']['value']
+m_vOldOrigin = clientdll['C_BasePlayerPawn']['data']['m_vOldOrigin']['value']
+m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value']
+m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
+mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
+
+print('[+] offsets parsed')
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
