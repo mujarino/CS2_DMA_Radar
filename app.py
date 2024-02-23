@@ -201,7 +201,7 @@ font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
 
 while True:
-    entitys = getentitys()
+    entitys = getentitypawns()
     print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
     running = True
     while running:
