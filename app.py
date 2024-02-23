@@ -118,7 +118,6 @@ class player1:
         self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
         self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
         self.isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.isdefusing = self.isdefusing[0]
     def draw(self, screen):
         if mapname in maps_with_split:
             if self.pZ<lowerz:
