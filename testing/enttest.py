@@ -40,9 +40,9 @@ while True:
     if entityId > 0:
         try:
             entEntry = struct.unpack("<Q", cs2.memory.read(entList + 0x8 * (entityId >> 9) + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-            entity = struct.unpack("<Q", cs2.memory.read(entEntry + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-            entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-            print(entityId,entityHp)
+            entity_pawn = struct.unpack("<Q", cs2.memory.read(entEntry + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+            IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn +(m_bIsDefusing +0x4) , 4, memprocfs.FLAG_NOCACHE))
+            print(entityId,IsDefusing)
         except:
             pass
 
