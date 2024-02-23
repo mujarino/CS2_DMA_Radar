@@ -174,7 +174,7 @@ class player1:
         if self.Hp > 0 and self.team == playerTeam:
             if self.color == 0:
                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                pygame.draw.circle(screen, (66, 170, 255), (transformed_x, transformed_y), circle_size)
+                pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
             if self.color == 1:
                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                 pygame.draw.circle(screen, (0, 255, 0), (transformed_x, transformed_y), circle_size)
@@ -183,10 +183,10 @@ class player1:
                 pygame.draw.circle(screen, (255, 255, 0), (transformed_x, transformed_y), circle_size)
             if self.color == 3:
                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                pygame.draw.circle(screen, (255, 165, 0), (transformed_x, transformed_y), circle_size)
+                pygame.draw.circle(screen, (255, 106, 2), (transformed_x, transformed_y), circle_size)
             if self.color == 4:
                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                pygame.draw.circle(screen, (128, 0, 128), (transformed_x, transformed_y), circle_size)
+                pygame.draw.circle(screen, (167, 107, 243), (transformed_x, transformed_y), circle_size)
         if self.Hp > 0 and self.team != playerTeam:
             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
