@@ -51,7 +51,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-entitys = []
+entityss = []
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
         image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -104,8 +104,8 @@ def get_only_mapname():
     return mapname
 
 def pawnhandler():
-    global entitys
-    entitys = getentitypawns()
+    global entityss
+    entityss = getentitypawns()
     time.sleep(2)
 
 def rotate_image(image, angle):
@@ -224,8 +224,8 @@ while running:
     while not 'empty' in get_only_mapname():
         try:
             players = []
-            print(entitys)
-            for entity in entitys:
+            print(entityss)
+            for entity in entityss:
                 p = player1(entity)
                 players.append(p)
         except:
