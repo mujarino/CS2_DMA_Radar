@@ -106,6 +106,7 @@ def getentitypawns():
             entitys.append(Pawn)
         except:
             return
+    print(entitys)
     return(entitys)
 
 class player1:
