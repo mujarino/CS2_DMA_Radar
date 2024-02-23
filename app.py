@@ -51,7 +51,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-entitys = []
+
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
@@ -107,9 +107,16 @@ def get_only_mapname():
 def pawnhandler():
     try:
         entitys = getentitypawns()
-        time.sleep(2)
     except:
         pass
+    try:
+        players = []
+        for entity in entitys:
+            p = player1(entity)
+            players.append(p)
+    except:
+        pass
+    time.sleep(2)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
@@ -226,14 +233,6 @@ while running:
     entitys = getentitypawns()
     print(f"[+] Find {len(entitys)} entitys.")
     while not 'empty' in get_only_mapname():
-        try:
-            players = []
-            for entity in entitys:
-                p = player1(entity)
-                players.append(p)
-        except:
-            pass
-
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
