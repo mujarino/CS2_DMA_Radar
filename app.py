@@ -107,7 +107,6 @@ def get_only_mapname():
 def pawnhandler():
     global global_entity_list
     global playerTeam
-    global mappp
     while True:
         try:
             entityss = getentitypawns()
@@ -118,11 +117,6 @@ def pawnhandler():
             
             player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
             playerTeam = struct.unpack("<I", cs2.memory.read(player + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-            mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-            mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
-            mapname = str(mapname)
-            if 'empty' in mapname:
-                mappp = False
         except:
             pass
 
@@ -263,12 +257,11 @@ while running:
     else:
         print(f'[-] Please, import this map first ({mapname})')
         continue
-    mappp = True
     if mapname in maps_with_split:
         lowerx,lowery,lowerz = getlowermapdata(mapname)
     scale,x,y = getmapdata(mapname)
     map_image = pygame.image.load(f'maps/{mapname}/radar.png')
-    while mappp:
+    while not 'empty' in get_only_mapname():
         try:
             players = []
             for Pawn, EntityAddress in global_entity_list:
