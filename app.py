@@ -89,7 +89,8 @@ def readmapfrommem():
         if folder in mapname:
             mapname = folder
             break
-    print(f"[+] Found map {mapname}")
+    if mapname != 'empty':
+        print(f"[+] Found map {mapname}")
     mapname = str(mapname)
     return mapname
 
@@ -164,6 +165,7 @@ class player1:
         if self.Hp==0:
             text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
+        print(transformed_x,transformed_y)
         screen.blit(text_surface, (transformed_x, transformed_y))
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
@@ -193,8 +195,6 @@ while exit_state == 0:
         rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
         search = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 100), (80, 50)), text='re-search', manager=manager)
 
-        entitys = getentitypawns()
-        print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
         running = True
         while running:
             mapname = readmapfrommem()
@@ -212,6 +212,8 @@ while exit_state == 0:
             scale,x,y = getmapdata(mapname)
 
             map_image = pygame.image.load(f'maps/{mapname}/radar.png')
+            entitys = getentitypawns()
+            print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
             research = 0
             while not 'empty' in get_only_mapname() and research == 0:
                 try:
