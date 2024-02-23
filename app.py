@@ -202,7 +202,8 @@ while exit_state:
             mapname = readmapfrommem()
             if 'empty' in mapname:
                 image = pygame.image.load(f'maps/empty/1.png')
-                screen.blit(image)
+                rect = rotated_image.get_rect(center = image.get_rect().center)
+                screen.blit(image, rect.topleft)
                 time.sleep(8)
                 continue
             if os.path.exists(f'maps/{mapname}'):
