@@ -51,6 +51,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+entitys = []
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
@@ -116,7 +117,6 @@ def rotate_image(image, angle):
     return rotated_image, new_rect
 
 def getentitypawns():
-    entitys = []
     EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
     EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
     for i in range(0,64):
