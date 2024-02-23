@@ -31,7 +31,7 @@ m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value'
 m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_bIsDefusing = 5128
-hasdefuser = 2040
+hasdefuser = 6384
 
 print('[+] offsets parsed')
 def getentitys():
