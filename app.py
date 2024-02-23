@@ -108,16 +108,18 @@ def pawnhandler():
     global global_entity_list
     global playerTeam
     while True:
-        entityss = getentitypawns()
-        if global_entity_list == entityss:
-            pass
-        else:
-            global_entity_list = entityss
         try:
+            entityss = getentitypawns()
+            if global_entity_list == entityss:
+                pass
+            else:
+                global_entity_list = entityss
+            
             player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
             playerTeam = struct.unpack("<I", cs2.memory.read(player + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
         except:
             pass
+
         time.sleep(2)
 
 def rotate_image(image, angle):
