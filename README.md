@@ -16,10 +16,10 @@ Simple using, fast memory reading.
 3. **Install Dependencies:**
    - Run `pip install -r requirements.txt` to install the required dependencies.
 
-4. **Open CS2 and Connect to the Map:**
-   - Launch CS2 and establish a connection to the map as needed for your radar.
+4. **Open CS2:**
+   - Launch CS2.
 
-5. **Start the Match:**
+5. **Start app.py in any time:**
    - On Linux: Launch the match with `sudo python app.py`.
    - On Windows: Execute the appropriate command to start the match `python.exe ./app.py`.
 
