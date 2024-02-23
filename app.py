@@ -105,7 +105,7 @@ def getentitypawns():
             Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
             entitys.append(Pawn)
         except:
-            return
+            pass
     print(entitys)
     return(entitys)
 
