@@ -111,7 +111,6 @@ def pawnhandler():
             pass
         else:
             global_entity_list = entityss
-            print('список обновлен')
         time.sleep(2)
 
 def rotate_image(image, angle):
