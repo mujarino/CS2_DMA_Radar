@@ -49,12 +49,9 @@ while True:
     player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
     entityId = struct.unpack("<I", cs2.memory.read(player + m_iIDEntIndex, 4, memprocfs.FLAG_NOCACHE))[0]
     print(entityId)
-    if entityId > 0:
-        try:
-            entEntry = struct.unpack("<Q", cs2.memory.read(entList + 0x8 * (entityId >> 9) + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-            entity_pawn = struct.unpack("<Q", cs2.memory.read(entEntry + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-            IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing , 4, memprocfs.FLAG_NOCACHE))
-            print(entityId,IsDefusing)
-        except:
-            pass
+    if entityId < 2048 and entityId > 0:
+        entEntry = struct.unpack("<Q", cs2.memory.read(entList + 0x8 * (entityId >> 9) + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+        entity_pawn = struct.unpack("<Q", cs2.memory.read(entEntry + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+        IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing , 4, memprocfs.FLAG_NOCACHE))
+        print(entityId,IsDefusing)
 
