@@ -104,7 +104,6 @@ def get_only_mapname():
     return mapname
 
 def pawnhandler():
-    global entityss
     entityss = getentitypawns()
     time.sleep(2)
     print(entityss)
