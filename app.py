@@ -50,7 +50,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-research == 0
+research = 0
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -212,7 +212,7 @@ while exit_state == 0:
             scale,x,y = getmapdata(mapname)
 
             map_image = pygame.image.load(f'maps/{mapname}/radar.png')
-            research == 0
+            research = 0
             while not 'empty' in get_only_mapname() and research == 0:
                 try:
                     players = []
