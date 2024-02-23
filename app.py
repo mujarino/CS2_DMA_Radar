@@ -107,6 +107,7 @@ def pawnhandler():
     global entityss
     entityss = getentitypawns()
     time.sleep(2)
+    print(entityss)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
@@ -224,7 +225,7 @@ while running:
     while not 'empty' in get_only_mapname():
         try:
             players = []
-            print(entityss)
+            global entityss
             for entity in entityss:
                 p = player1(entity)
                 players.append(p)
