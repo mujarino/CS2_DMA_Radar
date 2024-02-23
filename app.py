@@ -92,66 +92,70 @@ def rotate_image(image, angle):
     new_rect = rotated_image.get_rect(center = image.get_rect().center)
     return rotated_image, new_rect
 
-def getentitys():
+def getentitypawns():
     entitys = []
-    for entityId in range(1,2048):
-        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-        try:
-            entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-            entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-            if entityHp>0 and entityHp<=100:
-                entitys.append(entity)
-            else:
-                pass
-        except:
-            pass
+    EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+    EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+    for i in range(1,64):
+        EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (index + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
+        EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+        Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+        EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
+        Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+        entitys.append(pawn)
     return(entitys)
 
 class player1:
     def __init__(self, entity_id):
         self.entity_id = entity_id
-        self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-        self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-        self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
-        self.isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
+        try:
+            self.pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
+            self.pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
+            self.pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
+            self.Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+            self.team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+            self.EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
+            self.EyeAngles = math.radians(self.EyeAngles[0]+rot_angle)
+            self.isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
+        except:
+            pass
     def draw(self, screen):
-        if mapname in maps_with_split:
-            if self.pZ<lowerz:
-                transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
+        try:
+            if mapname in maps_with_split:
+                if self.pZ<lowerz:
+                    transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
+                else:
+                    transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
             else:
                 transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
-        else:
-            transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
-        triangle_top_x = transformed_x + math.sin(self.EyeAngles) * triangle_length
-        triangle_top_y = transformed_y + math.cos(self.EyeAngles) * triangle_length
-        triangle_left_x = transformed_x + math.sin(self.EyeAngles + math.pi / 3) * triangle_length / 2
-        triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
-        triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
-        triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
-        if self.Hp > 0 and self.team == 2:
-            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
-        if self.Hp > 0 and self.team == 3:
-            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
-        if self.isdefusing == 1:
-            pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
-            pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
-        if self.Hp>30:
-            text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
-            text_surface.set_alpha(255)
-        if self.Hp<=30:  
-            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
-            text_surface.set_alpha(255)
-        if self.Hp==0:
-            text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
-            text_surface.set_alpha(0)
+            triangle_top_x = transformed_x + math.sin(self.EyeAngles) * triangle_length
+            triangle_top_y = transformed_y + math.cos(self.EyeAngles) * triangle_length
+            triangle_left_x = transformed_x + math.sin(self.EyeAngles + math.pi / 3) * triangle_length / 2
+            triangle_left_y = transformed_y + math.cos(self.EyeAngles + math.pi / 3) * triangle_length / 2
+            triangle_right_x = transformed_x + math.sin(self.EyeAngles - math.pi / 3) * triangle_length / 2
+            triangle_right_y = transformed_y + math.cos(self.EyeAngles - math.pi / 3) * triangle_length / 2
+            if self.Hp > 0 and self.team == 2:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
+            if self.Hp > 0 and self.team == 3:
+                pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
+            if self.isdefusing == 1:
+                pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
+                pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
+            if self.Hp>30:
+                text_surface = font.render(f'  {self.Hp}', True, (0, 255, 0))
+                text_surface.set_alpha(255)
+            if self.Hp<=30:  
+                text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+                text_surface.set_alpha(255)
+            if self.Hp==0:
+                text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
+                text_surface.set_alpha(0)
 
-        screen.blit(text_surface, (transformed_x, transformed_y))
+            screen.blit(text_surface, (transformed_x, transformed_y))
+        except:
+            pass
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
 cs2 = vmm.process('cs2.exe')
