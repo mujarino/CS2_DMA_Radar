@@ -224,7 +224,7 @@ while running:
     while not 'empty' in get_only_mapname():
         try:
             players = []
-            print entitys
+            print(entitys)
             for entity in entitys:
                 p = player1(entity)
                 players.append(p)
