@@ -213,7 +213,7 @@ while exit_state == 0:
 
             map_image = pygame.image.load(f'maps/{mapname}/radar.png')
             research == 0
-            while 'empty' is not in get_only_mapname() and research == 0:
+            while not 'empty' in get_only_mapname() and research == 0:
                 try:
                     players = []
                     for entity in entitys:
