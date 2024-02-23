@@ -9,6 +9,7 @@ import numpy as np
 import os
 import re
 from requests import get
+import threading
 
 
 with open(f'config.json', 'r') as f:
@@ -50,7 +51,6 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
-research = 0
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
@@ -103,6 +103,12 @@ def get_only_mapname():
     mapname = str(mapname)
     return mapname
 
+def pawnhandler():
+    try:
+        entitys = getentitypawns()
+        time.sleep(2)
+    except:
+        pass
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
@@ -195,8 +201,8 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-search = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 100), (100, 30)), text='re-search', manager=manager)
-
+t = threading.Thread(target=pawnhandler)
+t.start()
 running = True
 while running:
     mapname = readmapfrommem()
@@ -237,9 +243,6 @@ while running:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == rot_plus_button:
                         rot_angle += 90
-                    if event.ui_element == search:
-                        entitys = getentitypawns()
-                        print(f"[+] Find {len(entitys)} entitys.")
         manager.update(time_delta)
 
         screen.fill((0, 0, 0))
@@ -248,7 +251,6 @@ while running:
 
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
         rot_plus_button.set_position([50, 50])
-        search.set_position([450, 50])
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
         try:
