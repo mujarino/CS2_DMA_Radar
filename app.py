@@ -134,7 +134,6 @@ class player1:
             else:
                 transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
         else:
-            print(mapname)
             transformed_x, transformed_y = world_to_minimap(self.pX, self.pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
         triangle_top_x = transformed_x + math.sin(self.EyeAngles) * triangle_length
         triangle_top_y = transformed_y + math.cos(self.EyeAngles) * triangle_length
@@ -203,9 +202,6 @@ while True:
         print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
         running = True
         while running:
-            mapname = readmapfrommem()
-            if 'empty' in mapname:
-                break
             try:
                 players = []
                 for entity in entitys:
