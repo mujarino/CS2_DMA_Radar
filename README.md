@@ -18,9 +18,9 @@ Beta version of my project. Simple using, fast memory reading.
    - [x] SET ANGLE MAP ROTATING
    - [x] Draw eye angle
    - [x] adjustable sizes of models
-   - [ ] Automatic parse offsets.
+   - [x] Automatic parse offsets.
    - [x] Automatic map reading.
-   - [ ] Bomb/kits drawing.
+   - [x] defuse drawing.
    - [x] Tutorial for add maps.
    - [ ] ...
 - [ ] websocket radar
