@@ -63,8 +63,8 @@ entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, mem
 enitys = getentitys()
 
 while True:
+    defuses = []
     for entity_pawn in enitys:
-        defuses = []
         try:
             IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing  , 4, memprocfs.FLAG_NOCACHE))
             defuses.append(IsDefusing)
