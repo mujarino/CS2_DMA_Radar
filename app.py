@@ -50,6 +50,7 @@ print('[+] offsets parsed')
 
 zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+research == 0
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -91,6 +92,13 @@ def readmapfrommem():
     print(f"[+] Found map {mapname}")
     mapname = str(mapname)
     return mapname
+
+def get_only_mapname():
+    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
+    mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    mapname = str(mapname)
+    return mapname
+
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
@@ -172,77 +180,72 @@ player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8,
 mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
 
-while True:
-    mapname = readmapfrommem()
-    if os.path.exists(f'maps/{mapname}'):
-        pass
-    else:
-        print(f'[-] Please, import this map first ({mapname})')
-        exit()
-    if mapname in maps_with_split:
-        lowerx,lowery,lowerz = getlowermapdata(mapname)
-    scale,x,y = getmapdata(mapname)
-
-    while True:
+exit_state = 0
+while exit_state == 0:
+    if 1==1:
         pygame.init()
-
         manager = pygame_gui.UIManager((600, 600))
         clock = pygame.time.Clock()
         screen_width, screen_height = 600, 600
         screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
         pygame.display.set_caption("CS2 Radar")
-        map_image = pygame.image.load(f'maps/{mapname}/radar.png')
         font = pygame.font.Font(None, hp_font_size)
         rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (120, 30)), text='ANGLE+90', manager=manager)
-        
+        search = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 100), (80, 50)), text='re-search', manager=manager)
+
         entitys = getentitypawns()
         print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
         running = True
         while running:
-            try:
-                players = []
-                for entity in entitys:
-                    p = player1(entity)
-                    players.append(p)
-                try:
-                    entitys[0]
-                except:
-                    print('[-] No entity found. Waiting')
-                    time.sleep(1)
-                    print('[-] 4')
-                    time.sleep(1)
-                    print('[-] 3')
-                    time.sleep(1)
-                    print('[-] 2')
-                    time.sleep(1)
-                    print('[-] 1')
-                    time.sleep(1)
-                    print('[+] Searching...')
-            except:
-                print('[-] Error data reading. Some entity leave or map closed. Closing program')
+            mapname = readmapfrommem()
+            if 'empty' in mapname:
+                print('[+] waiting for map')
+                time.sleep(8)
+                continue
+            if os.path.exists(f'maps/{mapname}'):
+                pass
+            else:
+                print(f'[-] Please, import this map first ({mapname})')
                 exit()
+            if mapname in maps_with_split:
+                lowerx,lowery,lowerz = getlowermapdata(mapname)
+            scale,x,y = getmapdata(mapname)
 
-            time_delta = clock.tick(60)/1000.0
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                manager.process_events(event)
-                if event.type == pygame.USEREVENT:
-                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == rot_plus_button:
-                            rot_angle += 90
-            manager.update(time_delta)
+            map_image = pygame.image.load(f'maps/{mapname}/radar.png')
+            research == 0
+            while 'empty' is not in get_only_mapname() and research == 0:
+                try:
+                    players = []
+                    for entity in entitys:
+                        p = player1(entity)
+                        players.append(p)
+                except:
+                    print('[-] Error data reading. Some entity leave or map closed. Closing program')
+                    exit()
 
-            screen.fill((0, 0, 0))
+                time_delta = clock.tick(60)/1000.0
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        exit_state == 1
+                    manager.process_events(event)
+                    if event.type == pygame.USEREVENT:
+                        if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                            if event.ui_element == rot_plus_button:
+                                rot_angle += 90
+                            if event.ui_element == search:
+                                research == 1
+                manager.update(time_delta)
 
-            triangle_color = (255, 255, 255)
+                screen.fill((0, 0, 0))
 
-            rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
-            rot_plus_button.set_position([50, 50])
-            screen.blit(rotated_map_image, map_rect.topleft)
-            manager.draw_ui(screen)
-            for p in players:
-                p.draw(screen)
+                triangle_color = (255, 255, 255)
 
-            pygame.display.flip()
+                rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
+                rot_plus_button.set_position([50, 50])
+                screen.blit(rotated_map_image, map_rect.topleft)
+                manager.draw_ui(screen)
+                for p in players:
+                    p.draw(screen)
+
+                pygame.display.flip()
 pygame.quit()
