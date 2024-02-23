@@ -216,7 +216,7 @@ while exit_state == 0:
 
             map_image = pygame.image.load(f'maps/{mapname}/radar.png')
             entitys = getentitypawns()
-            print(f"[+] Find {len(entitys)} entitys. If it is not equal to your lobby, hit the cross to do re-search")
+            print(f"[+] Find {len(entitys)} entitys.")
             research = 0
             while not 'empty' in get_only_mapname() and research == 0:
                 try:
@@ -238,7 +238,8 @@ while exit_state == 0:
                             if event.ui_element == rot_plus_button:
                                 rot_angle += 90
                             if event.ui_element == search:
-                                running = False
+                                entitys = getentitypawns()
+                                print(f"[+] Find {len(entitys)} entitys.")
                 manager.update(time_delta)
 
                 screen.fill((0, 0, 0))
