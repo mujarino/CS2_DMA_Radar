@@ -33,6 +33,21 @@ mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_bIsDefusing = 5128
 
 print('[+] offsets parsed')
+def getentitys():
+    entitys = []
+    for entityId in range(1,2048):
+        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
+        try:
+            entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+            entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+            if entityHp>0 and entityHp<=100:
+                entitys.append(entity)
+            else:
+                pass
+        except:
+            pass
+    return(entitys)
+
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
 
@@ -45,17 +60,13 @@ client_base = client.base
 print(f"[+] Client_base {client_base}")
 entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
 
+enitys = getentitys()
 
 while True:
-    player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-    entityId = struct.unpack("<I", cs2.memory.read(player + m_iIDEntIndex, 4, memprocfs.FLAG_NOCACHE))[0]
-    print(entityId)
-    if entityId < 2048 and entityId > 0:
-        entEntry = struct.unpack("<Q", cs2.memory.read(entList + 0x8 * (entityId >> 9) + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-        entity_pawn = struct.unpack("<Q", cs2.memory.read(entEntry + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+    for entity_pawn in entitys:
         try:
             IsDefusing = struct.unpack("<I", cs2.memory.read(entity_pawn + m_bIsDefusing  , 4, memprocfs.FLAG_NOCACHE))
-            print('entity is defusing!!')
+            print('some entity is defusing!!')
         except:
             pass
 
