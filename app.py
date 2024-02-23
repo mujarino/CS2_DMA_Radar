@@ -49,6 +49,7 @@ print('[+] offsets parsed')
 #######################################
 
 zoom_scale = 2
+map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -83,20 +84,10 @@ def getlowermapdata(mapname):
 def readmapfrommem():
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
     mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
-    map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
     for folder in map_folders:
         if folder in mapname:
             mapname = folder
             break
-    if mapname == 'empty':
-        print(f"[-] waiting for map connection")
-        time.sleep(5)
-        break
-    if os.path.exists(f'maps/{mapname}'):
-        pass
-    else:
-        print(f'[-] Please, import this map first ({mapname})')
-        exit()
     print(f"[+] Found map {mapname}")
     mapname = str(mapname)
     return mapName
@@ -187,10 +178,15 @@ mapNameAddressbase = mapNameAddress_dll.base
 
 while True:
     mapname = readmapfrommem()
-
+    if os.path.exists(f'maps/{mapname}'):
+        pass
+    else:
+        print(f'[-] Please, import this map first ({mapname})')
+        exit()
     if mapname in maps_with_split:
         lowerx,lowery,lowerz = getlowermapdata(mapname)
     scale,x,y = getmapdata(mapname)
+
     while True:
         pygame.init()
 
