@@ -168,7 +168,6 @@ class player1:
         if self.Hp==0:
             text_surface = font.render(f'  {self.Hp}', True, (255, 0, 0))
             text_surface.set_alpha(0)
-        print(transformed_x,transformed_y)
         screen.blit(text_surface, (transformed_x, transformed_y))
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
@@ -185,8 +184,8 @@ player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8,
 mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
 
-exit_state = 0
-while exit_state == 0:
+exit_state = True
+while exit_state:
     if 1==1:
         pygame.init()
         manager = pygame_gui.UIManager((600, 600))
@@ -202,36 +201,34 @@ while exit_state == 0:
         while running:
             mapname = readmapfrommem()
             if 'empty' in mapname:
-                print('[+] waiting for map')
+                image = pygame.image.load(f'maps/empty/1.png')
+                screen.blit(image)
                 time.sleep(8)
                 continue
             if os.path.exists(f'maps/{mapname}'):
                 pass
             else:
                 print(f'[-] Please, import this map first ({mapname})')
-                exit()
+                continue
             if mapname in maps_with_split:
                 lowerx,lowery,lowerz = getlowermapdata(mapname)
             scale,x,y = getmapdata(mapname)
-
             map_image = pygame.image.load(f'maps/{mapname}/radar.png')
             entitys = getentitypawns()
             print(f"[+] Find {len(entitys)} entitys.")
-            research = 0
-            while not 'empty' in get_only_mapname() and research == 0:
+            while not 'empty' in get_only_mapname():
                 try:
                     players = []
                     for entity in entitys:
                         p = player1(entity)
                         players.append(p)
                 except:
-                    print('[-] Error data reading. Some entity leave or map closed. Closing program')
-                    exit()
+                    pass
 
                 time_delta = clock.tick(60)/1000.0
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        exit_state == 1
+                        exit_state = False
                     manager.process_events(event)
                     if event.type == pygame.USEREVENT:
                         if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -248,10 +245,14 @@ while exit_state == 0:
 
                 rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
                 rot_plus_button.set_position([50, 50])
+                rot_plus_button.set_position([400, 50])
                 screen.blit(rotated_map_image, map_rect.topleft)
                 manager.draw_ui(screen)
-                for p in players:
-                    p.draw(screen)
+                try:
+                    for p in players:
+                        p.draw(screen)
+                except:
+                    pass
 
                 pygame.display.flip()
 pygame.quit()
