@@ -284,7 +284,7 @@ while running:
                     if Hp<=30:  
                         text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                         text_surface.set_alpha(255)
-                    if flash_alpha != 0.0:
+                    if flash_alpha != 255:
                         pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
 
                 screen.blit(text_surface, (transformed_x, transformed_y))
