@@ -47,6 +47,7 @@ mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value']
 m_bPawnHasDefuser = clientdll['CCSPlayerController']['data']['m_bPawnHasDefuser']['value']
 m_iCompTeammateColor = clientdll['CCSPlayerController']['data']['m_iCompTeammateColor']['value']
+m_flFlashOverlayAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashOverlayAlpha']['value']
 print('[+] offsets parsed')
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
@@ -230,6 +231,7 @@ while running:
                     EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
                     EyeAngles = math.radians(EyeAngles[0]+rot_angle)
                     isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
+                    flash_alpha = struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0]
                     if mapname in maps_with_split:
                         if self.pZ<lowerz:
                             transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
@@ -282,6 +284,9 @@ while running:
                     if Hp<=30:  
                         text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
                         text_surface.set_alpha(255)
+                    if flash_alpha != 0.0:
+                        pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+
                 screen.blit(text_surface, (transformed_x, transformed_y))
         except:
             pass
