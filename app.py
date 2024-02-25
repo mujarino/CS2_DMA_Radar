@@ -176,7 +176,7 @@ while running:
     mapname = readmapfrommem()
     if 'empty' in mapname:
         if altgirlpic_instead_nomappic == 1:
-            png_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+            png_files = [f for f in os.listdir('data/nomap_pics') if f.endswith('.png')]
             if png_files:
                 random_file = random.choice(png_files)
             image = pygame.image.load(f'data/nomap_pics/{random_file}')
