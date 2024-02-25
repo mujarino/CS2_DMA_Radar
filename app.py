@@ -231,7 +231,7 @@ while running:
                     EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
                     EyeAngles = math.radians(EyeAngles[0]+rot_angle)
                     isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
-                    flash_alpha = struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0]
+                    flash_alpha = int(struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0])
                     if mapname in maps_with_split:
                         if self.pZ<lowerz:
                             transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
