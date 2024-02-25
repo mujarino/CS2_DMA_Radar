@@ -4,4 +4,6 @@
 "hp_font_size": 18,
 "rot_angle": 0,
 "cross_size": 10
+"teammates": 2,
+"altgirlpic_instead_nomappic": 0
 }
