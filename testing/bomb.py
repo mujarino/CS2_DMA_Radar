@@ -54,6 +54,7 @@ print(f"[+] Client_base {client_base}")
 
 
 c4_ent = struct.unpack("<Q", cs2.memory.read(client_base + dwPlantedC4, 8, memprocfs.FLAG_NOCACHE))[0]
+print(cs2.memory.read(c4_ent + m_pGameSceneNode, 8, memprocfs.FLAG_NOCACHE))
 c4_node = struct.unpack("<Q", cs2.memory.read(c4_ent + m_pGameSceneNode, 8, memprocfs.FLAG_NOCACHE))[0]
 c4_pos = struct.unpack("<fff", cs2.memory.read(c4_node + m_vecAbsOrigin, 12, memprocfs.FLAG_NOCACHE))[0]
 print(c4_pos)
