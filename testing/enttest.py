@@ -30,7 +30,9 @@ m_vOldOrigin = clientdll['C_BasePlayerPawn']['data']['m_vOldOrigin']['value']
 m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value']
 m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
-
+m_flFlashBangTime = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashBangTime']['value']
+m_flFlashDuration = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashDuration']['value']
+m_flFlashMaxAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashMaxAlpha']['value']
 offset = int(input())
 
 print('[+] offsets parsed')
@@ -48,13 +50,15 @@ print(f"[+] Client_base {client_base}")
 
 EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
 EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-for i in range(0,64):
-    EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
-    EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-    Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-    EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
-    Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-    result = struct.unpack("<I", cs2.memory.read(EntityAddress + offset, 4, memprocfs.FLAG_NOCACHE))[0]
-    health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-    print(f'{str(i)}:  {result} | {health}')
+while True:
+    for i in range(0,64):
+        EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
+        EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+        Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+        EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
+        Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+        result = struct.unpack("<f", cs2.memory.read(Pawn + offset, 4, memprocfs.FLAG_NOCACHE))[0]
+        health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+        print(f'{str(i)}:  {result} | {health}')
+    time.sleep(2)
 
