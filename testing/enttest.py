@@ -60,8 +60,9 @@ while True:
             Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
             result = struct.unpack("<f", cs2.memory.read(Pawn + offset, 4, memprocfs.FLAG_NOCACHE))[0]
             health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-            print(f'{str(i)}:  {result} | {health}')
+            if health == 100:
+                print(f'{str(i)}:  {result} | {health}')
     except:
         pass
-    time.sleep(2)
+    time.sleep(0.1)
 
