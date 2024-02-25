@@ -259,6 +259,9 @@ while running:
                     if color == 4:
                         pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                         pygame.draw.circle(screen, (167, 107, 243), (transformed_x, transformed_y), circle_size)
+                if team == playerTeam and teammate_setting == 2:
+                    pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                    pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
                 if team == playerTeam and teammate_setting == 1:
                     pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                     pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
