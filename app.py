@@ -74,6 +74,11 @@ def rotate_point(center, point, angle):
     temp_point = temp_point[0] + center[0], center[1] - temp_point[1]
     return temp_point
 
+def checkissplit(mapname):
+    for name in maps_with_split:
+        if name in mapname:
+            return True
+
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
@@ -111,6 +116,7 @@ def get_only_mapname():
 def pawnhandler():
     global global_entity_list
     global playerTeam
+    global playerpawn
     while True:
         try:
             entityss = getentitypawns()
@@ -119,7 +125,7 @@ def pawnhandler():
             else:
                 global_entity_list = entityss
             
-            player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+            playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
             playerTeam = struct.unpack("<I", cs2.memory.read(player + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
         except:
             pass
@@ -220,7 +226,6 @@ while running:
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
         try:
-
             for entity_id, EntityAddress in global_entity_list:
                 Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 if Hp != 0:
@@ -232,7 +237,7 @@ while running:
                     EyeAngles = math.radians(EyeAngles[0]+rot_angle)
                     isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
                     flash_alpha = int(struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0])
-                    if mapname in maps_with_split:
+                    if checkissplit(mapname):
                         if self.pZ<lowerz:
                             transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
                         else:
@@ -246,8 +251,8 @@ while running:
                     triangle_right_x = transformed_x + math.sin(EyeAngles - math.pi / 3) * triangle_length / 2
                     triangle_right_y = transformed_y + math.cos(EyeAngles - math.pi / 3) * triangle_length / 2
 
-                    if team == playerTeam:
-                        if teammate_setting == 2:
+                    if teammate_setting == 2:
+                        if team == playerTeam:
                             color = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iCompTeammateColor, 4, memprocfs.FLAG_NOCACHE))[0]
                             if color == 0:
                                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
@@ -264,12 +269,30 @@ while running:
                             if color == 4:
                                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                                 pygame.draw.circle(screen, (167, 107, 243), (transformed_x, transformed_y), circle_size)
-                        if teammate_setting == 1:
+                            if Hp>30:
+                                text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
+                                text_surface.set_alpha(255)
+                            if Hp<=30:  
+                                text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
+                                text_surface.set_alpha(255)
+                            if flash_alpha == 255:
+                                pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+                    if teammate_setting == 1:
+                        if team != playerTeam:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
-                    if team != playerTeam:
-                        pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                        pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
+                        if entity_id == playerpawn:
+                            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
+                        if Hp>30:
+                            text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
+                            text_surface.set_alpha(255)
+                        if Hp<=30:  
+                            text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
+                            text_surface.set_alpha(255)
+                        if flash_alpha == 255:
+                            pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+                            
                     if isdefusing == 1:
                         hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
                         if hasdefuser:
@@ -278,14 +301,7 @@ while running:
                         else:
                             pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
                             pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
-                    if Hp>30:
-                        text_surface = font.render(f'  {Hp}', True, (0, 255, 0))
-                        text_surface.set_alpha(255)
-                    if Hp<=30:  
-                        text_surface = font.render(f'  {Hp}', True, (255, 0, 0))
-                        text_surface.set_alpha(255)
-                    if flash_alpha == 255:
-                        pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+
 
                 screen.blit(text_surface, (transformed_x, transformed_y))
         except:
