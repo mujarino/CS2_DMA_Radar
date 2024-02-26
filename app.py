@@ -225,7 +225,7 @@ while running:
         rot_plus_button.set_position([50, 50])
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
-        try:
+        if 1==1:
             for entity_id, EntityAddress in global_entity_list:
                 Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 if Hp != 0:
@@ -304,8 +304,7 @@ while running:
 
 
                 screen.blit(text_surface, (transformed_x, transformed_y))
-                print(transformed_x,transformed_y)
-        except:
-            pass
+        #except:
+            #pass
         pygame.display.flip()
 pygame.quit()
