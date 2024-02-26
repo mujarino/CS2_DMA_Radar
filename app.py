@@ -238,6 +238,7 @@ while running:
                     isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
                     flash_alpha = int(struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0])
                     if checkissplit(mapname):
+                        print('true')
                         if self.pZ<lowerz:
                             transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
                         else:
@@ -292,7 +293,7 @@ while running:
                             text_surface.set_alpha(255)
                         if flash_alpha == 255:
                             pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
-                            
+
                     if isdefusing == 1:
                         hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
                         if hasdefuser:
