@@ -67,3 +67,7 @@ sudo ./pcileech -device fpga probe
    6. use buttons to search current offset
    7. enter new numbers in meta.json
    8. you can open issue and send me this data and i will add your map for all
+
+# if you want to donate me
+litecoin - ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.png)
+usdt - ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.png)
