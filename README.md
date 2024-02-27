@@ -72,6 +72,6 @@ sudo ./pcileech -device fpga probe
 **LTC**
 <img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
 
-**USDT**
+**USDT erc20**
 <img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
 
