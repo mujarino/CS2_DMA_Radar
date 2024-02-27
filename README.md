@@ -69,5 +69,5 @@ sudo ./pcileech -device fpga probe
    8. you can open issue and send me this data and i will add your map for all
 
 # if you want to donate me
-litecoin - ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.png)
-usdt - ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.png)
+litecoin - ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg)
+usdt - ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg)
