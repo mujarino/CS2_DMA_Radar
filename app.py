@@ -227,7 +227,6 @@ while running:
         screen.blit(rotated_map_image, map_rect.topleft)
         manager.draw_ui(screen)
         try:
-
             for entity_id, EntityAddress in global_entity_list:
                 Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 if Hp != 0:
@@ -289,7 +288,7 @@ while running:
                                 text_surface.set_alpha(255)
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
-                    if teammate_setting == 1:
+                    elif teammate_setting == 1:
                         if team == playerTeam:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                             pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
@@ -312,7 +311,7 @@ while running:
                                 text_surface.set_alpha(255)
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
-                    if teammate_setting == 0:
+                    elif teammate_setting == 0:
                         if team == playerTeam:
                             pass
                         if team != playerTeam:
