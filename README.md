@@ -1,3 +1,4 @@
+
 # CS2 DMA RADAR
 Simple using, fast memory reading.
 
@@ -6,6 +7,14 @@ Simple using, fast memory reading.
 # requirements
 1. pcileech DMA Card
 2. Second x64 pc with windows or linux(did not testing on macOS)
+
+# if you want to donate me
+**LTC**   
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
+
+**USDT erc20**
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
+
 # Install:
 1. **Download Release:**
    - Access the latest release on GitHub to get the project files.
@@ -67,11 +76,4 @@ sudo ./pcileech -device fpga probe
    6. use buttons to search current offset
    7. enter new numbers in meta.json
    8. you can open issue and send me this data and i will add your map for all
-
-# if you want to donate me
-**LTC      **
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
-
-**USDT erc20**
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
 
