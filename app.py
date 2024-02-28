@@ -312,6 +312,9 @@ while running:
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
                     elif teammate_setting == 0:
+                        if entity_id == playerpawn:
+                            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
+                            pygame.draw.circle(screen, (75, 0, 130), (transformed_x, transformed_y), circle_size)
                         if team == playerTeam:
                             continue
                         if team is not playerTeam:
@@ -325,9 +328,6 @@ while running:
                                 text_surface.set_alpha(255)
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
-                        if entity_id == playerpawn:
-                            pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
-                            pygame.draw.circle(screen, (75, 0, 130), (transformed_x, transformed_y), circle_size)
                     if isdefusing == 1:
                         hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
                         if hasdefuser:
