@@ -312,6 +312,7 @@ while running:
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
                     elif teammate_setting == 0:
+                        print('team 0')
                         if team == playerTeam:
                             pass
                         elif team != playerTeam:
