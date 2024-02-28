@@ -318,13 +318,13 @@ while running:
                             text_surface = font.render(f'  {Hp}', True, (0, 255, 0) if Hp > 30 else (255, 0, 0))
                             screen.blit(text_surface, (transformed_x, transformed_y))
                         elif team == playerTeam:
-                            pass
+                            text_surface = font.render(f'  {Hp}', True, (0, 255, 0) if Hp > 30 else (255, 0, 0))
+                            text_surface.set_alpha(0)
+                            screen.blit(text_surface, (transformed_x, transformed_y))
                         elif team != playerTeam:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
                             text_surface = font.render(f'  {Hp}', True, (0, 255, 0) if Hp > 30 else (255, 0, 0))
-                            if flash_alpha == 255:
-                                pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
                             screen.blit(text_surface, (transformed_x, transformed_y))
                     if isdefusing == 1:
                         hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
