@@ -1,4 +1,4 @@
-
+![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
 # CS2 DMA RADAR
 Simple using, fast memory reading.
 
@@ -69,7 +69,6 @@ sudo ./pcileech -device fpga probe
    
    b) try to buy other dma firmware
 
-![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
 
 # How to add your map?
    1. download offsetfinder.py
