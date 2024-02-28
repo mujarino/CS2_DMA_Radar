@@ -1,9 +1,9 @@
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
-# CS2 DMA RADAR
 Simple using, fast memory reading.
 
-# Hit the star and i'll do web version!
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/preview.gif)
+**Hit the star and i'll do web version!**
+
 # requirements
 1. pcileech DMA Card
 2. Second x64 pc with windows or linux(did not testing on macOS)
