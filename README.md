@@ -69,7 +69,7 @@ sudo ./pcileech -device fpga probe
    8. you can open issue and send me this data and i will add your map for all
 
 # if you want to donate me
-**LTC**
+**LTC      **
 <img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
 
 **USDT erc20**
