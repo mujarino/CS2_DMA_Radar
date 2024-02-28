@@ -1,6 +1,6 @@
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
 
-Simple using, fast memory reading.
+**Simple using, fast memory reading.**
 
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/preview.gif)
 
