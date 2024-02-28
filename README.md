@@ -9,7 +9,7 @@ Simple using, fast memory reading.
 2. Second x64 pc with windows or linux(did not testing on macOS)
 
 # if you want to donate me
-**LTC**   
+**Litecoin**
 <img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
 
 **USDT erc20**
