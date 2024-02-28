@@ -314,7 +314,7 @@ while running:
                     elif teammate_setting == 0:
                         if team == playerTeam:
                             pass
-                        if team != playerTeam:
+                        elif team != playerTeam:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
                             if Hp>30:
