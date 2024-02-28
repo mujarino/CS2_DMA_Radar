@@ -312,9 +312,8 @@ while running:
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
                     elif teammate_setting == 0:
-                        print(team,playerTeam)
                         if team == playerTeam:
-                            pass
+                            continue
                         if team is not playerTeam:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
