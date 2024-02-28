@@ -25,10 +25,14 @@ Simple using, fast memory reading.
 3. **Install Dependencies:**
    - Run `pip install -r requirements.txt` to install the required dependencies.
 
-4. **Open CS2:**
+4. **config**
+   - teammates: 2: all with colors(only for 5x5 or 2x2). 1: all with blue and red colors(for another game modes). 0: teammates off(visibility only local player and enemies)
+   - altgirlpic_instead_nomappic: takes random png picture from data\nomap_pics instead of nomap picture
+     
+6. **Open CS2:**
    - Launch CS2.
 
-5. **Start app.py in any time:**
+7. **Start app.py in any time:**
    - On Linux: Launch the match with `sudo python app.py`.
    - On Windows: Execute the appropriate command to start the match `python.exe ./app.py`.
 
