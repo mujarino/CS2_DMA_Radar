@@ -2,3 +2,4 @@ memprocfs
 pygame
 pygame_gui
 numpy
+requests
