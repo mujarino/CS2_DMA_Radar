@@ -32,7 +32,7 @@ m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
 mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_flFlashBangTime = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashBangTime']['value']
 m_flFlashDuration = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashDuration']['value']
-m_flFlashMaxAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashMaxAlpha']['value']
+m_flFlashOverlayAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashOverlayAlpha']['value']
 offset = int(input())
 
 print('[+] offsets parsed')
