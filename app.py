@@ -11,6 +11,7 @@ import re
 from requests import get
 import threading
 import random
+from pygame.locals import *
 
 
 with open(f'config.json', 'r') as f:
