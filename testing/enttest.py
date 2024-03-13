@@ -117,9 +117,9 @@ for i in range(0,64):
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         try:
-            print(getweapon(Pawn), 'PAWN')
+            print(get_weapon(Pawn), 'PAWN')
         except:
-            print(getweapon(EntityAddress), 'EntityAddress')
+            print(get_weapon(EntityAddress), 'EntityAddress')
         
     except Exception as e:
         print(i, '   ', e)
