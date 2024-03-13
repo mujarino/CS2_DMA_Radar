@@ -139,6 +139,10 @@ def rotate_point(center, point, angle):
     temp_point = temp_point[0] + center[0], center[1] - temp_point[1]
     return temp_point
 
+def toggle_state():
+    global teammate_setting
+    teammate_setting = (teammate_setting + 1) % 3
+
 def getmapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
@@ -239,7 +243,7 @@ screen_width, screen_height = 800, 800
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
-rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 700), (120, 30)), text='ANGLE+90', manager=manager)
+
 
 running = True
 while running:
@@ -270,6 +274,8 @@ while running:
     scale,x,y = getmapdata(mapname)
     map_image = pygame.image.load(f'maps/{mapname}/radar.png')
     while not 'empty' in get_only_mapname():
+        rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, screen_height-60), (120, 30)), text='ANGLE+90', manager=manager)
+        teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, screen_height-60), (120, 30)), text='TEAMMATES', manager=manager)
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             manager.process_events(event)
@@ -279,6 +285,8 @@ while running:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == rot_plus_button:
                         rot_angle += 90
+                    if event.ui_element == teammates_button:
+                        toggle_state()
             elif event.type == VIDEORESIZE:
                 screen_width, screen_height = event.size
                 
