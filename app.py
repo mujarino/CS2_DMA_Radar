@@ -288,7 +288,7 @@ while running:
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
         rot_plus_button.set_position([50, 50])
         new_width = int(screen_width * 0.7)
-        new_height = int(new_width * rotated_map_image.get_height() / rotated_map_image.get_width())
+        new_height = int(screen_height * 0.7)
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
