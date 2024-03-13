@@ -106,6 +106,18 @@ def get_weapon(ptr):
         return None
     return weapon_id
 
+def get_player_name(player):
+    # Читаем имя игрока из памяти
+    name_address = struct.unpack("<Q", cs2.memory.read(player + 0x748, 8, memprocfs.FLAG_NOCACHE))[0]
+
+    # Читаем данные из памяти в буфер
+    name_data = cs2.memory.read(name_address, 128, memprocfs.FLAG_NOCACHE)
+
+    # Преобразуем байты в строку
+    name = name_data.decode('utf-8')
+
+    return name
+
 EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
 EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
 for i in range(0,64):
@@ -117,18 +129,8 @@ for i in range(0,64):
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
 
-        # Сначала прочитайте адрес строки
-        string_address = struct.unpack("<Q", cs2.memory.read(EntityAddress + 0x748, 8, memprocfs.FLAG_NOCACHE))[0]
-
-        # Затем прочитайте длину строки
-        string_length = struct.unpack("<I", cs2.memory.read(string_address + 8, 4, memprocfs.FLAG_NOCACHE))[0]
-
-        # Теперь вы можете прочитать саму строку
-        string_data = cs2.memory.read(string_address, string_length, memprocfs.FLAG_NOCACHE)
-
-        # Преобразуйте байты в строку
-        string = string_data.decode('utf-8')
-        print(string)
+       
+        print(get_player_name(Pawn))
         
     except Exception as e:
         print(i, '   ', e)
