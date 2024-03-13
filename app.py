@@ -244,6 +244,8 @@ screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
 
+rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, screen_height-60), (120, 30)), text='ANGLE+90', manager=manager)
+teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, screen_height-60), (120, 30)), text='TEAMMATES', manager=manager) 
 
 running = True
 while running:
@@ -274,8 +276,6 @@ while running:
     scale,x,y = getmapdata(mapname)
     map_image = pygame.image.load(f'maps/{mapname}/radar.png')
     while not 'empty' in get_only_mapname():
-        rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, screen_height-60), (120, 30)), text='ANGLE+90', manager=manager)
-        teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, screen_height-60), (120, 30)), text='TEAMMATES', manager=manager)
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             manager.process_events(event)
