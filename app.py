@@ -125,7 +125,7 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, r
     try:
         image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
         image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
-        center_x, center_y = screen.get_width() // 2, screen.get_height() // 2
+        center_x, center_y = map_image.get_width() // 2, map_image.get_height() // 2
         image_x, image_y = rotate_point((center_x, center_y), (image_x, image_y), rotation_angle)
         return int(image_x * 0.85), int(image_y * 0.85)
     except:
