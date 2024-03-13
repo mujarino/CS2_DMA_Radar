@@ -274,15 +274,14 @@ while running:
         for event in pygame.event.get():
             manager.process_events(event)
             if event.type == pygame.QUIT:
-                running = False
+                quit()
             elif event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == rot_plus_button:
                         rot_angle += 90
             elif event.type == VIDEORESIZE:
                 screen_width, screen_height = event.size
-                screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
-                    
+                
         manager.update(time_delta)
 
         screen.fill((0, 0, 0))
