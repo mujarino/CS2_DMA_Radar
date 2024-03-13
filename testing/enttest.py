@@ -124,6 +124,6 @@ for i in range(0,64):
             print(getweapon(EntityAddress), 'EntityAddress')
         except:
             pass
-    except as e:
-        print(e)
+    except Exception as e:
+        print e.message, e.args
 
