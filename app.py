@@ -232,9 +232,9 @@ mapNameAddress_dll = cs2.module('matchmaking.dll')
 mapNameAddressbase = mapNameAddress_dll.base
 
 pygame.init()
-manager = pygame_gui.UIManager((600, 600))
+manager = pygame_gui.UIManager((800, 800))
 clock = pygame.time.Clock()
-screen_width, screen_height = 600, 600
+screen_width, screen_height = 800, 800
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
@@ -287,8 +287,8 @@ while running:
 
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
         rot_plus_button.set_position([50, 50])
-        new_width = int(screen_width * 0.7)
-        new_height = int(screen_height * 0.7)
+        new_width = int(screen.get_width() * 0.7)
+        new_height = int(screen.get_height() * 0.7)
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
