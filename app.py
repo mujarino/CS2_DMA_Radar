@@ -127,9 +127,9 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, r
         image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
         center_x, center_y = screen.get_width() // 2, screen.get_height() // 2
         image_x, image_y = rotate_point((center_x, center_y), (image_x, image_y), rotation_angle)
-        return int(image_x), int(image_y)
+        return int(image_x * 0.7), int(image_y * 0.7)
     except:
-        return 0, 0
+        return 0,0
 
 def rotate_point(center, point, angle):
     angle_rad = math.radians(angle)
@@ -287,8 +287,8 @@ while running:
 
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
         rot_plus_button.set_position([50, 50])
-        new_width = int(screen.get_width() * 0.85)
-        new_height = int(screen.get_height() * 0.85)
+        new_width = int(screen_width * 0.7)
+        new_height = int(screen_height * 0.7)
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
@@ -306,11 +306,11 @@ while running:
                     flash_alpha = int(struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0])
                     if checkissplit(mapname):
                         if pZ<lowerz:
-                            transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, rotated_map_image, screen, zoom_scale, rot_angle)
+                            transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
                         else:
-                            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, rotated_map_image, screen, zoom_scale, rot_angle)
+                            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                     else:
-                        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, rotated_map_image, screen, zoom_scale, rot_angle)
+                        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                     triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                     triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
                     triangle_left_x = transformed_x + math.sin(EyeAngles + math.pi / 3) * triangle_length / 2
