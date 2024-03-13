@@ -58,6 +58,69 @@ zoom_scale = 2
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 global_entity_list = []
 playerpawn = 0 
+
+
+def get_weapon_name(weapon_id):
+    weapon_names = {
+        59: "T knife",
+        42: "CT knife",
+        1: "deagle",
+        2: "elite",
+        3: "fiveseven",
+        4: "glock",
+        64: "revolver",
+        32: "p2000",
+        36: "p250",
+        #61: "usp-s",
+        262205: "usp-s",
+        30: "tec9",
+        63: "cz75a",
+        17: "mac10",
+        24: "ump45",
+        26: "bizon",
+        33: "mp7",
+        34: "mp9",
+        19: "p90",
+        13: "galil",
+        10: "famas",
+        60: "m4a1_silencer",
+        16: "m4a4",
+        8: "aug",
+        39: "sg556",
+        7: "ak47",
+        11: "g3sg1",
+        38: "scar20",
+        9: "awp",
+        40: "ssg08",
+        25: "xm1014",
+        29: "sawedoff",
+        27: "mag7",
+        35: "nova",
+        28: "negev",
+        14: "m249",
+        31: "zeus",
+        43: "flashbang",
+        44: "hegrenade",
+        45: "smokegrenade",
+        46: "molotov",
+        47: "decoy",
+        48: "incgrenade",
+        49: "c4"
+    }
+
+    return weapon_names.get(weapon_id, "Unknown weapon")
+
+
+def get_weapon(ptr):
+    try:
+        b1 = struct.unpack("<Q", cs2.memory.read(ptr + 0x1308, 8, memprocfs.FLAG_NOCACHE))[0]
+        b2 = struct.unpack("<I", cs2.memory.read(b1 + 0x1BA + 0x50 + 0x1098, 4, memprocfs.FLAG_NOCACHE))[0]
+        weapon_id = get_weapon_name(b2)
+    except:
+        return None
+    return weapon_id
+
+
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
         image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
@@ -114,11 +177,45 @@ def get_only_mapname():
     mapname = str(mapname)
     return mapname
 
+def pawnhandler():
+    global global_entity_list
+    global playerTeam
+    global playerpawn
+    while True:
+        try:
+            entityss = getentitypawns()
+            if global_entity_list == entityss:
+                pass
+            else:
+                global_entity_list = entityss
+            
+            playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+            playerTeam = struct.unpack("<I", cs2.memory.read(playerpawn + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
+        except:
+            pass
+
+        time.sleep(10)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
     new_rect = rotated_image.get_rect(center = image.get_rect().center)
     return rotated_image, new_rect
+
+def getentitypawns():
+    entitys = []
+    EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+    EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+    for i in range(0,64):
+        try:
+            EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
+            EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+            Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+            EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
+            Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+            entitys.append((Pawn, EntityAddress))
+        except:
+            pass
+    return(entitys)
 
 
 vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
@@ -145,6 +242,8 @@ rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50
 
 running = True
 while running:
+    t = threading.Thread(target=pawnhandler)
+    t.start()
     mapname = readmapfrommem()
     if 'empty' in mapname:
         if altgirlpic_instead_nomappic == 1:
@@ -156,7 +255,7 @@ while running:
             image = pygame.image.load(f'maps/empty/1.png')
         rotat_image = pygame.transform.rotate(image, 0)
         rect = rotat_image.get_rect(center = image.get_rect().center)
-        screen.blit(image, rect.topleft)
+        screen.blit(image, (0, 0))
         pygame.display.flip()
         time.sleep(8)
         continue
@@ -188,19 +287,10 @@ while running:
 
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
         rot_plus_button.set_position([50, 50])
-        screen.blit(rotated_map_image, map_rect.topleft)
+        screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
-        EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-        EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-        EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-        playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-        for i in range(0,64):
-            if 1==1:
-                EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
-                playerTeam = struct.unpack("<I", cs2.memory.read(playerpawn + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-                Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-                EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
-                entity_id = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
+        try:
+            for entity_id, EntityAddress in global_entity_list:
                 Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
                 if Hp != 0:
                     pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
@@ -309,6 +399,7 @@ while running:
                             pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
 
                 screen.blit(text_surface, (transformed_x, transformed_y))
-           
+        except:
+            pass
         pygame.display.flip()
 pygame.quit()
