@@ -126,7 +126,4 @@ while True:
             print(getweapon(EntityAddress), 'EntityAddress')
         except:
             pass
-                
-except:
-    pass
 
