@@ -125,5 +125,5 @@ for i in range(0,64):
         except:
             pass
     except Exception as e:
-        print(e.message)
+        print(e)
 
