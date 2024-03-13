@@ -119,11 +119,8 @@ for i in range(0,64):
         try:
             print(getweapon(Pawn), 'PAWN')
         except:
-            pass
-        try:
             print(getweapon(EntityAddress), 'EntityAddress')
-        except:
-            pass
+        
     except Exception as e:
         print(i, '   ', e)
 
