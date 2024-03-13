@@ -306,11 +306,11 @@ while running:
                     flash_alpha = int(struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0])
                     if checkissplit(mapname):
                         if pZ<lowerz:
-                            transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, rotated_map_image, screen, zoom_scale, rot_angle)
+                            transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
                         else:
-                            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, rotated_map_image, screen, zoom_scale, rot_angle)
+                            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                     else:
-                        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, rotated_map_image, screen, zoom_scale, rot_angle)
+                        transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, map_image, screen, zoom_scale, rot_angle)
                     triangle_top_x = transformed_x + math.sin(EyeAngles) * triangle_length
                     triangle_top_y = transformed_y + math.cos(EyeAngles) * triangle_length
                     triangle_left_x = transformed_x + math.sin(EyeAngles + math.pi / 3) * triangle_length / 2
