@@ -271,13 +271,16 @@ while running:
     while not 'empty' in get_only_mapname():
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                exit()
             manager.process_events(event)
-            if event.type == pygame.USEREVENT:
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == rot_plus_button:
                         rot_angle += 90
+            elif event.type == VIDEORESIZE:
+                screen_width, screen_height = event.size
+                screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
                     
         manager.update(time_delta)
 
