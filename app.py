@@ -123,13 +123,13 @@ def get_weapon(ptr):
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
     try:
-        image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
-        image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
-        center_x, center_y = screen.get_width() // 2, screen.get_height() // 2
+        image_x = int((x - pos_x) * map_image.get_width() / (map_image.get_width() * scale * zoom_scale))
+        image_y = int((y - pos_y) * map_image.get_height() / (map_image.get_height() * scale * zoom_scale))
+        center_x, center_y = map_image.get_width() // 2, map_image.get_height() // 2
         image_x, image_y = rotate_point((center_x, center_y), (image_x, image_y), rotation_angle)
         return int(image_x), int(image_y)
     except:
-        return 0,0
+        return 0, 0
 
 def rotate_point(center, point, angle):
     angle_rad = math.radians(angle)
@@ -287,8 +287,8 @@ while running:
 
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
         rot_plus_button.set_position([50, 50])
-        new_width = int(screen.get_width() * 0.7)
-        new_height = int(screen.get_height() * 0.7)
+        new_width = int(screen.get_width() * 0.85)
+        new_height = int(screen.get_height() * 0.85)
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
