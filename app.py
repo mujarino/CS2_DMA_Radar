@@ -316,7 +316,6 @@ while running:
         triangle_color = (255, 255, 255)
 
         rotated_map_image, map_rect = rotate_image(pygame.transform.scale(map_image, screen.get_size()), rot_angle)
-        rot_plus_button.set_position([50, 50])
         new_width = int(screen_width * 0.85)
         new_height = int(screen_height * 0.85)
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
