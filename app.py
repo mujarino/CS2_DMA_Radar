@@ -447,8 +447,8 @@ while running:
         screeny = 60
         for name, weapon in wepname:
             stringg = f'{name} | {weapon}'
-            text_surfacee = font.render(f'{stringg}', True, (255, 255, 255))
+            text_surfacee = fontt.render(f'{stringg}', True, (255, 255, 255))
             screen.blit(text_surfacee, (screenx, screeny))
-            screeny = screeny + 10
+            screeny = screeny + 15
         pygame.display.flip()
 pygame.quit()
