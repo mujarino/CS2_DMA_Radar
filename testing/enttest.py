@@ -134,7 +134,7 @@ for i in range(0,64):
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         b = read_string_memory(Pawn + 0x638)
         x = read_string_memory(EntityAddress + 0x638)
-        print(b)
+        print(b,x)
        
         print(get_weapon(Pawn), '|', b)
         
