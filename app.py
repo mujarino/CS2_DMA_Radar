@@ -437,11 +437,12 @@ while running:
                 screen.blit(text_surface, (transformed_x, transformed_y))
         except:
             pass
-        stringg = ''
+        screenx = screen_width-200
+        screeny = 60
         for name, weapon in wepname:
             stringg = stringg + f'\n{name} | {weapon}'
-
-        text_surface = font.render(f'{stringg}', True, (255, 255, 255))
-        screen.blit(text_surface, (screen_width-60, 60))
+            text_surfacee = font.render(f'{stringg}', True, (255, 255, 255))
+            screen.blit(text_surfacee, (screenx, screeny))
+            screeny = screeny + 10
         pygame.display.flip()
 pygame.quit()
