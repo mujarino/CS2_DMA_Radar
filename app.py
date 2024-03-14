@@ -262,6 +262,7 @@ screen_width, screen_height = 800, 800
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
 pygame.display.set_caption("CS2 Radar")
 font = pygame.font.Font(None, hp_font_size)
+fontt = pygame.font.Font(None, 24)
 
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, screen_height-60), (120, 30)), text='ANGLE+90', manager=manager)
 teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, screen_height-60), (120, 30)), text='TEAMMATES', manager=manager) 
@@ -279,6 +280,7 @@ while running:
             image = pygame.image.load(f'data/nomap_pics/{random_file}')
         else:
             image = pygame.image.load(f'maps/empty/1.png')
+        image = pygame.transform.scale(image, (screen_width, screen_height))
         screen.blit(image, (0, 0))
         pygame.display.flip()
         time.sleep(8)
