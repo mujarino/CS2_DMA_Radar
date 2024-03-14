@@ -440,7 +440,7 @@ while running:
         screenx = screen_width-200
         screeny = 60
         for name, weapon in wepname:
-            stringg = stringg + f'\n{name} | {weapon}'
+            stringg = f'{name} | {weapon}'
             text_surfacee = font.render(f'{stringg}', True, (255, 255, 255))
             screen.blit(text_surfacee, (screenx, screeny))
             screeny = screeny + 10
