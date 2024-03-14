@@ -133,6 +133,7 @@ for i in range(0,64):
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
         b = read_string_memory(Pawn + 0x638)
+        x = read_string_memory(EntityAddress + 0x638)
         print(b)
        
         print(get_weapon(Pawn), '|', b)
