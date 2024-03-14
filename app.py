@@ -279,8 +279,6 @@ while running:
             image = pygame.image.load(f'data/nomap_pics/{random_file}')
         else:
             image = pygame.image.load(f'maps/empty/1.png')
-        rotat_image = pygame.transform.rotate(image, 0)
-        rect = rotat_image.get_rect(center = image.get_rect().center)
         screen.blit(image, (0, 0))
         pygame.display.flip()
         time.sleep(8)
