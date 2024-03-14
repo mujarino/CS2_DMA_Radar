@@ -110,7 +110,7 @@ def get_weapon(ptr):
 
 def read_string_memory(address):
     data = b""
-    if 1==1:
+    try:
         while True:
             byte = cs2.memory.read(address, 1)
             if byte == b'\0':
@@ -119,26 +119,25 @@ def read_string_memory(address):
             address += 1
         decoded_data = data.decode('utf-8')
         return decoded_data
-    #except UnicodeDecodeError:
-        #return data
+    except UnicodeDecodeError:
+        return data
 
 EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
 EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
 for i in range(0,64):
-    if 1==1:
+    try:
         EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
         EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
         EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        b = read_string_memory(Pawn + 0x638)
         x = read_string_memory(EntityAddress + 0x638)
-        print(b,x)
+        print(x)
        
-        print(get_weapon(Pawn), '|', b)
+        print(get_weapon(Pawn), '|', x)
         
-    #except Exception as e:
-        #print(i, '   ', e)
+    except Exception as e:
+        print(i, '   ', e)
 
 
