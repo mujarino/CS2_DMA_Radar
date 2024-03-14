@@ -108,11 +108,11 @@ def get_weapon(ptr):
 
 
 
-def read_string_memory(process, address):
+def read_string_memory(address):
     data = b""
     try:
         while True:
-            byte = process.memory.read(address, 1)
+            byte = cs2.memory.read(address, 1)
             if byte == b'\0':
                 break
             data += byte
@@ -132,7 +132,7 @@ for i in range(0,64):
         EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        b = read_string_memory(cs2, Pawn + 0x638)
+        b = read_string_memory(Pawn + 0x638)
        
         print(get_weapon(Pawn), '|', b)
         
