@@ -383,6 +383,9 @@ while running:
                                 text_surface.set_alpha(255)
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+                            name = read_string_memory(EntityAddress + m_iszPlayerName)
+                            weapon = get_weapon(entity_id)
+                            wepname.append((name, weapon))
                     elif teammate_setting == 1:
                         if team == playerTeam:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
@@ -406,6 +409,9 @@ while running:
                                 text_surface.set_alpha(255)
                             if flash_alpha == 255:
                                 pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+                            name = read_string_memory(EntityAddress + m_iszPlayerName)
+                            weapon = get_weapon(entity_id)
+                            wepname.append((name, weapon))
                     elif teammate_setting == 0:
                         if entity_id == playerpawn:
                             pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
@@ -421,6 +427,9 @@ while running:
                             pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
                             text_surface = font.render(f'  {Hp}', True, (0, 255, 0) if Hp > 30 else (255, 0, 0))
                             screen.blit(text_surface, (transformed_x, transformed_y))
+                            name = read_string_memory(EntityAddress + m_iszPlayerName)
+                            weapon = get_weapon(entity_id)
+                            wepname.append((name, weapon))
                     if isdefusing == 1:
                         hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
                         if hasdefuser:
@@ -428,10 +437,7 @@ while running:
                             pygame.draw.line(screen, (255, 0, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
                         else:
                             pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
-                            pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
-                    name = read_string_memory(EntityAddress + m_iszPlayerName)
-                    weapon = get_weapon(entity_id)
-                    wepname.append((name, weapon))
+                            pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)1
                 screen.blit(text_surface, (transformed_x, transformed_y))
         except:
             pass
