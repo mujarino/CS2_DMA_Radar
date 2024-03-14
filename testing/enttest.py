@@ -106,17 +106,21 @@ def get_weapon(ptr):
         return None
     return weapon_id
 
-def get_player_name(player):
-    # Читаем имя игрока из памяти
-    name_address = struct.unpack("<Q", cs2.memory.read(player + 0x748, 8, memprocfs.FLAG_NOCACHE))[0]
 
-    # Читаем данные из памяти в буфер
-    name_data = cs2.memory.read(name_address, 128, memprocfs.FLAG_NOCACHE)
 
-    # Преобразуем байты в строку
-    name = name_data.decode('utf-8')
-
-    return name
+def read_string_memory(process, address):
+    data = b""
+    try:
+        while True:
+            byte = process.memory.read(address, 1)
+            if byte == b'\0':
+                break
+            data += byte
+            address += 1
+        decoded_data = data.decode('utf-8')
+        return decoded_data
+    except UnicodeDecodeError:
+        return data
 
 EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
 EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
@@ -128,10 +132,11 @@ for i in range(0,64):
         EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
         Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
         health = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iPawnHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-
+        b = read_string_memory(cs2, Pawn + 0x638)
        
-        print(get_player_name(Pawn))
+        print(get_weapon(Pawn), '|', b)
         
     except Exception as e:
         print(i, '   ', e)
+
 
