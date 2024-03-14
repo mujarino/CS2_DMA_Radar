@@ -49,7 +49,7 @@ m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value'
 m_bPawnHasDefuser = clientdll['CCSPlayerController']['data']['m_bPawnHasDefuser']['value']
 m_iCompTeammateColor = clientdll['CCSPlayerController']['data']['m_iCompTeammateColor']['value']
 m_flFlashOverlayAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashOverlayAlpha']['value']
-m_iszPlayerName = clientdll['CBasePlayerController ']['data']['m_iszPlayerName']['value']
+m_iszPlayerName = clientdll['CBasePlayerController']['data']['m_iszPlayerName']['value']
 m_pClippingWeapon = clientdll['C_CSPlayerPawnBase']['data']['m_pClippingWeapon']['value']
 
 print('[+] offsets parsed')
@@ -440,7 +440,7 @@ while running:
         stringg = ''
         for name, weapon in wepname:
             stringg = stringg + f'\n{name} | {weapon}'
-            
+
         text_surface = font.render(f'{stringg}', True, (255, 255, 255))
         screen.blit(text_surface, (screen_width-60, 60))
         pygame.display.flip()
