@@ -49,6 +49,9 @@ m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value'
 m_bPawnHasDefuser = clientdll['CCSPlayerController']['data']['m_bPawnHasDefuser']['value']
 m_iCompTeammateColor = clientdll['CCSPlayerController']['data']['m_iCompTeammateColor']['value']
 m_flFlashOverlayAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashOverlayAlpha']['value']
+m_iszPlayerName = clientdll['CBasePlayerController ']['data']['m_iszPlayerName']['value']
+m_pClippingWeapon = clientdll['C_CSPlayerPawnBase']['data']['m_pClippingWeapon']['value']
+
 print('[+] offsets parsed')
 
 #https://github.com/a2x/cs2-dumper/tree/main/generated
@@ -114,7 +117,7 @@ def get_weapon_name(weapon_id):
 
 def get_weapon(ptr):
     try:
-        b1 = struct.unpack("<Q", cs2.memory.read(ptr + 0x1308, 8, memprocfs.FLAG_NOCACHE))[0]
+        b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
         b2 = struct.unpack("<I", cs2.memory.read(b1 + 0x1BA + 0x50 + 0x1098, 4, memprocfs.FLAG_NOCACHE))[0]
         weapon_id = get_weapon_name(b2)
     except:
@@ -163,6 +166,22 @@ def checkissplit(mapname):
     for name in maps_with_split:
         if name in mapname:
             return True
+
+
+def read_string_memory(address):
+    data = b""
+    try:
+        while True:
+            byte = cs2.memory.read(address, 1)
+            if byte == b'\0':
+                break
+            data += byte
+            address += 1
+        decoded_data = data.decode('utf-8')
+        return decoded_data
+    except UnicodeDecodeError:
+        return data
+
 
 def readmapfrommem():
     mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
@@ -303,6 +322,7 @@ while running:
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
+        wepname = []
         try:
             for entity_id, EntityAddress in global_entity_list:
                 Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
@@ -411,9 +431,17 @@ while running:
                         else:
                             pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
                             pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
-
+                    name = read_string_memory(EntityAddress + m_iszPlayerName)
+                    weapon = get_weapon(entity_id)
+                    wepname.append((name, weapon))
                 screen.blit(text_surface, (transformed_x, transformed_y))
         except:
             pass
+        stringg = ''
+        for name, weapon in wepname:
+            stringg = stringg + f'\n{name} | {weapon}'
+            
+        text_surface = font.render(f'{stringg}', True, (255, 255, 255))
+        screen.blit(text_surface, (screen_width-60, 60))
         pygame.display.flip()
 pygame.quit()

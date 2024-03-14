@@ -33,6 +33,7 @@ mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
 m_flFlashBangTime = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashBangTime']['value']
 m_flFlashDuration = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashDuration']['value']
 m_flFlashOverlayAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashOverlayAlpha']['value']
+m_pClippingWeapon = clientdll['C_CSPlayerPawnBase']['data']['m_pClippingWeapon']['value']
 
 print('[+] offsets parsed')
 
@@ -99,7 +100,7 @@ def get_weapon_name(weapon_id):
 
 def get_weapon(ptr):
     try:
-        b1 = struct.unpack("<Q", cs2.memory.read(ptr + 0x1308, 8, memprocfs.FLAG_NOCACHE))[0]
+        b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
         b2 = struct.unpack("<I", cs2.memory.read(b1 + 0x1BA + 0x50 + 0x1098, 4, memprocfs.FLAG_NOCACHE))[0]
         weapon_id = get_weapon_name(b2)
     except:
