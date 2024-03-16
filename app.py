@@ -446,10 +446,10 @@ while running:
                                 pygame.draw.line(screen, (0, 255, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
                                 pygame.draw.line(screen, (0, 255, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
                     screen.blit(text_surface, (transformed_x, transformed_y))
-                except:
-                    continue
-        except:
-            pass
+                except Exception as e:
+                    print(e)
+        except Exception as e:
+            print(e)
         screenx = screen_width-200
         screeny = 60
         for name, weapon in wepname:
