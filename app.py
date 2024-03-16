@@ -267,6 +267,9 @@ fontt = pygame.font.Font(None, 24)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, screen_height-60), (120, 30)), text='ANGLE+90', manager=manager)
 teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, screen_height-60), (120, 30)), text='TEAMMATES', manager=manager) 
 
+EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+
 running = True
 while running:
     mapname = readmapfrommem()
@@ -319,13 +322,11 @@ while running:
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen)
-        wepname = []
+        wepname = []    
         try:
             playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
             playerTeam = struct.unpack("<I", cs2.memory.read(playerpawn + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-            EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-            EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-            for i in range(0,64):
+            for i in range(0,12):
                 try:
                     EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
                     EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
