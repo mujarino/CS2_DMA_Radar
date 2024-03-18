@@ -19,7 +19,7 @@
 
 # Install:
 1. **Download Release:**
-   - Access the latest release on GitHub to get the project files.
+   - Access the latest [Release](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases) on GitHub to get the project files.
 
 2. **Install Python 3:**
    - Ensure you have [Python3](https://www.python.org/downloads/) installed on your system.
