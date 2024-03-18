@@ -30,6 +30,8 @@
 4. **config**
    - teammates: 2: all with colors(only for 5x5 or 2x2). 1: all with blue and red colors(for another game modes). 0: teammates off(visibility only local player and enemies)
    - altgirlpic_instead_nomappic: takes random png picture from data\nomap_pics instead of nomap picture
+   - update_offsets: 1 - update automatic with internet. 0: - place client and offsets manually
+   - maxclients: max clients. starts from 0, so if it 9 it will be 10 players. Dont change if u dont know what u doing
      
 6. **Open CS2:**
    - Launch CS2.
