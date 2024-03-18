@@ -7,16 +7,10 @@
 I doing this project for myself and make this github page public. I dont really need the web wersion of this program, but if u show me activity and show interest for my project(like hitting the star, contributing, helping me, donating) i will do it, so
 **Hit the star and i'll do web version!**
 
-# requirements
+# Requirements
 1. pcileech DMA Card
 2. Second x64 pc with windows or linux(did not testing on macOS)
-
-# if you want to donate me
-**Litecoin**
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
-
-**USDT erc20**
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
+   
 
 # Install:
 1. **Download Release:**
@@ -40,6 +34,13 @@ I doing this project for myself and make this github page public. I dont really 
 7. **Start app.py in any time:**
    - On Linux: Launch the match with `sudo python app.py`.
    - On Windows: Execute the appropriate command to start the match `python.exe ./app.py`.
+  
+# if you want to donate me
+**Litecoin**
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
+
+**USDT erc20**
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
 
 # TODO
 - [x] pygame radar
