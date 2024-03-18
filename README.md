@@ -85,4 +85,5 @@ sudo ./pcileech -device fpga probe
    6. use buttons to search current offset
    7. enter new numbers in meta.json
    8. you can open issue and send me this data and i will add your map for all
+   9. if ur map with split, use meta.json from nuke or vertigo and add ur mapname in maps_with_split
 
