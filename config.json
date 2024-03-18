@@ -5,5 +5,7 @@
 "rot_angle": 0,
 "cross_size": 10,
 "teammates": 2,
-"altgirlpic_instead_nomappic": 0
+"altgirlpic_instead_nomappic": 0,
+"update_offsets": 1,
+"maxclients": 0,
 }
