@@ -32,8 +32,8 @@ I doing this project for myself and make this github page public. I dont really 
    - Launch CS2.
 
 7. **Start app.py in any time:**
-   - On Linux: Launch the match with `sudo python app.py`.
-   - On Windows: Execute the appropriate command to start the match `python.exe ./app.py`.
+   - On Linux: Launch after cs2 startup with `sudo python app.py`.
+   - On Windows: Execute the appropriate command after cs2 startup to start  `python.exe ./app.py`.
   
 # if you want to donate me
 **Litecoin**
