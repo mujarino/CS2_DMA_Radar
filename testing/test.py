@@ -50,7 +50,8 @@ m_flFlashOverlayAlpha = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']
 m_iszPlayerName = clientdll['client.dll']['classes']['CBasePlayerController']['fields']['m_iszPlayerName']
 m_pClippingWeapon = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_pClippingWeapon']
 m_iRoundTime = clientdll['client.dll']['classes']['C_CSGameRules']['fields']['m_iRoundTime']
-
+m_pInGameMoneyServices = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_pInGameMoneyServices']
+m_iAccount = clientdll['client.dll']['classes']['CCSPlayerController_InGameMoneyServices']['fields']['m_iAccount']
 print('[+] offsets parsed')
 
 
@@ -91,6 +92,8 @@ for i in range(2):
     Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
     newEntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
     entity_id = struct.unpack("<Q", cs2.memory.read(newEntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-    print(get_weapon(entity_id))
+    moneyentry = struct.unpack("<Q", cs2.memory.read(entity_id + m_pInGameMoneyServices, 8, memprocfs.FLAG_NOCACHE))[0]
+    money = struct.unpack("<I", cs2.memory.read(moneyentry + m_iAccount, 4, memprocfs.FLAG_NOCACHE))[0]
+    print(get_weapon(money))
 
 vmm.close()
