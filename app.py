@@ -88,9 +88,8 @@ def get_weapon(ptr):
     b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
     base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
     data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
-    data = read_string_memory(data)
-    weapon_id = str(weapon_id)[7:]
-    return weapon_id
+    finall = read_string_memory(data)
+    return str(finall)[7:]
 
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
