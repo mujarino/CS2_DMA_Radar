@@ -94,6 +94,6 @@ for i in range(2):
     entity_id = struct.unpack("<Q", cs2.memory.read(newEntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
     moneyentry = struct.unpack("<Q", cs2.memory.read(entity_id + m_pInGameMoneyServices, 8, memprocfs.FLAG_NOCACHE))[0]
     money = struct.unpack("<I", cs2.memory.read(moneyentry + m_iAccount, 4, memprocfs.FLAG_NOCACHE))[0]
-    print(get_weapon(money))
+    print(money)
 
 vmm.close()
