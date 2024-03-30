@@ -53,9 +53,9 @@ I doing this project for myself and make this github page public. I dont really 
    - [x] defuse drawing.
    - [x] Tutorial for add maps.
    - [ ] ...
-- [ ] websocket radar
-   - [ ] alpha version
-   - [ ] angle map rotating
+- [ ] websocket radar(not public for now)
+   - [x] alpha version
+   - [x] angle map rotating
    - [ ] adjustable sizes from gui
    - [ ] player-angle rotation
    - [ ] mobile optimization
