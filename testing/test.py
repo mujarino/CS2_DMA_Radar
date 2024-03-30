@@ -8,7 +8,7 @@ import math
 import numpy as np
 import os
 import re
-
+from requests import get
 
 try:
     offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/offsets.json').json()
