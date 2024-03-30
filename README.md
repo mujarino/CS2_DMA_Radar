@@ -56,10 +56,10 @@ I doing this project for myself and make this github page public. I dont really 
 - [ ] websocket radar(not public for now)
    - [x] alpha version
    - [x] angle map rotating
-   - [] adjustable sizes from gui
-   - [] player-angle rotation
-   - [] mobile optimization
-   - [] access from external ip-address
+   - [ ] adjustable sizes from gui
+   - [ ] player-angle rotation
+   - [ ] mobile optimization
+   - [ ] access from external ip-address
 
 # TROUBLESHOOTING
 1. download binaries from https://github.com/ufrisk/pcileech
