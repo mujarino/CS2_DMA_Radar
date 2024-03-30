@@ -83,61 +83,17 @@ playerpawn = 0
 
 
 def get_weapon_name(weapon_id):
-    weapon_names = {
-        59: "T knife",
-        42: "CT knife",
-        1: "deagle",
-        2: "elite",
-        3: "fiveseven",
-        4: "glock",
-        64: "revolver",
-        32: "p2000",
-        36: "p250",
-        #61: "usp-s",
-        262205: "usp-s",
-        30: "tec9",
-        63: "cz75a",
-        17: "mac10",
-        24: "ump45",
-        26: "bizon",
-        33: "mp7",
-        34: "mp9",
-        19: "p90",
-        13: "galil",
-        10: "famas",
-        60: "m4a1_silencer",
-        16: "m4a4",
-        8: "aug",
-        39: "sg556",
-        7: "ak47",
-        11: "g3sg1",
-        38: "scar20",
-        9: "awp",
-        40: "ssg08",
-        25: "xm1014",
-        29: "sawedoff",
-        27: "mag7",
-        35: "nova",
-        28: "negev",
-        14: "m249",
-        31: "zeus",
-        43: "flashbang",
-        44: "hegrenade",
-        45: "smokegrenade",
-        46: "molotov",
-        47: "decoy",
-        48: "incgrenade",
-        49: "c4"
-    }
-
-    return weapon_names.get(weapon_id, "Unknown weapon")
+    weapon_id.split('_')
+    return weapon_id[1]
 
 
 def get_weapon(ptr):
     try:
         b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
-        b2 = struct.unpack("<I", cs2.memory.read(b1 + 0x1BA + 0x50 + 0x1098, 4, memprocfs.FLAG_NOCACHE))[0]
-        weapon_id = get_weapon_name(b2)
+        base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+        data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
+        data = read_string_memory(data)
+        weapon_id = get_weapon_name(data)
     except:
         return None
     return weapon_id
