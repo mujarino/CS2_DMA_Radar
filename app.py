@@ -90,7 +90,7 @@ def get_weapon(ptr):
         base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
         data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
         data = read_string_memory(data)
-        weapon_id = str(weapon_id[7:])
+        weapon_id = str(weapon_id)[7:]
     except:
         return None
     return weapon_id
