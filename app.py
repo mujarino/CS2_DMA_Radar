@@ -30,11 +30,12 @@ maxclients = int(settings['maxclients'])
 
 #######################################
 
-if update_offsets == 1:
+try:
     offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/offsets.json').json()
     clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/client.dll.json').json()
-else:
+except:
     try:
+        print('[-]Unable to parse offsets. Using from current folder')
         with open(f'client.dll.json', 'r') as a:
             clientdll = json.load(a)
         with open(f'offsets.json', 'r') as b:
@@ -47,24 +48,26 @@ else:
 #######################################
 
 maps_with_split = ['de_nuke','de_vertigo']
-dwEntityList = offsets['client_dll']['data']['dwEntityList']['value']
-dwLocalPlayerPawn = offsets['client_dll']['data']['dwLocalPlayerPawn']['value']
-m_iPawnHealth = clientdll['CCSPlayerController']['data']['m_iPawnHealth']['value']
-m_iPawnArmor = clientdll['CCSPlayerController']['data']['m_iPawnArmor']['value']
-m_bPawnIsAlive = clientdll['CCSPlayerController']['data']['m_bPawnIsAlive']['value']
-m_angEyeAngles = clientdll['C_CSPlayerPawnBase']['data']['m_angEyeAngles']['value']
-m_iTeamNum = clientdll['C_BaseEntity']['data']['m_iTeamNum']['value']
-m_hPlayerPawn = clientdll['CCSPlayerController']['data']['m_hPlayerPawn']['value']
-m_vOldOrigin = clientdll['C_BasePlayerPawn']['data']['m_vOldOrigin']['value']
-m_iIDEntIndex = clientdll['C_CSPlayerPawnBase']['data']['m_iIDEntIndex']['value']
-m_iHealth = clientdll['C_BaseEntity']['data']['m_iHealth']['value']
-mapNameVal = offsets['matchmaking_dll']['data']['dwGameTypes_mapName']['value']
-m_bIsDefusing = clientdll['C_CSPlayerPawnBase']['data']['m_bIsDefusing']['value']
-m_bPawnHasDefuser = clientdll['CCSPlayerController']['data']['m_bPawnHasDefuser']['value']
-m_iCompTeammateColor = clientdll['CCSPlayerController']['data']['m_iCompTeammateColor']['value']
-m_flFlashOverlayAlpha = clientdll['C_CSPlayerPawnBase']['data']['m_flFlashOverlayAlpha']['value']
-m_iszPlayerName = clientdll['CBasePlayerController']['data']['m_iszPlayerName']['value']
-m_pClippingWeapon = clientdll['C_CSPlayerPawnBase']['data']['m_pClippingWeapon']['value']
+
+dwEntityList = offsets['client.dll']['dwEntityList']
+mapNameVal = offsets['matchmaking.dll']['dwGameTypes_mapName']
+dwLocalPlayerPawn = offsets['client.dll']['dwLocalPlayerPawn']
+
+m_iPawnHealth = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnHealth']
+m_iPawnArmor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnArmor']
+m_bPawnIsAlive = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnIsAlive']
+m_angEyeAngles = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_angEyeAngles']
+m_iTeamNum = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iTeamNum']
+m_hPlayerPawn = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_hPlayerPawn']
+m_vOldOrigin = clientdll['client.dll']['classes']['C_BasePlayerPawn']['fields']['m_vOldOrigin']
+m_iIDEntIndex = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_iIDEntIndex']
+m_iHealth = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iHealth']
+m_bIsDefusing = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_bIsDefusing']
+m_bPawnHasDefuser = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnHasDefuser']
+m_iCompTeammateColor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iCompTeammateColor']
+m_flFlashOverlayAlpha = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_flFlashOverlayAlpha']
+m_iszPlayerName = clientdll['client.dll']['classes']['CBasePlayerController']['fields']['m_iszPlayerName']
+m_pClippingWeapon = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_pClippingWeapon']
 
 print('[+] offsets parsed')
 
