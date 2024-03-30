@@ -62,8 +62,12 @@ cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
 client_base = client.base
 print(f"[+] Finded client base")
-for key, value in data["client.dll"].items():
-    playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + value, 8, memprocfs.FLAG_NOCACHE))[0]
-    time = struct.unpack("<I", cs2.memory.read(playerpawn + m_iRoundTime, 4, memprocfs.FLAG_NOCACHE))[0]
-    print(f'Time - {time}, current - {key}')
+for key, value in offsets["client.dll"].items():
+    try:
+        playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + value, 8, memprocfs.FLAG_NOCACHE))[0]
+        time = struct.unpack("<I", cs2.memory.read(playerpawn + m_iRoundTime, 4, memprocfs.FLAG_NOCACHE))[0]
+        print(f'Time - {time}, current - {key}')
+    except Exception as e:
+        print(f'{key} - {e}')
+
 vmm.close()
