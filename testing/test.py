@@ -66,7 +66,7 @@ for key, value in offsets["client.dll"].items():
     try:
         playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + value, 8, memprocfs.FLAG_NOCACHE))[0]
         time = struct.unpack("<I", cs2.memory.read(playerpawn + 3856, 4, memprocfs.FLAG_NOCACHE))[0]
-        print(f'Time - {time}, current - {key}')
+        print(f'Value - {time}, current - {key}')
     except Exception as e:
         print(f'{key} - {e}')
 
