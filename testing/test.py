@@ -54,7 +54,19 @@ m_iRoundTime = clientdll['client.dll']['classes']['C_CSGameRules']['fields']['m_
 print('[+] offsets parsed')
 
 
-
+def read_string_memory(address):
+    data = b""
+    try:
+        while True:
+            byte = cs2.memory.read(address, 1)
+            if byte == b'\0':
+                break
+            data += byte
+            address += 1
+        decoded_data = data.decode('utf-8')
+        return decoded_data
+    except UnicodeDecodeError:
+        return data
 
 
 vmm = memprocfs.Vmm(['-device', 'fpga'])
@@ -62,12 +74,14 @@ cs2 = vmm.process('cs2.exe')
 client = cs2.module('client.dll')
 client_base = client.base
 print(f"[+] Finded client base")
-for key, value in offsets["client.dll"].items():
-    try:
-        playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + value, 8, memprocfs.FLAG_NOCACHE))[0]
-        time = struct.unpack("<I", cs2.memory.read(playerpawn + 3856, 4, memprocfs.FLAG_NOCACHE))[0]
-        print(f'Value - {time}, current - {key}')
-    except Exception as e:
-        print(f'{key} - {e}')
+
+ptr = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
+b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
+base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
+
+print(read_string_memory(data))
+
+
 
 vmm.close()
