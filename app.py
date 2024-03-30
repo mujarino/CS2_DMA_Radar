@@ -33,7 +33,8 @@ maxclients = int(settings['maxclients'])
 try:
     offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/offsets.json').json()
     clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/client.dll.json').json()
-except:
+except Exception as e:
+    print(e)
     try:
         print('[-]Unable to parse offsets. Using from current folder')
         with open(f'client.dll.json', 'r') as a:
