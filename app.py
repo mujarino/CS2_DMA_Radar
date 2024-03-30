@@ -31,8 +31,8 @@ maxclients = int(settings['maxclients'])
 #######################################
 
 if update_offsets == 1:
-    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/generated/offsets.json').json()
-    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/generated/client.dll.json').json()
+    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/offsets.json').json()
+    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/client.dll.json').json()
 else:
     try:
         with open(f'client.dll.json', 'r') as a:
