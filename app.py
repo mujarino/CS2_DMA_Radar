@@ -31,8 +31,8 @@ maxclients = int(settings['maxclients'])
 #######################################
 
 try:
-    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/offsets.json').json()
-    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/win/client.dll.json').json()
+    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
+    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
 except Exception as e:
     print(e)
     try:
@@ -72,8 +72,6 @@ m_pClippingWeapon = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fi
 
 print('[+] offsets parsed')
 
-#https://github.com/a2x/cs2-dumper/tree/main/generated
-
 #######################################
 
 zoom_scale = 2
@@ -85,11 +83,14 @@ playerpawn = 0
 
 
 def get_weapon(ptr):
-    b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
-    base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-    data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
-    finall = read_string_memory(data)
-    return str(finall)[7:]
+    try:
+        b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
+        base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
+        data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
+        finall = read_string_memory(data)
+        return str(finall)[7:]
+    except:
+        return 'None'
 
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, rotation_angle):
@@ -98,7 +99,7 @@ def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale, r
         image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
         center_x, center_y = screen_height // 2, screen_width // 2
         image_x, image_y = rotate_point((center_x, center_y), (image_x, image_y), rotation_angle)
-        return int(image_x * 0.85), int(image_y * 0.95)
+        return image_x * 0.85, image_y * 0.95
     except:
         return 0,0
 
