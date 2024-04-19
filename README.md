@@ -55,11 +55,10 @@ I doing this project for myself and make this github page public. I dont really 
    - [ ] Guns
 - [x] websocket radar(not public for now)
    - [x] alpha version
-   - [x] angle map rotating
    - [x] adjustable sizes from gui
-   - [x] player-angle rotation
    - [x] mobile optimization
    - [x] access from external ip-address
+   - [x] same functionality like in pygame version
    - [ ] guns
    - [ ] hp with progress bar
    - [ ] advanced config
