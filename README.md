@@ -60,10 +60,10 @@ I doing this project for myself and make this github page public. I dont really 
    - [x] player-angle rotation
    - [x] mobile optimization
    - [x] access from external ip-address
-   - [] guns
-   - [] hp with progress bar
-   - [] advanced config
-   - [] custom link for any client, so it can be reached from private IP(after release)
+   - [ ] guns
+   - [ ] hp with progress bar
+   - [ ] advanced config
+   - [ ] custom link for any client, so it can be reached from private IP(after release)
 
 # TROUBLESHOOTING
 1. download binaries from https://github.com/ufrisk/pcileech
