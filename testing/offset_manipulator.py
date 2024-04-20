@@ -8,14 +8,71 @@ import math
 import numpy as np
 import os
 import re
+from requests import get
+import threading
+import random
+from pygame.locals import *
 
 
-dwEntityList = 0x17CE6A0
-dwLocalPlayerPawn = 0x16D4F48
-m_iHealth = 0x32C
-m_vOldOrigin = 0x1224
-m_iTeamNum = 0x3BF
-mapNameVal = 0x1CC200
+with open(f'config.json', 'r') as f:
+    settings = json.load(f)
+
+triangle_length = settings['triangle_length']
+circle_size = settings['circle_size']
+hp_font_size = settings['hp_font_size']
+rot_angle = settings['rot_angle']
+cross_size = settings['cross_size']
+teammate_setting = settings['teammates']
+altgirlpic_instead_nomappic = settings['altgirlpic_instead_nomappic']
+update_offsets = settings['update_offsets']
+maxclients = int(settings['maxclients'])
+
+
+#######################################
+
+try:
+    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
+    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
+except Exception as e:
+    print(e)
+    try:
+        print('[-]Unable to parse offsets. Using from current folder')
+        with open(f'client.dll.json', 'r') as a:
+            clientdll = json.load(a)
+        with open(f'offsets.json', 'r') as b:
+            offsets = json.load(b)
+    except:
+        print('[-] put offsets.json and client.dll.json in main folder')
+        exit()
+
+
+#######################################
+
+maps_with_split = ['de_nuke','de_vertigo']
+
+dwEntityList = offsets['client.dll']['dwEntityList']
+mapNameVal = offsets['matchmaking.dll']['dwGameTypes_mapName']
+dwLocalPlayerPawn = offsets['client.dll']['dwLocalPlayerPawn']
+
+m_iPawnHealth = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnHealth']
+m_iPawnArmor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnArmor']
+m_bPawnIsAlive = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnIsAlive']
+m_angEyeAngles = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_angEyeAngles']
+m_iTeamNum = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iTeamNum']
+m_hPlayerPawn = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_hPlayerPawn']
+m_vOldOrigin = clientdll['client.dll']['classes']['C_BasePlayerPawn']['fields']['m_vOldOrigin']
+m_iIDEntIndex = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_iIDEntIndex']
+m_iHealth = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iHealth']
+m_bIsDefusing = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_bIsDefusing']
+m_bPawnHasDefuser = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnHasDefuser']
+m_iCompTeammateColor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iCompTeammateColor']
+m_flFlashOverlayAlpha = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_flFlashOverlayAlpha']
+m_iszPlayerName = clientdll['client.dll']['classes']['CBasePlayerController']['fields']['m_iszPlayerName']
+m_pClippingWeapon = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_pClippingWeapon']
+
+print('[+] offsets parsed')
+
+#######################################
 zoom_scale = 2
 
 maps_with_split = []
