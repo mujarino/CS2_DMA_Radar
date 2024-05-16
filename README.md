@@ -42,6 +42,9 @@ I doing this project for myself and make this github page public. I dont really 
 **USDT erc20**
 <img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
 
+**TON**
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ton.jpg" width="210px">
+
 # TODO
 - [x] pygame radar
    - [x] Logic to draw lower maps for nuke and vertigo.
@@ -52,7 +55,7 @@ I doing this project for myself and make this github page public. I dont really 
    - [x] Automatic map reading.
    - [x] defuse drawing.
    - [x] Tutorial for add maps.
-   - [ ] Guns
+   - [x] Guns(in external)
 - [x] websocket radar(not public for now)
    - [x] alpha version
    - [x] adjustable sizes from gui
@@ -60,8 +63,8 @@ I doing this project for myself and make this github page public. I dont really 
    - [x] access from external ip-address
    - [x] same functionality like in pygame version
    - [ ] guns
-   - [ ] hp with progress bar
-   - [ ] advanced config
+   - [x] hp with progress bar
+   - [x] advanced config
    - [ ] custom link for any client, so it can be reached from private IP(after release)
 
 # TROUBLESHOOTING
