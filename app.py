@@ -1,10 +1,10 @@
-import memprocfs
+import pymem
 import struct
 import time
-import pygame
-import pygame_gui
 import json
 import math
+import pygame
+import pygame_gui
 import numpy as np
 import os
 import re
@@ -84,10 +84,10 @@ playerpawn = 0
 
 def get_weapon(ptr):
     try:
-        b1 = struct.unpack("<Q", cs2.memory.read(ptr + m_pClippingWeapon, 8, memprocfs.FLAG_NOCACHE))[0]
-        base = struct.unpack("<Q", cs2.memory.read(b1 + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-        data = struct.unpack("<Q", cs2.memory.read(base + 0x20, 8, memprocfs.FLAG_NOCACHE))[0]
-        finall = read_string_memory(data)
+        b1 = pm.read_longlong(ptr + m_pClippingWeapon)
+        base = pm.read_longlong(b1 + 0x10)
+        data = pm.read_longlong(base + 0x20)
+        finall = pm.read_string(data)
         return str(finall)[7:]
     except:
         return 'None'
@@ -152,8 +152,8 @@ def read_string_memory(address):
 
 
 def readmapfrommem():
-    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    mapNameAddress = pm.read_longlong(mapNameAddressbase + mapNameVal)
+    mapname = pm.read_string(mapNameAddress+0x4)
     for folder in map_folders:
         if folder in mapname:
             mapname = folder
@@ -164,64 +164,30 @@ def readmapfrommem():
     return mapname
 
 def get_only_mapname():
-    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    mapNameAddress = pm.read_longlong(mapNameAddressbase + mapNameVal)
+    mapname = pm.read_string(mapNameAddress+0x4)
     mapname = str(mapname)
     return mapname
 
-def pawnhandler():
-    global global_entity_list
-    global playerTeam
-    global playerpawn
-    while True:
-        try:
-            entityss = getentitypawns()
-            if global_entity_list == entityss:
-                pass
-            else:
-                global_entity_list = entityss
-            
-            playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-            playerTeam = struct.unpack("<I", cs2.memory.read(playerpawn + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-        except:
-            pass
-
-        time.sleep(10)
 
 def rotate_image(image, angle):
     rotated_image = pygame.transform.rotate(image, angle)
     new_rect = rotated_image.get_rect(center = image.get_rect().center)
     return rotated_image, new_rect
 
-def getentitypawns():
-    entitys = []
-    EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-    EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
-    for i in range(0,64):
-        try:
-            EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
-            EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-            Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-            EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
-            Pawn = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-            entitys.append((Pawn, EntityAddress))
-        except:
-            pass
-    return(entitys)
+pm = pymem.Pymem("cs2.exe")
 
-
-vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
-cs2 = vmm.process('cs2.exe')
-client = cs2.module('client.dll')
-client_base = client.base
+client_base = pymem.process.module_from_name(pm.process_handle, "client.dll").lpBaseOfDll
 print(f"[+] Finded client base")
 
-entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+entList = pm.read_longlong(client_base + dwEntityList)
 print(f"[+] Entered entitylist")
 
+mapNameAddressbase = pymem.process.module_from_name(pm.process_handle, "matchmaking.dll").lpBaseOfDll
 
-mapNameAddress_dll = cs2.module('matchmaking.dll')
-mapNameAddressbase = mapNameAddress_dll.base
+EntityList = pm.read_longlong(client_base + dwEntityList)
+EntityList = pm.read_longlong(EntityList + 0x10)
+
 
 pygame.init()
 manager = pygame_gui.UIManager((800, 800))
@@ -235,8 +201,6 @@ fontt = pygame.font.Font(None, 24)
 rot_plus_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, screen_height-60), (120, 30)), text='ANGLE+90', manager=manager)
 teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, screen_height-60), (120, 30)), text='TEAMMATES', manager=manager) 
 
-EntityList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-EntityList = struct.unpack("<Q", cs2.memory.read(EntityList + 0x10, 8, memprocfs.FLAG_NOCACHE))[0]
 
 running = True
 while running:
@@ -290,26 +254,27 @@ while running:
         rotated_map_image = pygame.transform.scale(rotated_map_image, (new_width, new_height))
         screen.blit(rotated_map_image, (0, 0))
         manager.draw_ui(screen) 
+        wepname = []
         try:
-            playerpawn = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-            playerTeam = struct.unpack("<I", cs2.memory.read(playerpawn + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-            EntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
+            playerpawn = pm.read_longlong(client_base + dwLocalPlayerPawn)
+            playerTeam = pm.read_int(playerpawn + m_iTeamNum)
+            EntityPawnListEntry = pm.read_longlong(client_base + dwEntityList)
             for i in range(maxclients):
                 try:
-                    EntityAddress = struct.unpack("<Q", cs2.memory.read(EntityList + (i + 1) * 0x78, 8, memprocfs.FLAG_NOCACHE))[0]
-                    Pawn = struct.unpack("<Q", cs2.memory.read(EntityAddress + m_hPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-                    newEntityPawnListEntry = struct.unpack("<Q", cs2.memory.read(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9), 8, memprocfs.FLAG_NOCACHE))[0]
-                    entity_id = struct.unpack("<Q", cs2.memory.read(newEntityPawnListEntry + 0x78 * (Pawn & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-                    Hp = struct.unpack("<I", cs2.memory.read(entity_id + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
+                    EntityAddress = pm.read_longlong(EntityList + (i + 1) * 0x78)
+                    Pawn = pm.read_longlong(EntityAddress + m_hPlayerPawn)
+                    newEntityPawnListEntry = pm.read_longlong(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9))
+                    entity_id = pm.read_longlong(newEntityPawnListEntry + 0x78 * (Pawn & 0x1FF))
+                    Hp = pm.read_int(entity_id + m_iHealth)
                     if Hp != 0:
-                        pX = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
-                        pY = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
-                        pZ = struct.unpack("<f", cs2.memory.read(entity_id + m_vOldOrigin +0x8, 4, memprocfs.FLAG_NOCACHE))[0]
-                        team = struct.unpack("<I", cs2.memory.read(entity_id + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-                        EyeAngles = struct.unpack("<fff", cs2.memory.read(entity_id +(m_angEyeAngles +0x4) , 12, memprocfs.FLAG_NOCACHE))
-                        EyeAngles = math.radians(EyeAngles[0]+rot_angle)
-                        isdefusing = struct.unpack("<I", cs2.memory.read(entity_id + m_bIsDefusing, 4, memprocfs.FLAG_NOCACHE))[0]
-                        flash_alpha = int(struct.unpack("<f", cs2.memory.read(entity_id + m_flFlashOverlayAlpha, 4, memprocfs.FLAG_NOCACHE))[0])
+                        pX = pm.read_float(entity_id + m_vOldOrigin +0x4)
+                        pY = pm.read_float(entity_id + m_vOldOrigin)
+                        pZ = pm.read_float(entity_id + m_vOldOrigin +0x8)
+                        team = pm.read_int(entity_id + m_iTeamNum)
+                        EyeAngles = pm.read_float(entity_id + (m_angEyeAngles +0x4))
+                        EyeAngles = math.radians(EyeAngles+rot_angle)
+                        isdefusing = pm.read_int(entity_id + m_bIsDefusing)
+                        flash_alpha = int(pm.read_int(entity_id + m_flFlashOverlayAlpha))
                         if checkissplit(mapname):
                             if pZ<lowerz:
                                 transformed_x, transformed_y = world_to_minimap(pX, pY, lowerx, lowery, scale, map_image, screen, zoom_scale, rot_angle)
@@ -325,7 +290,7 @@ while running:
                         triangle_right_y = transformed_y + math.cos(EyeAngles - math.pi / 3) * triangle_length / 2
                         if teammate_setting == 2:
                             if team == playerTeam:
-                                color = struct.unpack("<I", cs2.memory.read(EntityAddress + m_iCompTeammateColor, 4, memprocfs.FLAG_NOCACHE))[0]
+                                color = pm.read_int(EntityAddress + m_iCompTeammateColor)
                                 if color == 0:
                                     pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                                     pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), circle_size)
@@ -349,7 +314,7 @@ while running:
                                     text_surface.set_alpha(255)
                                 if flash_alpha == 255:
                                     pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
-                            elif team != playerTeam:
+                            elif team != playerTeam: 
                                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
                                 pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
                                 if Hp>30:
@@ -360,6 +325,9 @@ while running:
                                     text_surface.set_alpha(255)
                                 if flash_alpha == 255:
                                     pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
+                                name = pm.read_string(EntityAddress + m_iszPlayerName)
+                                weapon = get_weapon(entity_id)
+                                wepname.append((name, weapon))
                         elif teammate_setting == 1:
                             if team == playerTeam:
                                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
@@ -383,7 +351,9 @@ while running:
                                     text_surface.set_alpha(255)
                                 if flash_alpha == 255:
                                     pygame.draw.circle(screen, (255, 255, 255, flash_alpha), (transformed_x, transformed_y), circle_size)
-                                name = read_string_memory(EntityAddress + m_iszPlayerName)
+                                name = pm.read_string(EntityAddress + m_iszPlayerName)
+                                weapon = get_weapon(entity_id)
+                                wepname.append((name, weapon))
                         elif teammate_setting == 0:
                             if entity_id == playerpawn:
                                 pygame.draw.polygon(screen, triangle_color, [(triangle_top_x, triangle_top_y), (triangle_left_x, triangle_left_y), (triangle_right_x, triangle_right_y)])
@@ -399,9 +369,11 @@ while running:
                                 pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), circle_size)
                                 text_surface = font.render(f'  {Hp}', True, (0, 255, 0) if Hp > 30 else (255, 0, 0))
                                 screen.blit(text_surface, (transformed_x, transformed_y))
-                                name = read_string_memory(EntityAddress + m_iszPlayerName)
+                                name = pm.read_string(EntityAddress + m_iszPlayerName)
+                                weapon = get_weapon(entity_id)
+                                wepname.append((name, weapon))
                         if isdefusing == 1:
-                            hasdefuser = struct.unpack("?", cs2.memory.read(EntityAddress + m_bPawnHasDefuser, 1, memprocfs.FLAG_NOCACHE))[0]
+                            hasdefuser = pm.read_bool(EntityAddress + m_bPawnHasDefuser)
                             if hasdefuser:
                                 pygame.draw.line(screen, (255, 0, 0), (transformed_x - cross_size, transformed_y - cross_size), (transformed_x + cross_size, transformed_y + cross_size), 2)
                                 pygame.draw.line(screen, (255, 0, 0), (transformed_x + cross_size, transformed_y - cross_size), (transformed_x - cross_size, transformed_y + cross_size), 2)
@@ -415,5 +387,11 @@ while running:
             print(e)
         screenx = screen_width-200
         screeny = 60
+        for name, weapon in wepname:
+            stringg = f'{name} | {weapon}'
+            text_surfacee = fontt.render(f'{stringg}', True, (255, 255, 255))
+            screen.blit(text_surfacee, (screenx, screeny))
+            screeny = screeny + 15
         pygame.display.flip()
+        
 pygame.quit()
