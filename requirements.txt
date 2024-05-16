@@ -1,5 +1,5 @@
 memprocfs
 pygame
-pygame_gui
+pygame-gui
 numpy
 requests
