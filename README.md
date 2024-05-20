@@ -62,10 +62,12 @@ I doing this project for myself and make this github page public. I dont really 
    - [x] mobile optimization
    - [x] access from external ip-address
    - [x] same functionality like in pygame version
-   - [ ] guns
+   - [x] guns
    - [x] hp with progress bar
    - [x] advanced config
    - [ ] custom link for any client, so it can be reached from private IP(after release)
+   - [ ] bomb
+   - [ ] done
 
 # TROUBLESHOOTING
 1. download binaries from https://github.com/ufrisk/pcileech
