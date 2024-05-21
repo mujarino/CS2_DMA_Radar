@@ -1,5 +1,3 @@
 pymem
 numpy
 requests
-pygame
-pygame-gui
