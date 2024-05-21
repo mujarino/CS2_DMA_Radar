@@ -1,5 +1,3 @@
 memprocfs
-pygame
-pygame-gui
 numpy
 requests
