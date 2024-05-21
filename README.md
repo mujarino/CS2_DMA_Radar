@@ -66,7 +66,8 @@ I doing this project for myself and make this github page public. I dont really 
    - [x] hp with progress bar
    - [x] advanced config
    - [ ] custom link for any client, so it can be reached from private IP(after release)
-   - [ ] bomb
+   - [x] bomb
+   - [x] kits
    - [ ] done
 
 # TROUBLESHOOTING
