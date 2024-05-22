@@ -67,7 +67,7 @@ I doing this project for myself and make this github page public. U can only giv
    - [x] hp with progress bar
    - [x] advanced config
    - [ ] is enemy spoted
-   - [ ] custom link for any client, so it can be reached from private IP(after release)
+   - [ ] custom link for any client, so it can be reached from private IP(without port open and static ip)
    - [x] bomb
    - [x] kits
    - [ ] done
