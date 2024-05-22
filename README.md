@@ -4,7 +4,7 @@
 
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/preview.gif)
 
-I doing this project for myself and make this github page public. I dont really need the web wersion of this program, but if u show me activity and show interest for my project(like hitting the star, contributing, helping me, donating) i will do it, so
+I doing this project for myself and make this github page public. U can only give me star or crypto donate to make me happy. This project will be free and up do date as long as i will be motivated to do it.
 **Hit the star and i'll do web version!**
 
 # Requirements
