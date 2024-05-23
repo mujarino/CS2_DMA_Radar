@@ -70,6 +70,7 @@ I doing this project for myself and make this github page public. U can only giv
    - [ ] custom link for any client, so it can be reached from private IP(without port open and static ip)
    - [x] bomb
    - [x] kits
+   - [ ] money on frezetime
    - [ ] done
 
 # TROUBLESHOOTING
