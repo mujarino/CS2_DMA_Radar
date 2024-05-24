@@ -24,7 +24,7 @@ I doing this project for myself and make this github page public. U can only giv
 
 3. **Install Dependencies:**
    - Run `pip install -r requirements.txt` to install the required dependencies.
-   - **WARNING**  INSTALL pygame and pygame-gui manually by - pip install pygame AND pip install pygame-gui
+   - **WARNING**  INSTALL pygame and pygame-gui manually by - **pip install pygame** AND **pip install pygame-gui**
 
 4. **config**
    - teammates: 2: all with colors(only for 5x5 or 2x2). 1: all with blue and red colors(for another game modes). 0: teammates off(visibility only local player and enemies)
