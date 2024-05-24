@@ -1,6 +1,4 @@
-![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://)
-
-[![status - Updated](https://img.shields.io/static/v1?label=status&message=Updated&color=2ea44f&style=for-the-badge)](https://)
+[![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![status - Updated](https://img.shields.io/static/v1?label=status&message=Updated&color=2ea44f)](https://)
 
 **Simple using, fast memory reading.**
 
@@ -9,6 +7,7 @@
 I doing this project for myself and make this github page public. U can only give me star or crypto donate to make me happy. This project will be free and up do date as long as i will be motivated to do it.
 
 **Hit the star**
+![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) 
 
 # Requirements
 1. pcileech DMA Card
