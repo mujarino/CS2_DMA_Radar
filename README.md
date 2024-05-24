@@ -1,4 +1,4 @@
-![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar})
+![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![status - Updated](https://img.shields.io/static/v1?label=status&message=Updated&color=2ea44f&style=for-the-badge)](https://)
 
 **Simple using, fast memory reading.**
 
