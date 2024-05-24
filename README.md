@@ -1,14 +1,14 @@
 [![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![status - Updated](https://img.shields.io/static/v1?label=status&message=Updated&color=2ea44f)](https://)
 
-**Simple using, fast memory reading.**
 
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/preview.gif)
 
-I doing this project for myself and make this github page public. U can only give me star or crypto donate to make me happy. This project will be free and up do date as long as i will be motivated to do it.
+I doing this project for myself and make this github page public. U can only give me star or crypto donate to make me happy. This project will be free and up do date as long as i will be motivated to do it - **Hit the star**
 
-**Hit the star**
 
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![GitHub release](https://img.shields.io/github/release/meanwhiletothestars/CS2_DMA_Radar?include_prereleases=&sort=semver&color=blue)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases/) [![issues - CS2_DMA_Radar](https://img.shields.io/github/issues/meanwhiletothestars/CS2_DMA_Radar)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/issues)
+
+
 
 # Requirements
 1. pcileech DMA Card
