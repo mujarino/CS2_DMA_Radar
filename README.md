@@ -107,13 +107,13 @@ sudo ./pcileech -device fpga probe
 
 
 # How to add your map?
-   1. download offsetfinder.py
+   1. download testing/offset_manipulator.py
    2. make folder in /maps with your mapname
    3. copy meta.json from one of other maps. to work properly it needs 2 files in folder: radar.png and meta.json
    4. run offset finder with python
    5. numbers in console is player position in program. so u need to make it positive(if its negative) with plus and minus, x,y
    6. use buttons to search current offset
    7. enter new numbers in meta.json
-   8. you can open issue and send me this data and i will add your map for all
-   9. if ur map with split, use meta.json from nuke or vertigo and add ur mapname in maps_with_split
+   8. if ur map with split, use meta.json from nuke or vertigo and add ur mapname in maps_with_split
+   9. you can open issue and send me this data and i will add your map for all
 
