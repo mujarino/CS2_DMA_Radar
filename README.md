@@ -8,12 +8,19 @@ I doing this project for myself and make this github page public. U can only giv
 
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![GitHub release](https://img.shields.io/github/release/meanwhiletothestars/CS2_DMA_Radar?include_prereleases=&sort=semver&color=blue)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases/) [![issues - CS2_DMA_Radar](https://img.shields.io/github/issues/meanwhiletothestars/CS2_DMA_Radar)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/issues)
 
+# Is DMA Undetected?
+**VAC** - Unreal to detect
+**EAC/GAMEGUADR/A-tier AC** - If good firmware - Unreal to detect
+**Faceit AC** - If good firmware - 99% not detect
 
+# Is External Undetected?
+**VAC** - 99,99% Unreal to detect 
+**EAC/GAMEGUADR/A-tier AC** - EAC not detect/other - didn't tested
+**Faceit AC** - Dont use it on Faceit pls, insta ban probably
 
-# Requirements
+# Requirements FOR DMA:
 1. pcileech DMA Card
 2. Second x64 pc with windows or linux(did not testing on macOS)
-   
 
 # Install:
 1. **Download Release:**
