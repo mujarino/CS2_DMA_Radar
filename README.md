@@ -10,13 +10,19 @@ I doing this project for myself and make this github page public. U can only giv
 
 # Is DMA Undetected?
 **VAC** - Unreal to detect
+
 **EAC/GAMEGUADR/A-tier AC** - If good firmware - Unreal to detect
+
 **Faceit AC** - If good firmware - 99% not detect
+
 
 # Is External Undetected?
 **VAC** - 99,99% Unreal to detect 
+
 **EAC/GAMEGUADR/A-tier AC** - EAC not detect/other - didn't tested
+
 **Faceit AC** - Dont use it on Faceit pls, insta ban probably
+
 
 # Requirements FOR DMA:
 1. pcileech DMA Card
