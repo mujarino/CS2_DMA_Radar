@@ -11,7 +11,7 @@ I doing this project for myself and make this github page public. U can only giv
 # Is DMA Undetected?
 **VAC** - Unreal to detect on any firmware
 
-**EAC/GAMEGUADR/A-tier AC** - If SOME not default firmware - Unreal to detect
+**EAC/GAMEGUARD/any A-tier AC that startup after windows** - If SOME not default firmware - Unreal to detect
 
 **Faceit AC** - If good 1:1 firmware - 99% not detect
 
@@ -19,7 +19,7 @@ I doing this project for myself and make this github page public. U can only giv
 # Is External Undetected?
 **VAC** - 99,99% Unreal to detect 
 
-**EAC/GAMEGUADR/A-tier AC** - EAC not detect/other - didn't tested
+**EAC/GAMEGUARD/any A-tier AC that startup after windows** - EAC not detect/other - didn't tested
 
 **Faceit AC** - Dont use it on Faceit pls, insta ban probably
 
