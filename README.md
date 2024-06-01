@@ -54,13 +54,13 @@ I doing this project for myself and make this github page public. U can only giv
   
 # if you want to donate me
 **Litecoin**
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ltc.jpg" width="210px">
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/ltc.jpg" width="210px">
 
 **USDT erc20**
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/usdt.jpg" width="210px">
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/usdt.jpg" width="210px">
 
 **TON**
-<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/main/testing/ton.jpg" width="210px">
+<img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/ton.jpg" width="210px">
 
 # TODO
 - [x] pygame radar
