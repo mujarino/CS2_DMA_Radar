@@ -1,4 +1,4 @@
-[![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![tested-cs2-version. - 14011](https://img.shields.io/static/v1?label=tested+cs2+version&message=14011&color=2ea44f)](https://)
+[![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![tested-cs2-version. - 14014](https://img.shields.io/static/v1?label=tested+cs2+version&message=14011&color=2ea44f)](https://)
 
 
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/preview.gif)
