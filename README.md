@@ -9,6 +9,7 @@ I doing this project for myself and make this github page public. U can only giv
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![GitHub release](https://img.shields.io/github/release/meanwhiletothestars/CS2_DMA_Radar?include_prereleases=&sort=semver&color=blue)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases/) [![issues - CS2_DMA_Radar](https://img.shields.io/github/issues/meanwhiletothestars/CS2_DMA_Radar)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/issues)
 
 # Is DMA Undetected?
+Detecting probability demands only on your dma firmware
 **VAC** - Unreal to detect on any firmware
 
 **EAC/GAMEGUARD/any A-tier AC that startup after windows** - If SOME not default firmware - Unreal to detect
@@ -17,7 +18,7 @@ I doing this project for myself and make this github page public. U can only giv
 
 
 # Is External Undetected?
-**VAC** - 99,99% Unreal to detect 
+**VAC** - 99,99% Unreal to detect on any firmware
 
 **EAC/GAMEGUARD/any A-tier AC that startup after windows** - EAC not detect/other - didn't tested
 
