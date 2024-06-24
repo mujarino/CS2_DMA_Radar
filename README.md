@@ -109,6 +109,7 @@ sudo ./pcileech -device fpga probe
 
 4. If u use without A/C and it works, then try with AC and have problems - BUY BETTER FIRMWARE. This radar works on libraries that use 100% of dma cheats and only DECRYPTYNG memory. SO there is no chance to fix AC Problems of it because bypass ac is FIRMWARE TASK
 
+P.S. If cheat works great without any anti-cheat and stop working when u start anti-cheat - then u need to buy better dma firmware. This is not my cheat issue
 
 # How to add your map?
    1. download testing/offset_manipulator.py
