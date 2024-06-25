@@ -15,7 +15,7 @@ Detecting probability demands only on your dma firmware
 **VAC** - Unreal to detect on any firmware
 
 **EAC/GAMEGUARD/any A-tier AC that startup after windows** - If SOME not default firmware - Unreal to detect
-**There is a lot of EAC versions 
+**There is a lot of EAC versions and some can be very good in dma protect**
 
 **Faceit AC** - If good 1:1 firmware - 99% not detect
 
