@@ -30,20 +30,27 @@ maxclients = int(settings['maxclients'])
 
 #######################################
 
-try:
-    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
-    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
-except Exception as e:
-    print(e)
-    try:
-        print('[-]Unable to parse offsets. Using from current folder')
-        with open(f'client.dll.json', 'r') as a:
-            clientdll = json.load(a)
-        with open(f'offsets.json', 'r') as b:
-            offsets = json.load(b)
-    except:
-        print('[-] put offsets.json and client.dll.json in main folder')
-        exit()
+if update_offsets == '1':
+        try:
+            offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
+            clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
+        except Exception as e:
+            print(e)
+            try:
+                print('[-] ' + Fore.RED + 'Unable to parse offsets. Using from current folder' + Style.RESET_ALL)
+                with open(f'client.dll.json', 'r') as a:
+                    clientdll = json.load(a)
+                with open(f'offsets.json', 'r') as b:
+                    offsets = json.load(b)
+            except:
+                print('[-] ' + Fore.RED + 'Put offsets.json and client.dll.json in main folder' + Style.RESET_ALL)
+                exit()
+else:
+    print('parsing from folder')
+    with open('offsets.json', 'r') as file:
+        offsets = json.load(file)
+    with open('client.dll.json', 'r') as file:
+        clientdll = json.load(file)
 
 
 #######################################
