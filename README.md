@@ -9,15 +9,19 @@ I doing this project for myself and make this github page public. U can only giv
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![GitHub release](https://img.shields.io/github/release/meanwhiletothestars/CS2_DMA_Radar?include_prereleases=&sort=semver&color=blue)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases/) [![issues - CS2_DMA_Radar](https://img.shields.io/github/issues/meanwhiletothestars/CS2_DMA_Radar)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/issues)
 
 # Is DMA Undetected?
+Detecting probability demands only on your dma firmware
+
+
 **VAC** - Unreal to detect on any firmware
 
 **EAC/GAMEGUARD/any A-tier AC that startup after windows** - If SOME not default firmware - Unreal to detect
+**There is a lot of EAC versions and some can be very good in dma protect**
 
 **Faceit AC** - If good 1:1 firmware - 99% not detect
 
 
 # Is External Undetected?
-**VAC** - 99,99% Unreal to detect 
+**VAC** - 99,99% Unreal to detect on any firmware
 
 **EAC/GAMEGUARD/any A-tier AC that startup after windows** - EAC not detect/other - didn't tested
 
@@ -105,6 +109,7 @@ sudo ./pcileech -device fpga probe
 
 4. If u use without A/C and it works, then try with AC and have problems - BUY BETTER FIRMWARE. This radar works on libraries that use 100% of dma cheats and only DECRYPTYNG memory. SO there is no chance to fix AC Problems of it because bypass ac is FIRMWARE TASK
 
+P.S. If cheat works great without any anti-cheat and stop working when u start anti-cheat - then u need to buy better dma firmware. This is not my cheat issue
 
 # How to add your map?
    1. download testing/offset_manipulator.py
