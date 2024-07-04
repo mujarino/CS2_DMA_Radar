@@ -24,7 +24,7 @@ rot_angle = settings['rot_angle']
 cross_size = settings['cross_size']
 teammate_setting = settings['teammates']
 altgirlpic_instead_nomappic = settings['altgirlpic_instead_nomappic']
-update_offsets = settings['update_offsets']
+update_offsets = str(settings['update_offsets'])
 maxclients = int(settings['maxclients'])
 
 
@@ -37,13 +37,13 @@ if update_offsets == '1':
     except Exception as e:
         print(e)
         try:
-            print('[-] ' + Fore.RED + 'Unable to parse offsets. Using from current folder' + Style.RESET_ALL)
+            print('[-] Unable to parse offsets. Using from current folder')
             with open(f'client.dll.json', 'r') as a:
                 clientdll = json.load(a)
             with open(f'offsets.json', 'r') as b:
                 offsets = json.load(b)
         except:
-            print('[-] ' + Fore.RED + 'Put offsets.json and client.dll.json in main folder' + Style.RESET_ALL)
+            print('[-] Put offsets.json and client.dll.json in main folder')
             exit()
 else:
     with open('offsets.json', 'r') as file:
@@ -59,10 +59,10 @@ maps_with_split = ['de_nuke','de_vertigo']
 dwEntityList = offsets['client.dll']['dwEntityList']
 mapNameVal = offsets['matchmaking.dll']['dwGameTypes_mapName']
 dwLocalPlayerPawn = offsets['client.dll']['dwLocalPlayerPawn']
+dwPlantedC4 = offsets['client.dll']['dwPlantedC4']
+dwGameRules = offsets['client.dll']['dwGameRules']
+dwGlobalVars = offsets['client.dll']['dwGlobalVars']
 
-m_iPawnHealth = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnHealth']
-m_iPawnArmor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnArmor']
-m_bPawnIsAlive = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnIsAlive']
 m_angEyeAngles = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_angEyeAngles']
 m_iTeamNum = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iTeamNum']
 m_hPlayerPawn = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_hPlayerPawn']
@@ -70,13 +70,20 @@ m_vOldOrigin = clientdll['client.dll']['classes']['C_BasePlayerPawn']['fields'][
 m_iIDEntIndex = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_iIDEntIndex']
 m_iHealth = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iHealth']
 m_bIsDefusing = clientdll['client.dll']['classes']['C_CSPlayerPawn']['fields']['m_bIsDefusing']
-m_bPawnHasDefuser = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnHasDefuser']
 m_iCompTeammateColor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iCompTeammateColor']
 m_flFlashOverlayAlpha = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_flFlashOverlayAlpha']
 m_iszPlayerName = clientdll['client.dll']['classes']['CBasePlayerController']['fields']['m_iszPlayerName']
 m_pClippingWeapon = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_pClippingWeapon']
+m_pInGameMoneyServices = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_pInGameMoneyServices']
+m_iAccount = clientdll['client.dll']['classes']['CCSPlayerController_InGameMoneyServices']['fields']['m_iAccount']
+m_pItemServices = clientdll['client.dll']['classes']['C_BasePlayerPawn']['fields']['m_pItemServices']
+m_bHasDefuser = clientdll['client.dll']['classes']['CCSPlayer_ItemServices']['fields']['m_bHasDefuser']
+m_pGameSceneNode = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_pGameSceneNode']
+m_vecAbsOrigin = clientdll['client.dll']['classes']['CGameSceneNode']['fields']['m_vecAbsOrigin']
+m_hOwnerEntity = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_hOwnerEntity']
+m_bFreezePeriod = clientdll['client.dll']['classes']['C_CSGameRules']['fields']['m_bFreezePeriod']
 
-print('[+] offsets parsed')
+print('[+] Offsets parsed')
 
 #######################################
 
@@ -158,22 +165,26 @@ def read_string_memory(address):
 
 
 def readmapfrommem():
-    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
+    dwGlobalVarsvar = struct.unpack("<Q", cs2.memory.read(client_base + dwGlobalVars, 8, memprocfs.FLAG_NOCACHE))[0]
+    dwGlobalVarsvaradress = struct.unpack("<Q", cs2.memory.read(dwGlobalVarsvar + 0x1B8, 8, memprocfs.FLAG_NOCACHE))[0]
+    mapname = read_string(dwGlobalVarsvaradress)
     for folder in map_folders:
         if folder in mapname:
             mapname = folder
             break
     if mapname != 'empty':
-        print(f"[+] Found map {mapname}")
+        print('[+] ' + Fore.GREEN + f'Found map {mapname}' + Style.RESET_ALL)
     mapname = str(mapname)
-    return mapname
+    return mapname 
 
 def get_only_mapname():
-    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapname = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
-    mapname = str(mapname)
-    return mapname
+    try:
+        dwGlobalVarsvar = struct.unpack("<Q", cs2.memory.read(client_base + dwGlobalVars, 8, memprocfs.FLAG_NOCACHE))[0]
+        dwGlobalVarsvaradress = struct.unpack("<Q", cs2.memory.read(dwGlobalVarsvar + 0x1B8, 8, memprocfs.FLAG_NOCACHE))[0]
+        mapname1 = read_string(dwGlobalVarsvaradress)
+        return mapname1
+    except Exception as e:
+        return 'empty'
 
 def pawnhandler():
     global global_entity_list
