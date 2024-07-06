@@ -204,22 +204,22 @@ while running:
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == scale_plus_button:
-                    scale += 0.1
-                    scale_label.set_text(f'Scale: {scale:.1f}')
+                    scale += 0.05
+                    scale_label.set_text(f'Scale: {scale:.2f}')
                 elif event.ui_element == scale_minus_button:
-                    scale -= 0.1
-                    scale_label.set_text(f'Scale: {scale:.1f}')
+                    scale -= 0.05
+                    scale_label.set_text(f'Scale: {scale:.2f}')
                 elif event.ui_element == x_plus_button:
-                    x += 50.0
+                    x += 25.0
                     x_label.set_text(f'X: {x:.1f}')
                 elif event.ui_element == x_minus_button:
-                    x -= 50.0
+                    x -= 25.0
                     x_label.set_text(f'X: {x:.1f}')
                 elif event.ui_element == y_plus_button:
-                    y += 50.0
+                    y += 25.0
                     y_label.set_text(f'Y: {y:.1f}')
                 elif event.ui_element == y_minus_button:
-                    y -= 50.0
+                    y -= 25.0
                     y_label.set_text(f'Y: {y:.1f}')
 
     manager.update(time_delta)
