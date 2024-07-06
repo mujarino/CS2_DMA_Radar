@@ -12,10 +12,10 @@ from requests import get
 import threading
 import random
 from pygame.locals import *
-
+import pymem
 
 with open(f'config.json', 'r') as f:
-    settings = json.load(f)
+	settings = json.load(f)
 
 triangle_length = settings['triangle_length']
 circle_size = settings['circle_size']
@@ -30,21 +30,8 @@ maxclients = int(settings['maxclients'])
 
 #######################################
 
-try:
-    offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
-    clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
-except Exception as e:
-    print(e)
-    try:
-        print('[-]Unable to parse offsets. Using from current folder')
-        with open(f'client.dll.json', 'r') as a:
-            clientdll = json.load(a)
-        with open(f'offsets.json', 'r') as b:
-            offsets = json.load(b)
-    except:
-        print('[-] put offsets.json and client.dll.json in main folder')
-        exit()
-
+offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
+clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
 
 #######################################
 
@@ -53,100 +40,128 @@ maps_with_split = ['de_nuke','de_vertigo']
 dwEntityList = offsets['client.dll']['dwEntityList']
 mapNameVal = offsets['matchmaking.dll']['dwGameTypes_mapName']
 dwLocalPlayerPawn = offsets['client.dll']['dwLocalPlayerPawn']
+dwPlantedC4 = offsets['client.dll']['dwPlantedC4']
+dwGameRules = offsets['client.dll']['dwGameRules']
+dwGlobalVars = offsets['client.dll']['dwGlobalVars']
 
-m_iPawnHealth = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnHealth']
-m_iPawnArmor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iPawnArmor']
-m_bPawnIsAlive = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnIsAlive']
 m_angEyeAngles = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_angEyeAngles']
 m_iTeamNum = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iTeamNum']
 m_hPlayerPawn = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_hPlayerPawn']
 m_vOldOrigin = clientdll['client.dll']['classes']['C_BasePlayerPawn']['fields']['m_vOldOrigin']
 m_iIDEntIndex = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_iIDEntIndex']
 m_iHealth = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_iHealth']
-m_bIsDefusing = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_bIsDefusing']
-m_bPawnHasDefuser = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_bPawnHasDefuser']
+m_bIsDefusing = clientdll['client.dll']['classes']['C_CSPlayerPawn']['fields']['m_bIsDefusing']
 m_iCompTeammateColor = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_iCompTeammateColor']
 m_flFlashOverlayAlpha = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_flFlashOverlayAlpha']
 m_iszPlayerName = clientdll['client.dll']['classes']['CBasePlayerController']['fields']['m_iszPlayerName']
 m_pClippingWeapon = clientdll['client.dll']['classes']['C_CSPlayerPawnBase']['fields']['m_pClippingWeapon']
+m_pInGameMoneyServices = clientdll['client.dll']['classes']['CCSPlayerController']['fields']['m_pInGameMoneyServices']
+m_iAccount = clientdll['client.dll']['classes']['CCSPlayerController_InGameMoneyServices']['fields']['m_iAccount']
+m_pItemServices = clientdll['client.dll']['classes']['C_BasePlayerPawn']['fields']['m_pItemServices']
+m_bHasDefuser = clientdll['client.dll']['classes']['CCSPlayer_ItemServices']['fields']['m_bHasDefuser']
+m_pGameSceneNode = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_pGameSceneNode']
+m_vecAbsOrigin = clientdll['client.dll']['classes']['CGameSceneNode']['fields']['m_vecAbsOrigin']
+m_hOwnerEntity = clientdll['client.dll']['classes']['C_BaseEntity']['fields']['m_hOwnerEntity']
+m_bFreezePeriod = clientdll['client.dll']['classes']['C_CSGameRules']['fields']['m_bFreezePeriod']
 
 print('[+] offsets parsed')
 
 #######################################
 zoom_scale = 2
-
-maps_with_split = []
+map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
+global_entity_list = []
+playerpawn = 0
 
 def world_to_minimap(x, y, pos_x, pos_y, scale, map_image, screen, zoom_scale):
-    image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
-    image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
+	image_x = int((x - pos_x) * screen.get_width() / (map_image.get_width() * scale * zoom_scale))
+	image_y = int((y - pos_y) * screen.get_height() / (map_image.get_height() * scale * zoom_scale))
 
-    return int(image_x), int(image_y)
+	return int(image_x), int(image_y)
+
+def read_string_memory(address):
+	data = b""
+	try:
+		while True:
+			byte = cs2.memory.read(address, 1)
+			if byte == b'\0':
+				break
+			data += byte
+			address += 1
+		decoded_data = data.decode('utf-8')
+		return decoded_data
+	except UnicodeDecodeError:
+		return data
+
 
 def readmapfrommem():
-    mapNameAddress_dll = cs2.module('matchmaking.dll')
-    mapNameAddressbase = mapNameAddress_dll.base
-    mapNameAddress = struct.unpack("<Q", cs2.memory.read(mapNameAddressbase + mapNameVal, 8, memprocfs.FLAG_NOCACHE))[0]
-    mapName = struct.unpack("<32s", cs2.memory.read(mapNameAddress+0x4, 32, memprocfs.FLAG_NOCACHE))[0].decode('utf-8', 'ignore')
-    return str(mapName)
+	mapNameAddress = pm.read_longlong(client_base + dwGlobalVars)
+	mapnameAddresss = pm.read_longlong(mapNameAddress+0x1B8)
+	mapname = pm.read_string(mapnameAddresss)
+	for folder in map_folders:
+		if folder in mapname:
+			mapname = folder
+			break
+	if mapname != 'empty':
+		print(f"[+] Found map {mapname}")
+	mapname = str(mapname)
+	return mapname
+
+def get_only_mapname():
+	mapNameAddress = pm.read_longlong(client_base + dwGlobalVars)
+	mapnameAddresss = pm.read_longlong(mapNameAddress+0x1B8)
+	mapname = pm.read_string(mapnameAddresss)
+	return mapname
 
 def getmapdata(mapname):
+	with open(f'maps/{mapname}/meta.json', 'r') as f:
+		data = json.load(f)
+	scale = data['scale']
+	x = data['offset']['x']
+	y = data['offset']['y']
+	return scale,x,y
+
+def getlowermapdata(mapname):
     with open(f'maps/{mapname}/meta.json', 'r') as f:
         data = json.load(f)
-    scale = data['scale']
-    x = data['offset']['x']
-    y = data['offset']['y']
-    return scale,x,y
+    lowerx = data['splits']['offset']['x']
+    lowery = data['splits']['offset']['y']
+    z = data['splits']['zRange']['z']
+    return lowerx,lowery,z
 
-vmm = memprocfs.Vmm(['-device', 'fpga', '-disable-python', '-disable-symbols', '-disable-symbolserver', '-disable-yara', '-disable-yara-builtin', '-debug-pte-quality-threshold', '64'])
-cs2 = vmm.process('cs2.exe')
-client = cs2.module('client.dll')
-client_base = client.base
-print(f"[+] Client_base {client_base}")
 
-entList = struct.unpack("<Q", cs2.memory.read(client_base + dwEntityList, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Entitylist {entList}")
+pm = pymem.Pymem("cs2.exe")
 
-player = struct.unpack("<Q", cs2.memory.read(client_base + dwLocalPlayerPawn, 8, memprocfs.FLAG_NOCACHE))[0]
-print(f"[+] Player {player}")
+client_base = pymem.process.module_from_name(pm.process_handle, "client.dll").lpBaseOfDll
+print(f"[+] Finded client base")
 
-entitys = []
-for entityId in range(1,2048):
-    EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-    try:
-        entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-        entityHp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        if int(entityHp) != 0:
-            entitys.append(entityId)
-            team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-            print(team)
-        else:
-            pass
-    except:
-        pass
-print(entitys)
+entList = pm.read_longlong(client_base + dwEntityList)
+print(f"[+] Entered entitylist")
 
+mapNameAddressbase = pymem.process.module_from_name(pm.process_handle, "matchmaking.dll").lpBaseOfDll
+
+EntityList = pm.read_longlong(client_base + dwEntityList)
+EntityList = pm.read_longlong(EntityList + 0x10)
 mapname = readmapfrommem()
 
 map_folders = [f for f in os.listdir('maps') if os.path.isdir(os.path.join('maps', f))]
 
 for folder in map_folders:
-    if folder in mapname:
-        mapname = folder
-        break
+	if folder in mapname:
+		mapname = folder
+		break
 
 if mapname == 'empty':
-    print(f"[-] You are not connected to map")
-    exit()
+	print(f"[-] You are not connected to map")
+	exit()
 if os.path.exists(f'maps/{mapname}'):
-    pass
+	pass
 else:
-    print(f'[-] Please, import this map first ({mapname})')
-    exit()
+	print(f'[-] Please, import this map first ({mapname})')
+	exit()
 print(f"[+] Found map {mapname}")
 if mapname in maps_with_split:
-    lowerx,lowery = getlowermapdata(mapname)
-    print(lowerx,lowery)
+	lowerx,lowery,z = getlowermapdata(mapname)
+	print(lowerx,lowery,z)
 scale,x,y = getmapdata(mapname)
 
 
@@ -213,26 +228,37 @@ while running:
 
     rotated_map_image, map_rect = pygame.transform.scale(radar_image, screen.get_size()), radar_image.get_rect()
     screen.blit(rotated_map_image, map_rect.topleft)
-
-    for entityId in entitys:
-        EntityENTRY = struct.unpack("<Q", cs2.memory.read((entList + 0x8 * (entityId >> 9) + 0x10), 8, memprocfs.FLAG_NOCACHE))[0]
-        entity = struct.unpack("<Q", cs2.memory.read(EntityENTRY + 120 * (entityId & 0x1FF), 8, memprocfs.FLAG_NOCACHE))[0]
-        pX = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin +0x4, 4, memprocfs.FLAG_NOCACHE))[0]
-        pY = struct.unpack("<f", cs2.memory.read(entity + m_vOldOrigin, 4, memprocfs.FLAG_NOCACHE))[0]
-        Hp = struct.unpack("<I", cs2.memory.read(entity + m_iHealth, 4, memprocfs.FLAG_NOCACHE))[0]
-        team = struct.unpack("<I", cs2.memory.read(entity + m_iTeamNum, 4, memprocfs.FLAG_NOCACHE))[0]
-        if Hp > 0 and team == 2:
-            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
-            pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 5)
-        if Hp > 0 and team == 3:
-            transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
-            pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 5)
-        text_surface = font.render(f'{Hp}', True, (255, 255, 255))
-        print(f'{transformed_x}, {transformed_y}')
-        screen.blit(text_surface, (transformed_x, transformed_y))
-
+    playerpawn = pm.read_longlong(client_base + dwLocalPlayerPawn)
+    playerTeam = pm.read_int(playerpawn + m_iTeamNum)
+    EntityPawnListEntry = pm.read_longlong(client_base + dwEntityList)
+    for i in range(maxclients):
+        try:
+            EntityAddress = pm.read_longlong(EntityList + (i + 1) * 0x78)
+            Pawn = pm.read_longlong(EntityAddress + m_hPlayerPawn)
+            newEntityPawnListEntry = pm.read_longlong(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9))
+            entity_id = pm.read_longlong(newEntityPawnListEntry + 0x78 * (Pawn & 0x1FF))
+            Hp = pm.read_int(entity_id + m_iHealth)
+            if Hp!= 0:
+                pX = pm.read_float(entity_id + m_vOldOrigin +0x4)
+                pY = pm.read_float(entity_id + m_vOldOrigin)
+                pZ = pm.read_float(entity_id + m_vOldOrigin +0x8)
+                team = pm.read_int(entity_id + m_iTeamNum)
+                EyeAngles = pm.read_float(entity_id + (m_angEyeAngles +0x4))
+                EyeAngles = math.radians(EyeAngles+rot_angle)
+                isdefusing = pm.read_int(entity_id + m_bIsDefusing)
+                flash_alpha = int(pm.read_int(entity_id + m_flFlashOverlayAlpha))  
+            if Hp > 0 and team == 2:
+                transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
+                pygame.draw.circle(screen, (255, 0, 0), (transformed_x, transformed_y), 5)
+            if Hp > 0 and team == 3:
+                transformed_x, transformed_y = world_to_minimap(pX, pY, x, y, scale, radar_image, screen, zoom_scale)
+                pygame.draw.circle(screen, (0, 0, 255), (transformed_x, transformed_y), 5)
+            text_surface = font.render(f'{Hp}', True, (255, 255, 255))
+            print(f'{transformed_x}, {transformed_y}')
+            screen.blit(text_surface, (transformed_x, transformed_y))
+        except:
+            pass
     manager.draw_ui(screen)
-
     pygame.display.flip()
 
 pygame.quit()
