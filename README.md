@@ -1,7 +1,7 @@
 [![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![tested-cs2-version. - 14017](https://img.shields.io/static/v1?label=tested+cs2+version&message=14017&color=2ea44f)](https://)
 
 **You can ask me any question/get help/request adding your map by joining our discord.**
-<iframe src="https://discord.com/widget?id=1259423438234320927&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+![Discord Banner 1](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner1)
 
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/preview.gif)
 
