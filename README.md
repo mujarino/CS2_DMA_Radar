@@ -2,7 +2,7 @@
 
 **You can ask me any question/get help/request adding your map by joining our discord.**
 
-![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)
+[![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
 
 
 
