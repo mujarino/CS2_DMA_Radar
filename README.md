@@ -87,7 +87,7 @@ Detecting probability demands only on your dma firmware
    - [x] hp with progress bar
    - [x] advanced config
    - [ ] is enemy spoted
-   - [ ] custom link for any client, so it can be reached from private IP(without port open and static ip)
+   - [x] custom link for any client, so it can be reached from private IP(without port open and static ip)
    - [x] bomb
    - [x] kits
    - [x] money on frezetime
