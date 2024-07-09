@@ -26,11 +26,7 @@ Detecting probability demands only on your dma firmware
 
 
 # Is External Undetected?
-**VAC** - 99,99% Unreal to detect on any firmware
-
-**EAC/GAMEGUARD/any A-tier AC that startup after windows** - EAC not detect/other - didn't tested
-
-**Faceit AC** - Dont use it on Faceit pls, insta ban probably
+**VAC** - 99% Unreal to detect on any firmware
 
 
 # Requirements FOR DMA:
