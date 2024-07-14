@@ -34,9 +34,3 @@ Detecting probability demands **ONLY** on your dma firmware
 
 **TON**
 <img src="https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/ton.jpg" width="210px">
-
-
-
-# How to add your map?
-   1. request in our discord
-
