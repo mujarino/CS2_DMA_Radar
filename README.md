@@ -1,3 +1,4 @@
+# **You can ask me any question/get help/request adding your map/see specified install guide/get news about new web radar by joining our discord.**
 [![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
 
 
@@ -9,7 +10,6 @@
 
 
 
-**You can ask me any question/get help/request adding your map/see specified install guide/get news about new web radar by joining our discord.**
 
 
 
