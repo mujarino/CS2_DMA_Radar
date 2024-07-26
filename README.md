@@ -1,3 +1,6 @@
+[![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
+
+
 [![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![tested-cs2-version. - 14017](https://img.shields.io/static/v1?label=tested+cs2+version&message=14017&color=2ea44f)](https://)
 
 
@@ -8,7 +11,6 @@
 
 **You can ask me any question/get help/request adding your map/see specified install guide/get news about new web radar by joining our discord.**
 
-[![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
 
 
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![GitHub release](https://img.shields.io/github/release/meanwhiletothestars/CS2_DMA_Radar?include_prereleases=&sort=semver&color=blue)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases/) [![issues - CS2_DMA_Radar](https://img.shields.io/github/issues/meanwhiletothestars/CS2_DMA_Radar)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/issues)
