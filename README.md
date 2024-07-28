@@ -1,6 +1,8 @@
 # **WEB RADAR**
 ![Capture](https://github.com/meanwhiletothestars/CS2_DMA_Radar/blob/DMA/testing/web-preview.gif)
 
+[**See more here**](https://www.youtube.com/watch?v=_ZmtrcW1Pg0&ab_channel=ScoreTech)
+
 Non compromise web radar released for now by very low price! No bans, new level radar expirience!
 Buy/ask any question via our Discord!
 
