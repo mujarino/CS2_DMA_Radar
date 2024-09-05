@@ -9,7 +9,7 @@
 ![](https://view-counter.tobyhagan.com/?user={meanwhiletothestars}/{CS2_DMA_Radar}) [![GitHub release](https://img.shields.io/github/release/meanwhiletothestars/CS2_DMA_Radar?include_prereleases=&sort=semver&color=blue)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/releases/) [![issues - CS2_DMA_Radar](https://img.shields.io/github/issues/meanwhiletothestars/CS2_DMA_Radar)](https://github.com/meanwhiletothestars/CS2_DMA_Radar/issues)
 
 
-Installing guide, free dma support in our Discord.
+Installing guide, free dma support in our Discord. 
 
 [![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
 
