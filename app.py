@@ -27,13 +27,13 @@ altgirlpic_instead_nomappic = settings['altgirlpic_instead_nomappic']
 update_offsets = str(settings['update_offsets'])
 maxclients = int(settings['maxclients'])
 
-
+mapname = 'de_mirage'
 #######################################
 
 if update_offsets == '1':
     try:
         offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
-        clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
+        clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client_dll.json').json()
     except Exception as e:
         print(e)
         try:
@@ -219,7 +219,7 @@ teammates_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((170, 
 
 running = True
 while running:
-    mapname = readmapfrommem()
+    mapname = 'de_mirage'
     if 'empty' in mapname:
         if altgirlpic_instead_nomappic == 1:
             png_files = [f for f in os.listdir('data/nomap_pics') if f.endswith('.png')]
@@ -242,7 +242,7 @@ while running:
         lowerx,lowery,lowerz = getlowermapdata(mapname)
     scale,x,y = getmapdata(mapname)
     map_image = pygame.image.load(f'maps/{mapname}/radar.png')
-    while not 'empty' in get_only_mapname():
+    while not 'empty' in 'de_mirage':
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             manager.process_events(event)
