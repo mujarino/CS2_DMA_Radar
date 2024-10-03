@@ -30,7 +30,12 @@ print(f"[+] Client_base {client_base}")
 
 
 dwGlobalVarsvar = pm.read_longlong(client_base + dwGlobalVars)
-dwGlobalVarsvaradress = pm.read_longlong(dwGlobalVarsvar + 384)
-mapname1 = pm.read_string(dwGlobalVarsvaradress)
-print(mapname1)
-	
+for i in range(4096):
+	try:
+		dwGlobalVarsvaradress = pm.read_longlong(dwGlobalVarsvar + i)
+		mapname1 = pm.read_string(dwGlobalVarsvaradress)
+		if mapname1 == 'de_mirage':
+			print(i)
+		print(mapname1)
+	except Exception as e:
+		pass
