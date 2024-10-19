@@ -14,4 +14,4 @@ Installing guide, free dma support in our Discord.
 [![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
 
 # **if you want to donate**
-Buy new web radar with a lot of features if you want to support me
+Buy new web radar with a lot of features via tiket in our discord if you want to support me
