@@ -1,4 +1,4 @@
-# **PYGUI RADAR**
+
 [![ac status - Undetected](https://img.shields.io/static/v1?label=ac+status&message=Undetected&color=2ea44f)](https://) [![tested-cs2-version. - 14017](https://img.shields.io/static/v1?label=tested+cs2+version&message=14017&color=2ea44f)](https://)
 
 
@@ -13,5 +13,9 @@ Installing guide, free dma support in our Discord.
 
 [![Discord Banner 2](https://discordapp.com/api/guilds/1259423438234320927/widget.png?style=banner2)](https://discord.gg/WyNkYt6ftm)
 
+#Warning
+For now we dont have enough time to keep public radar up to date, but we glad to inform you that u can buy private version, that is always up to date, have a lot of additional features include public share link(no-delay), bomb and smokes!
+The price is very low for that type of product. So u can open ticket in our discordand buy it right now!
+
 # **if you want to donate**
-Buy new web radar with a lot of features via tiket in our discord if you want to support me
+Just buy our new **Web radar**
