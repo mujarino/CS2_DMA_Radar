@@ -15,7 +15,7 @@ Installing guide, free dma support in our Discord.
 
 # Warning
 For now we dont have enough time to keep public radar up to date, but we glad to inform you that u can buy private version, that is always up to date, have a lot of additional features include public share link(no-delay), bomb and smokes!
-The price is very low for that type of product. So u can open ticket in our discordand buy it right now!
+The price is very low for that type of product. So u can open ticket in our discord and buy it right now!
 
 # **if you want to donate**
 Just buy our new **Web radar**
