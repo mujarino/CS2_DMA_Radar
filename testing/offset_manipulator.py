@@ -1,4 +1,4 @@
-import memprocfs
+
 import struct
 import time
 import pygame
@@ -30,8 +30,8 @@ maxclients = int(settings['maxclients'])
 
 #######################################
 
-offsets = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
-clientdll = get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client.dll.json').json()
+offsets = get('https://nld.scoretech.pro/api/offsets/offsets.json').json()
+clientdll = get('https://nld.scoretech.pro/api/offsets/client_dll.json').json()
 
 #######################################
 
@@ -95,7 +95,7 @@ def read_string_memory(address):
 
 def readmapfrommem():
 	mapNameAddress = pm.read_longlong(client_base + dwGlobalVars)
-	mapnameAddresss = pm.read_longlong(mapNameAddress+0x1B8)
+	mapnameAddresss = pm.read_longlong(mapNameAddress+384)
 	mapname = pm.read_string(mapnameAddresss)
 	for folder in map_folders:
 		if folder in mapname:
@@ -108,7 +108,7 @@ def readmapfrommem():
 
 def get_only_mapname():
 	mapNameAddress = pm.read_longlong(client_base + dwGlobalVars)
-	mapnameAddresss = pm.read_longlong(mapNameAddress+0x1B8)
+	mapnameAddresss = pm.read_longlong(mapNameAddress+384)
 	mapname = pm.read_string(mapnameAddresss)
 	return mapname
 
